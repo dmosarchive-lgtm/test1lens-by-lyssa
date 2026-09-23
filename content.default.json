@@ -1,0 +1,561 @@
+{
+  "version": 1,
+  "brand": {
+    "name": "Lens By Lyssa",
+    "owner": "Lyssa",
+    "email": "hello@lensbylyssa.com",
+    "instagram": "@lensbylyssa",
+    "city": "St. George, Utah",
+    "serviceArea": "St. George + 30 mi"
+  },
+  "nav": {
+    "hi": "Hi!",
+    "board": "Gallery",
+    "edits": "Edits",
+    "tags": "Pricing",
+    "letter": "Book"
+  },
+  "sections": {
+    "board": true,
+    "edits": true,
+    "tags": true
+  },
+  "home": {
+    "kicker": "Lens By Lyssa ✿",
+    "title": "Photos as sweet as your",
+    "highlight": "everyday",
+    "lede": "Playful portraits, groups, sports and milestone sessions in St. George. Messy hair, big giggles, and all the little details you never want to forget.",
+    "ctaPrimary": "Write me a note ✎",
+    "ctaSecondary": "Peek at the board",
+    "dragHint": "psst, drag us around!",
+    "collage": [
+      {
+        "photo": "",
+        "kind": "family",
+        "caption": "best day ever"
+      },
+      {
+        "photo": "",
+        "kind": "couple",
+        "caption": "us ♡"
+      },
+      {
+        "photo": "",
+        "kind": "newborn",
+        "caption": "hello, world"
+      },
+      {
+        "photo": "",
+        "kind": "senior",
+        "caption": "class of '27"
+      }
+    ]
+  },
+  "gallery": {
+    "title": "The photo board",
+    "subtitle": "Tap a sticky note to filter. Tap a photo to flip it over and read the story behind it.",
+    "items": [
+      {
+        "id": "g1",
+        "cat": "groups",
+        "title": "Picnic at Snow Canyon",
+        "story": "The kids built a 'castle' out of picnic blankets. We shot for 10 minutes before anyone noticed the camera.",
+        "meta": "Spring · Snow Canyon",
+        "photo": ""
+      },
+      {
+        "id": "g2",
+        "cat": "portraits",
+        "title": "Anniversary stroll",
+        "story": "Ten years married and still laughing at the same jokes. Warm film edit.",
+        "meta": "Fall · Pioneer Park",
+        "photo": ""
+      },
+      {
+        "id": "g3",
+        "cat": "sports",
+        "title": "Game day",
+        "story": "Senior night under the lights. Caught the winning pin from the corner of the mat.",
+        "meta": "Winter · Dixie High",
+        "photo": ""
+      },
+      {
+        "id": "g4",
+        "cat": "portraits",
+        "title": "Class of '27",
+        "story": "Letterman jacket plus red rocks. We did golden hour, then sparklers.",
+        "meta": "Spring · Red Cliffs",
+        "photo": ""
+      },
+      {
+        "id": "g5",
+        "cat": "groups",
+        "title": "Roommate chaos",
+        "story": "Four roommates, one blanket fort, zero chill.",
+        "meta": "Summer · Tuacahn",
+        "photo": ""
+      },
+      {
+        "id": "g6",
+        "cat": "milestones",
+        "title": "She said yes!",
+        "story": "He hid behind the juniper. She had no idea. Tears all around.",
+        "meta": "Fall · Kayenta",
+        "photo": ""
+      },
+      {
+        "id": "g7",
+        "cat": "milestones",
+        "title": "Almost here",
+        "story": "A golden hour maternity walk, three weeks before baby's arrival.",
+        "meta": "Spring · Sand Hollow",
+        "photo": ""
+      },
+      {
+        "id": "g8",
+        "cat": "sports",
+        "title": "First season",
+        "story": "Soccer Saturdays, mud included. Soft B&W edit.",
+        "meta": "Fall · Little Valley",
+        "photo": ""
+      },
+      {
+        "id": "g9",
+        "cat": "groups",
+        "title": "Grandma's garden",
+        "story": "Three generations, one very fluffy dog.",
+        "meta": "Spring · Santa Clara",
+        "photo": ""
+      }
+    ],
+    "categories": [
+      {
+        "id": "portraits",
+        "name": "portraits"
+      },
+      {
+        "id": "groups",
+        "name": "groups"
+      },
+      {
+        "id": "sports",
+        "name": "sports"
+      },
+      {
+        "id": "milestones",
+        "name": "milestones"
+      }
+    ]
+  },
+  "edits": {
+    "title": "Try on an edit",
+    "subtitle": "Move your finger or mouse over the photo. The edited version shows through the circle.",
+    "photo": "",
+    "styles": [
+      {
+        "name": "Light & Airy",
+        "desc": "Bright, soft, dreamy",
+        "color": "#FFF1A8",
+        "look": "airy",
+        "photo": ""
+      },
+      {
+        "name": "Warm Film",
+        "desc": "Golden and nostalgic",
+        "color": "#FFD2B3",
+        "look": "film",
+        "photo": ""
+      },
+      {
+        "name": "Moody",
+        "desc": "Deep and cinematic",
+        "color": "#DCCFF4",
+        "look": "moody",
+        "photo": ""
+      },
+      {
+        "name": "Black & White",
+        "desc": "Timeless and classic",
+        "color": "#E4E4E4",
+        "look": "bw",
+        "photo": ""
+      }
+    ],
+    "showOptions": false
+  },
+  "pricing": {
+    "title": "Little price tags",
+    "subtitle": "Every session comes with a style guide, posing help, and a private online gallery.",
+    "allowDeposit": true,
+    "deposit": 25,
+    "packages": [
+      {
+        "id": "portraits-wildflower",
+        "cat": "portraits",
+        "name": "Wild Flower",
+        "price": 60,
+        "time": "30 minutes",
+        "color": "#F9C6D0",
+        "perks": [
+          "20+ edited pictures",
+          "1 outfit"
+        ]
+      },
+      {
+        "id": "portraits-sunbeam",
+        "cat": "portraits",
+        "name": "Sunbeam",
+        "price": 80,
+        "time": "45 minutes",
+        "color": "#FFF1A8",
+        "perks": [
+          "40+ edited pictures",
+          "2 outfits"
+        ]
+      },
+      {
+        "id": "portraits-honeybee",
+        "cat": "portraits",
+        "name": "Honeybee",
+        "price": 120,
+        "time": "60–90 minutes",
+        "color": "#F7C98A",
+        "perks": [
+          "60+ edited pictures",
+          "2+ outfits"
+        ]
+      },
+      {
+        "id": "groups-wildflower",
+        "cat": "groups",
+        "name": "Wild Flower",
+        "price": 75,
+        "time": "45 minutes",
+        "color": "#F9C6D0",
+        "perks": [
+          "20+ edited pictures"
+        ]
+      },
+      {
+        "id": "groups-sunbeam",
+        "cat": "groups",
+        "name": "Sunbeam",
+        "price": 100,
+        "time": "60 minutes",
+        "color": "#FFF1A8",
+        "perks": [
+          "40+ edited pictures"
+        ]
+      },
+      {
+        "id": "groups-honeybee",
+        "cat": "groups",
+        "name": "Honeybee",
+        "price": 125,
+        "time": "90 minutes",
+        "color": "#F7C98A",
+        "perks": [
+          "60+ edited pictures"
+        ]
+      },
+      {
+        "id": "sports-wildflower",
+        "cat": "sports",
+        "name": "Wild Flower",
+        "price": 50,
+        "time": "15 minutes of your event",
+        "color": "#F9C6D0",
+        "perks": [
+          "15+ edited pictures"
+        ]
+      },
+      {
+        "id": "sports-sunbeam",
+        "cat": "sports",
+        "name": "Sunbeam",
+        "price": 80,
+        "time": "45 minutes of your event",
+        "color": "#FFF1A8",
+        "perks": [
+          "30+ edited pictures"
+        ]
+      },
+      {
+        "id": "sports-honeybee",
+        "cat": "sports",
+        "name": "Honeybee",
+        "price": 110,
+        "time": "Your full event",
+        "color": "#F7C98A",
+        "perks": [
+          "45+ edited pictures"
+        ]
+      },
+      {
+        "id": "milestones-wildflower",
+        "cat": "milestones",
+        "name": "Wild Flower",
+        "price": 60,
+        "time": "45 minutes",
+        "color": "#F9C6D0",
+        "perks": [
+          "20+ edited pictures"
+        ]
+      },
+      {
+        "id": "milestones-sunbeam",
+        "cat": "milestones",
+        "name": "Sunbeam",
+        "price": 80,
+        "time": "60 minutes",
+        "color": "#FFF1A8",
+        "perks": [
+          "40+ edited pictures"
+        ]
+      },
+      {
+        "id": "milestones-honeybee",
+        "cat": "milestones",
+        "name": "Honeybee",
+        "price": 120,
+        "time": "75–90 minutes",
+        "color": "#F7C98A",
+        "perks": [
+          "60+ edited pictures"
+        ]
+      }
+    ],
+    "bookingMode": "message",
+    "messageButton": "Message me to book",
+    "notice": {
+      "enabled": true,
+      "title": "Before you book ✿",
+      "text": "Please send me a note before paying! Tell me about your people and the dates you're hoping for. Once we pick your date and time together, I'll send you a personal link to pay and lock it in."
+    },
+    "categories": [
+      {
+        "id": "portraits",
+        "name": "Portraits",
+        "who": "1–2 people",
+        "sub": "Individuals • Seniors • Couples",
+        "note": ""
+      },
+      {
+        "id": "groups",
+        "name": "Groups",
+        "who": "3–5 people",
+        "sub": "Families • Friends • Roommates",
+        "note": "+$25 a person after 5 people"
+      },
+      {
+        "id": "sports",
+        "name": "Sports",
+        "who": "",
+        "sub": "Action shots • Games • Events",
+        "note": ""
+      },
+      {
+        "id": "milestones",
+        "name": "Milestones",
+        "who": "",
+        "sub": "Proposals • Maternity • Adventures • Parties",
+        "note": ""
+      }
+    ]
+  },
+  "letter": {
+    "title": "Write me a note",
+    "subtitle": "Fill in the blanks and I'll write back within 48 hours.",
+    "greeting": "Dear Lyssa,",
+    "askStyle": false
+  },
+  "footer": {
+    "thanks": "thanks for visiting!"
+  },
+  "minisPage": {
+    "enabled": true,
+    "tabLabel": "Minis",
+    "promo": true,
+    "title": "Pick your mini",
+    "subtitle": "Choose a season, tap a time sticker, add any extras, and you're in!",
+    "momentsTitle": "Mini moments",
+    "moments": [
+      {
+        "photo": "",
+        "kind": "family",
+        "caption": "pumpkin patch vibes"
+      },
+      {
+        "photo": "",
+        "kind": "couple",
+        "caption": "holiday cozy"
+      },
+      {
+        "photo": "",
+        "kind": "newborn",
+        "caption": "spring blooms"
+      },
+      {
+        "photo": "",
+        "kind": "senior",
+        "caption": "sparkler magic"
+      },
+      {
+        "photo": "",
+        "kind": "family",
+        "caption": "hay bale giggles"
+      }
+    ],
+    "faq": [
+      {
+        "q": "What's a mini session?",
+        "a": "A short, sweet 15-minute session at a set place and date. Same gorgeous editing as a full session, smaller price."
+      },
+      {
+        "q": "Who can come?",
+        "a": "Up to 6 people (grandparents too!). Well-behaved pets are always welcome."
+      },
+      {
+        "q": "What if it rains?",
+        "a": "If weather cancels mini day, everyone moves to the backup date in the same time slot."
+      },
+      {
+        "q": "When do we get photos?",
+        "a": "Within 2 weeks, in a private online gallery. Add the sneak-peek sticker to see a few in 48 hours."
+      }
+    ],
+    "bookingMode": "pay",
+    "notice": {
+      "enabled": false,
+      "title": "Good to know ✿",
+      "text": "Mini sessions are first come, first served. Pick your time and pay to lock it in. Questions? Send me a note on the home page first!"
+    }
+  },
+  "minis": [
+    {
+      "id": "fall",
+      "name": "Pumpkin Patch Minis",
+      "tab": "Pumpkin patch",
+      "status": "open",
+      "color": "#F7B98A",
+      "date": "2026-10-17",
+      "where": "A pumpkin patch near St. George",
+      "start": "16:00",
+      "end": "18:40",
+      "interval": 20,
+      "price": 95,
+      "len": "15 min",
+      "photos": 8,
+      "taken": [],
+      "photo": "",
+      "kind": "family",
+      "kicker": "mini sessions are here! ✿",
+      "title": "Pumpkin patch",
+      "lede": "15 quick, giggly minutes at the pumpkin patch. Perfect for holiday cards, grandma's fridge and growing-up-too-fast memories.",
+      "useCalendar": true
+    },
+    {
+      "id": "holiday",
+      "name": "Cozy Holiday Minis",
+      "tab": "Cozy holiday",
+      "status": "open",
+      "color": "#F9C6D0",
+      "date": "2026-11-21",
+      "where": "Twinkle-light set, downtown St. George",
+      "start": "10:00",
+      "end": "12:40",
+      "interval": 20,
+      "price": 110,
+      "len": "15 min",
+      "photos": 10,
+      "taken": [],
+      "photo": "",
+      "kind": "couple",
+      "kicker": "'tis the season ✿",
+      "title": "Cozy holiday",
+      "lede": "Matching pajamas, twinkle lights and hot cocoa smiles. Your holiday card, done.",
+      "useCalendar": true
+    },
+    {
+      "id": "spring",
+      "name": "Spring Bloom Minis",
+      "tab": "Spring blooms",
+      "status": "soon",
+      "color": "#C6E7B8",
+      "date": "2027-04-10",
+      "where": "A wildflower field (location TBA)",
+      "start": "09:00",
+      "end": "11:40",
+      "interval": 20,
+      "price": 95,
+      "len": "15 min",
+      "photos": 8,
+      "taken": [],
+      "photo": "",
+      "kind": "newborn",
+      "kicker": "coming this spring ✿",
+      "title": "Spring bloom",
+      "lede": "Wildflowers, sunhats and brand-new babies. Join the list and you'll hear first when spots open.",
+      "useCalendar": true
+    },
+    {
+      "id": "summer",
+      "name": "Summer Sparkler Minis",
+      "tab": "Summer sparklers",
+      "status": "soon",
+      "color": "#FFF1A8",
+      "date": "2027-06-26",
+      "where": "Sand Hollow at sunset",
+      "start": "19:00",
+      "end": "20:20",
+      "interval": 20,
+      "price": 100,
+      "len": "15 min",
+      "photos": 8,
+      "taken": [],
+      "photo": "",
+      "kind": "senior",
+      "kicker": "coming this summer ✿",
+      "title": "Summer sparkler",
+      "lede": "Golden hour, sparklers and sandy toes. Join the list for first dibs.",
+      "useCalendar": true
+    }
+  ],
+  "addons": [
+    {
+      "id": "extra",
+      "label": "+5 extra photos",
+      "note": "more favorites!",
+      "price": 30,
+      "color": "#F9C6D0"
+    },
+    {
+      "id": "prints",
+      "label": "Print pack",
+      "note": "five 5×7 prints",
+      "price": 25,
+      "color": "#BFE0F5"
+    },
+    {
+      "id": "peek",
+      "label": "48-hour sneak peek",
+      "note": "can't wait? same!",
+      "price": 15,
+      "color": "#FFF1A8"
+    },
+    {
+      "id": "pet",
+      "label": "Bring the pup",
+      "note": "always free ♡",
+      "price": 0,
+      "color": "#C6E7B8"
+    }
+  ],
+  "bookingMessage": "Hi {first}! Your {session} is all set for {date} at {time}. Here's your personal link to pay and lock it in: {link}\n\nCan't wait! ✿ {owner}",
+  "invoice": {
+    "dueDays": 3,
+    "title": "Invoice",
+    "note": "Thank you so much for choosing me to capture your people! I can't wait for our session. ✿",
+    "terms": "Deposits hold your date and are non-refundable, but can be moved to a new date once. The remaining balance is due by your session day."
+  }
+}

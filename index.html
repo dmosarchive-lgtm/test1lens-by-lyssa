@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lens By Lyssa Admin</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Quicksand:wght@500;600;700&family=Gochi+Hand&display=swap">
+<style>
+/* Admin panel: calm, clear, same family as the site. Deliberately single light theme. */
+#admin-root{
+  color-scheme:light;
+  --paper:#FDFBF5; --card:#FFFFFF; --ink:#35415A; --soft:#6C7690; --line:#E4E1D8; --line2:#CFCABD;
+  --pink:#F9C6D0; --pink-d:#D9667F; --lemon:#FFF1A8; --sky:#BFE0F5; --grass:#C6E7B8; --lav:#DCCFF4; --peach:#FFD8C2;
+  --ok:#2E8B57; --warn:#B7791F; --bad:#C0405C;
+  --disp:"Fredoka", "Arial Rounded MT Bold", system-ui, sans-serif;
+  --body:"Quicksand", "Trebuchet MS", system-ui, sans-serif;
+  --hand:"Gochi Hand", "Comic Sans MS", cursive;
+  font:600 16px/1.5 var(--body);color:var(--ink);background:var(--paper);min-height:100vh;
+}
+#admin-root *{box-sizing:border-box}
+#admin-root [hidden]{display:none!important}
+:where(#admin-root) :is(h1,h2,h3){font-family:var(--disp);font-weight:700;margin:0;line-height:1.15}
+:where(#admin-root) p{margin:0}
+:where(#admin-root) button{font:inherit;color:inherit}
+#admin-root :focus-visible{outline:3px solid var(--pink-d);outline-offset:2px}
+#admin-root .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:2px solid var(--ink);background:var(--pink);border-radius:999px;padding:9px 18px;font-family:var(--disp);font-weight:600;cursor:pointer;text-decoration:none;color:var(--ink);transition:transform .15s,background .2s}
+#admin-root .btn:hover{transform:translateY(-1px)}
+#admin-root .btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+#admin-root .btn.ghost{background:var(--card)}
+#admin-root .btn.small{padding:5px 12px;font-size:.88rem}
+#admin-root .btn.danger{background:#FFE3E8;border-color:var(--bad);color:var(--bad)}
+#admin-root .btn.yellow{background:var(--lemon)}
+
+/* login */
+.a-login{min-height:100vh;display:grid;place-items:center;padding:20px 16px}
+.a-login .box{width:min(400px,100%);background:var(--card);border:2px solid var(--ink);border-radius:20px;padding:28px;box-shadow:8px 8px 0 var(--pink);display:grid;gap:14px}
+.a-login h1{font-size:1.8rem}
+.a-login .hello{font-family:var(--hand);font-size:1.4rem;color:var(--pink-d)}
+.a-demo{font-size:.9rem;background:var(--lemon);border:2px dashed var(--ink);border-radius:12px;padding:8px 12px}
+
+/* layout */
+.a-app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+.a-side{background:var(--card);border-right:2px solid var(--line);padding:18px 12px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh;overflow:auto}
+.a-brand{font-family:var(--disp);font-weight:700;font-size:1.15rem;padding:4px 10px 12px;display:flex;gap:8px;align-items:center}
+.a-brand small{display:block;font-family:var(--hand);font-weight:400;color:var(--pink-d);font-size:1rem}
+.a-nav{display:flex;flex-direction:column;gap:2px}
+.a-nav button{display:flex;align-items:center;gap:10px;border:0;background:none;text-align:left;padding:9px 10px;border-radius:12px;cursor:pointer;font-weight:700}
+.a-nav button i{width:12px;height:12px;border-radius:50%;background:var(--c);border:2px solid var(--ink);flex:none}
+.a-nav button:hover{background:var(--paper)}
+.a-nav button[aria-current="true"]{background:var(--c)}
+.a-nav .badge{margin-left:auto;background:var(--pink-d);color:#fff;border-radius:999px;padding:0 8px;font-size:.8rem}
+.a-side .foot{margin-top:auto;display:grid;gap:8px;padding:12px 6px 0}
+.a-main{min-width:0;display:flex;flex-direction:column}
+.a-top{position:sticky;top:0;z-index:20;background:rgba(253,251,245,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:2px solid var(--line);padding:12px 24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.a-top h2{font-size:1.4rem;margin-right:auto}
+.pill{font-size:.85rem;border-radius:999px;padding:4px 12px;border:2px solid currentColor;font-weight:700}
+.pill.ok{color:var(--ok)}.pill.dirty{color:var(--warn);background:#FFF7E0}.pill.demo{color:var(--soft)}
+.a-body{padding:22px 24px 80px;max-width:900px;width:100%}
+.a-intro{color:var(--soft);margin-bottom:18px;max-width:65ch}
+@media (max-width:820px){
+  .a-app{grid-template-columns:1fr}
+  .a-side{position:static;height:auto;border-right:0;border-bottom:2px solid var(--line);padding:10px 12px}
+  .a-nav{flex-direction:row;overflow-x:auto;scrollbar-width:none}
+  .a-nav button{flex:none;padding:7px 10px}
+  .a-side .foot{flex-direction:row;display:flex;flex-wrap:wrap;margin-top:6px;padding:6px 0 0}
+  .a-top{padding:10px 16px}.a-body{padding:16px 16px 80px}
+}
+
+/* fields */
+.group{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:18px;margin-bottom:16px;display:grid;gap:14px}
+.group>h3{font-size:1.1rem}
+.fld{display:grid;gap:5px}
+.fld>label,.fld>.lbl{font-family:var(--disp);font-weight:600;font-size:.95rem}
+.fld .help{font-size:.85rem;color:var(--soft);font-weight:600}
+.fld input[type=text],.fld input[type=email],.fld input[type=number],.fld input[type=date],.fld input[type=time],.fld select,.fld textarea{font:600 1rem var(--body);color:var(--ink);background:var(--paper);border:2px solid var(--line2);border-radius:12px;padding:9px 12px;width:100%;max-width:100%}
+.fld input:focus,.fld select:focus,.fld textarea:focus{outline:none;border-color:var(--ink);background:#fff}
+.fld textarea{min-height:80px;resize:vertical}
+.money{display:flex;align-items:center;gap:6px}.money span{font-family:var(--disp);font-size:1.1rem}.money input{max-width:140px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:620px){.row2,.row3{grid-template-columns:1fr}}
+.toggle{display:flex;align-items:center;gap:12px;cursor:pointer;font-family:var(--disp);font-weight:600}
+.toggle input{appearance:none;width:48px;height:28px;border-radius:999px;background:var(--line2);position:relative;cursor:pointer;margin:0;flex:none;transition:background .2s}
+.toggle input::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .2s}
+.toggle input:checked{background:var(--ok)}.toggle input:checked::after{transform:translateX(20px)}
+.swatches{display:flex;gap:8px;flex-wrap:wrap}
+.swatches button{width:32px;height:32px;border-radius:50%;border:2px solid var(--ink);background:var(--c);cursor:pointer}
+.swatches button[aria-pressed="true"]{box-shadow:0 0 0 3px var(--paper),0 0 0 5px var(--ink)}
+.photo{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.photo .thumb{width:112px;height:112px;border-radius:12px;border:2px solid var(--line2);object-fit:cover;background:var(--paper);flex:none}
+.photo .sample{font-family:var(--hand);font-size:1rem;color:var(--soft)}
+.photo .acts{display:flex;gap:8px;flex-wrap:wrap}
+.photo.busy .thumb{opacity:.4}
+.list{display:grid;gap:10px}
+.item{border:2px solid var(--line2);border-radius:14px;background:var(--paper)}
+.item>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:10px 12px}
+.item>summary::-webkit-details-marker{display:none}
+.item>summary img{width:44px;height:44px;border-radius:8px;object-fit:cover;border:2px solid var(--line2);flex:none}
+.item>summary .t{font-family:var(--disp);font-weight:600;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.item>summary .sub{font-size:.85rem;color:var(--soft)}
+.item>summary .chev{transition:transform .2s}
+.item[open]>summary .chev{transform:rotate(90deg)}
+.item .inside{padding:4px 14px 14px;display:grid;gap:14px;border-top:2px dashed var(--line2)}
+.item .tools{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;padding-top:6px}
+.dot{width:14px;height:14px;border-radius:50%;background:var(--c);border:2px solid var(--ink);flex:none}
+.status{font-size:.78rem;border-radius:999px;padding:2px 10px;border:2px solid var(--ink);background:var(--c)}
+.addrow{display:flex;gap:8px;flex-wrap:wrap}
+.anote{background:var(--sky);border:2px solid var(--ink);border-radius:14px;padding:12px 14px;font-size:.95rem}
+.anote.warm{background:var(--lemon)}
+.slots{display:flex;flex-wrap:wrap;gap:8px}
+.slots button{border:2px solid var(--ink);border-radius:999px;padding:6px 12px;background:#fff;cursor:pointer;font-family:var(--disp);font-weight:600;font-size:.9rem}
+.slots button.taken{background:var(--lemon);text-decoration:line-through}
+.slots button.paid{background:var(--grass);cursor:default}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.85rem;color:var(--soft)}
+.legend span::before{content:"";display:inline-block;width:12px;height:12px;border-radius:50%;border:2px solid var(--ink);margin-right:5px;vertical-align:-1px;background:var(--c)}
+
+/* inbox */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.filters button{border:2px solid var(--ink);border-radius:999px;background:#fff;padding:5px 14px;cursor:pointer;font-weight:700}
+.filters button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.msg{background:var(--card);border:2px solid var(--line2);border-radius:16px;padding:14px 16px;display:grid;gap:8px;margin-bottom:12px}
+.msg.done{opacity:.6}
+.msg .head{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.msg .head b{font-family:var(--disp);font-size:1.1rem}
+.msg .when{margin-left:auto;font-size:.85rem;color:var(--soft)}
+.kind{font-size:.78rem;border-radius:999px;padding:2px 10px;border:2px solid var(--ink)}
+.kind.payment{background:var(--grass)}.kind.inquiry{background:var(--pink)}.kind.waitlist{background:var(--sky)}
+.msg dl{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;margin:0;font-size:.95rem}
+.msg ul.pays{list-style:none;margin:8px 0 0;padding:8px 12px;background:#F4FBEF;border:2px dashed #BFE3B0;border-radius:12px;font-size:.9rem}.msg ul.pays li::before{content:"♡ ";color:var(--ok)}
+.msg dt{color:var(--soft)}.msg dd{margin:0;overflow-wrap:anywhere}
+.msg .quote{background:var(--paper);border-radius:10px;padding:8px 12px;font-family:var(--hand);font-size:1.15rem;white-space:pre-wrap}
+.msg .acts{display:flex;gap:8px;flex-wrap:wrap}
+.alert{border:2px solid var(--bad);background:#FFE3E8;color:var(--bad);border-radius:12px;padding:8px 12px;font-weight:700}
+.empty{text-align:center;color:var(--soft);padding:40px 10px;font-family:var(--hand);font-size:1.4rem}
+.help h3{margin:18px 0 6px}.help p,.help li{color:var(--ink);max-width:68ch}.help ul{padding-left:20px;margin:6px 0}
+.a-toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,calc(100% + 40px));visibility:hidden;background:var(--ink);color:#fff;padding:12px 20px;border-radius:14px;z-index:90;font-weight:700;transition:transform .35s,visibility .35s;max-width:calc(100% - 32px);text-align:center}
+.a-toast.show{transform:translate(-50%,0);visibility:visible}
+.a-toast.bad{background:var(--bad)}
+@media (prefers-reduced-motion:reduce){#admin-root *{transition:none!important;animation:none!important}}
+</style>
+
+
+</head>
+<body>
+<div id="admin-root">
+  <div class="a-login" id="loginView">
+    <form class="box" id="loginForm">
+      <p class="hello">welcome back ✿</p>
+      <h1 id="loginBrand">Lens By Lyssa</h1>
+      <p style="color:var(--soft)">Sign in to update your website.</p>
+      <div class="fld"><label for="pw">Password</label><input type="password" id="pw" autocomplete="current-password" style="font:600 1rem var(--body);border:2px solid var(--line2);border-radius:12px;padding:10px 12px"></div>
+      <p class="alert" id="loginErr" hidden></p>
+      <button class="btn" type="submit" id="loginBtn">Sign in</button>
+      <p class="a-demo" id="loginDemo" hidden>Preview mode: the real sign-in turns on once the site is live. Any password works here, and changes are saved in this browser only.</p>
+    </form>
+  </div>
+
+  <div class="a-app" id="appView" hidden>
+    <aside class="a-side">
+      <div class="a-brand"><span class="dot" style="--c:var(--pink)"></span><div><span id="sideBrand">Lens By Lyssa</span><small>admin</small></div></div>
+      <nav class="a-nav" id="nav" aria-label="Admin sections"></nav>
+      <div class="foot"><a class="btn ghost small" id="viewSite" href="/" target="_blank" rel="noopener">View site ↗</a><button class="btn ghost small" id="signOut" type="button">Sign out</button></div>
+    </aside>
+    <div class="a-main">
+      <div class="a-top"><h2 id="secTitle"></h2><span class="pill ok" id="savePill">All changes saved</span><button class="btn" id="saveBtn" type="button" disabled>Save changes</button></div>
+      <div class="a-body" id="body"></div>
+    </div>
+  </div>
+  <div class="a-toast" id="aToast" role="status" aria-live="polite"></div>
+  <input type="file" id="filePick" accept="image/jpeg,image/png,image/webp" hidden>
+  <input type="file" id="filePickMany" accept="image/jpeg,image/png,image/webp" multiple hidden>
+</div>
+
+<script>
+/* Shared by the site and the admin panel. */
+const LBL=(()=>{
+const DEFAULTS={"version": 1, "brand": {"name": "Lens By Lyssa", "owner": "Lyssa", "email": "hello@lensbylyssa.com", "instagram": "@lensbylyssa", "city": "St. George, Utah", "serviceArea": "St. George + 30 mi"}, "nav": {"hi": "Hi!", "board": "Gallery", "edits": "Edits", "tags": "Pricing", "letter": "Book"}, "sections": {"board": true, "edits": true, "tags": true}, "home": {"kicker": "Lens By Lyssa ✿", "title": "Photos as sweet as your", "highlight": "everyday", "lede": "Playful portraits, groups, sports and milestone sessions in St. George. Messy hair, big giggles, and all the little details you never want to forget.", "ctaPrimary": "Write me a note ✎", "ctaSecondary": "Peek at the board", "dragHint": "psst, drag us around!", "collage": [{"photo": "", "kind": "family", "caption": "best day ever"}, {"photo": "", "kind": "couple", "caption": "us ♡"}, {"photo": "", "kind": "newborn", "caption": "hello, world"}, {"photo": "", "kind": "senior", "caption": "class of '27"}]}, "gallery": {"title": "The photo board", "subtitle": "Tap a sticky note to filter. Tap a photo to flip it over and read the story behind it.", "items": [{"id": "g1", "cat": "groups", "title": "Picnic at Snow Canyon", "story": "The kids built a 'castle' out of picnic blankets. We shot for 10 minutes before anyone noticed the camera.", "meta": "Spring · Snow Canyon", "photo": ""}, {"id": "g2", "cat": "portraits", "title": "Anniversary stroll", "story": "Ten years married and still laughing at the same jokes. Warm film edit.", "meta": "Fall · Pioneer Park", "photo": ""}, {"id": "g3", "cat": "sports", "title": "Game day", "story": "Senior night under the lights. Caught the winning pin from the corner of the mat.", "meta": "Winter · Dixie High", "photo": ""}, {"id": "g4", "cat": "portraits", "title": "Class of '27", "story": "Letterman jacket plus red rocks. We did golden hour, then sparklers.", "meta": "Spring · Red Cliffs", "photo": ""}, {"id": "g5", "cat": "groups", "title": "Roommate chaos", "story": "Four roommates, one blanket fort, zero chill.", "meta": "Summer · Tuacahn", "photo": ""}, {"id": "g6", "cat": "milestones", "title": "She said yes!", "story": "He hid behind the juniper. She had no idea. Tears all around.", "meta": "Fall · Kayenta", "photo": ""}, {"id": "g7", "cat": "milestones", "title": "Almost here", "story": "A golden hour maternity walk, three weeks before baby's arrival.", "meta": "Spring · Sand Hollow", "photo": ""}, {"id": "g8", "cat": "sports", "title": "First season", "story": "Soccer Saturdays, mud included. Soft B&W edit.", "meta": "Fall · Little Valley", "photo": ""}, {"id": "g9", "cat": "groups", "title": "Grandma's garden", "story": "Three generations, one very fluffy dog.", "meta": "Spring · Santa Clara", "photo": ""}], "categories": [{"id": "portraits", "name": "portraits"}, {"id": "groups", "name": "groups"}, {"id": "sports", "name": "sports"}, {"id": "milestones", "name": "milestones"}]}, "edits": {"title": "Try on an edit", "subtitle": "Move your finger or mouse over the photo. The edited version shows through the circle.", "photo": "", "styles": [{"name": "Light & Airy", "desc": "Bright, soft, dreamy", "color": "#FFF1A8", "look": "airy", "photo": ""}, {"name": "Warm Film", "desc": "Golden and nostalgic", "color": "#FFD2B3", "look": "film", "photo": ""}, {"name": "Moody", "desc": "Deep and cinematic", "color": "#DCCFF4", "look": "moody", "photo": ""}, {"name": "Black & White", "desc": "Timeless and classic", "color": "#E4E4E4", "look": "bw", "photo": ""}], "showOptions": false}, "pricing": {"title": "Little price tags", "subtitle": "Every session comes with a style guide, posing help, and a private online gallery.", "allowDeposit": true, "deposit": 25, "packages": [{"id": "portraits-wildflower", "cat": "portraits", "name": "Wild Flower", "price": 60, "time": "30 minutes", "color": "#F9C6D0", "perks": ["20+ edited pictures", "1 outfit"]}, {"id": "portraits-sunbeam", "cat": "portraits", "name": "Sunbeam", "price": 80, "time": "45 minutes", "color": "#FFF1A8", "perks": ["40+ edited pictures", "2 outfits"]}, {"id": "portraits-honeybee", "cat": "portraits", "name": "Honeybee", "price": 120, "time": "60–90 minutes", "color": "#F7C98A", "perks": ["60+ edited pictures", "2+ outfits"]}, {"id": "groups-wildflower", "cat": "groups", "name": "Wild Flower", "price": 75, "time": "45 minutes", "color": "#F9C6D0", "perks": ["20+ edited pictures"]}, {"id": "groups-sunbeam", "cat": "groups", "name": "Sunbeam", "price": 100, "time": "60 minutes", "color": "#FFF1A8", "perks": ["40+ edited pictures"]}, {"id": "groups-honeybee", "cat": "groups", "name": "Honeybee", "price": 125, "time": "90 minutes", "color": "#F7C98A", "perks": ["60+ edited pictures"]}, {"id": "sports-wildflower", "cat": "sports", "name": "Wild Flower", "price": 50, "time": "15 minutes of your event", "color": "#F9C6D0", "perks": ["15+ edited pictures"]}, {"id": "sports-sunbeam", "cat": "sports", "name": "Sunbeam", "price": 80, "time": "45 minutes of your event", "color": "#FFF1A8", "perks": ["30+ edited pictures"]}, {"id": "sports-honeybee", "cat": "sports", "name": "Honeybee", "price": 110, "time": "Your full event", "color": "#F7C98A", "perks": ["45+ edited pictures"]}, {"id": "milestones-wildflower", "cat": "milestones", "name": "Wild Flower", "price": 60, "time": "45 minutes", "color": "#F9C6D0", "perks": ["20+ edited pictures"]}, {"id": "milestones-sunbeam", "cat": "milestones", "name": "Sunbeam", "price": 80, "time": "60 minutes", "color": "#FFF1A8", "perks": ["40+ edited pictures"]}, {"id": "milestones-honeybee", "cat": "milestones", "name": "Honeybee", "price": 120, "time": "75–90 minutes", "color": "#F7C98A", "perks": ["60+ edited pictures"]}], "bookingMode": "message", "messageButton": "Message me to book", "notice": {"enabled": true, "title": "Before you book ✿", "text": "Please send me a note before paying! Tell me about your people and the dates you're hoping for. Once we pick your date and time together, I'll send you a personal link to pay and lock it in."}, "categories": [{"id": "portraits", "name": "Portraits", "who": "1–2 people", "sub": "Individuals • Seniors • Couples", "note": ""}, {"id": "groups", "name": "Groups", "who": "3–5 people", "sub": "Families • Friends • Roommates", "note": "+$25 a person after 5 people"}, {"id": "sports", "name": "Sports", "who": "", "sub": "Action shots • Games • Events", "note": ""}, {"id": "milestones", "name": "Milestones", "who": "", "sub": "Proposals • Maternity • Adventures • Parties", "note": ""}]}, "letter": {"title": "Write me a note", "subtitle": "Fill in the blanks and I'll write back within 48 hours.", "greeting": "Dear Lyssa,", "askStyle": false}, "footer": {"thanks": "thanks for visiting!"}, "minisPage": {"enabled": true, "tabLabel": "Minis", "promo": true, "title": "Pick your mini", "subtitle": "Choose a season, tap a time sticker, add any extras, and you're in!", "momentsTitle": "Mini moments", "moments": [{"photo": "", "kind": "family", "caption": "pumpkin patch vibes"}, {"photo": "", "kind": "couple", "caption": "holiday cozy"}, {"photo": "", "kind": "newborn", "caption": "spring blooms"}, {"photo": "", "kind": "senior", "caption": "sparkler magic"}, {"photo": "", "kind": "family", "caption": "hay bale giggles"}], "faq": [{"q": "What's a mini session?", "a": "A short, sweet 15-minute session at a set place and date. Same gorgeous editing as a full session, smaller price."}, {"q": "Who can come?", "a": "Up to 6 people (grandparents too!). Well-behaved pets are always welcome."}, {"q": "What if it rains?", "a": "If weather cancels mini day, everyone moves to the backup date in the same time slot."}, {"q": "When do we get photos?", "a": "Within 2 weeks, in a private online gallery. Add the sneak-peek sticker to see a few in 48 hours."}], "bookingMode": "pay", "notice": {"enabled": false, "title": "Good to know ✿", "text": "Mini sessions are first come, first served. Pick your time and pay to lock it in. Questions? Send me a note on the home page first!"}}, "minis": [{"id": "fall", "name": "Pumpkin Patch Minis", "tab": "Pumpkin patch", "status": "open", "color": "#F7B98A", "date": "2026-10-17", "where": "A pumpkin patch near St. George", "start": "16:00", "end": "18:40", "interval": 20, "price": 95, "len": "15 min", "photos": 8, "taken": [], "photo": "", "kind": "family", "kicker": "mini sessions are here! ✿", "title": "Pumpkin patch", "lede": "15 quick, giggly minutes at the pumpkin patch. Perfect for holiday cards, grandma's fridge and growing-up-too-fast memories.", "useCalendar": true}, {"id": "holiday", "name": "Cozy Holiday Minis", "tab": "Cozy holiday", "status": "open", "color": "#F9C6D0", "date": "2026-11-21", "where": "Twinkle-light set, downtown St. George", "start": "10:00", "end": "12:40", "interval": 20, "price": 110, "len": "15 min", "photos": 10, "taken": [], "photo": "", "kind": "couple", "kicker": "'tis the season ✿", "title": "Cozy holiday", "lede": "Matching pajamas, twinkle lights and hot cocoa smiles. Your holiday card, done.", "useCalendar": true}, {"id": "spring", "name": "Spring Bloom Minis", "tab": "Spring blooms", "status": "soon", "color": "#C6E7B8", "date": "2027-04-10", "where": "A wildflower field (location TBA)", "start": "09:00", "end": "11:40", "interval": 20, "price": 95, "len": "15 min", "photos": 8, "taken": [], "photo": "", "kind": "newborn", "kicker": "coming this spring ✿", "title": "Spring bloom", "lede": "Wildflowers, sunhats and brand-new babies. Join the list and you'll hear first when spots open.", "useCalendar": true}, {"id": "summer", "name": "Summer Sparkler Minis", "tab": "Summer sparklers", "status": "soon", "color": "#FFF1A8", "date": "2027-06-26", "where": "Sand Hollow at sunset", "start": "19:00", "end": "20:20", "interval": 20, "price": 100, "len": "15 min", "photos": 8, "taken": [], "photo": "", "kind": "senior", "kicker": "coming this summer ✿", "title": "Summer sparkler", "lede": "Golden hour, sparklers and sandy toes. Join the list for first dibs.", "useCalendar": true}], "addons": [{"id": "extra", "label": "+5 extra photos", "note": "more favorites!", "price": 30, "color": "#F9C6D0"}, {"id": "prints", "label": "Print pack", "note": "five 5×7 prints", "price": 25, "color": "#BFE0F5"}, {"id": "peek", "label": "48-hour sneak peek", "note": "can't wait? same!", "price": 15, "color": "#FFF1A8"}, {"id": "pet", "label": "Bring the pup", "note": "always free ♡", "price": 0, "color": "#C6E7B8"}], "bookingMessage": "Hi {first}! Your {session} is all set for {date} at {time}. Here's your personal link to pay and lock it in: {link}\n\nCan't wait! ✿ {owner}", "invoice": {"dueDays": 3, "title": "Invoice", "note": "Thank you so much for choosing me to capture your people! I can't wait for our session. ✿", "terms": "Deposits hold your date and are non-refundable, but can be moved to a new date once. The remaining balance is due by your session day."}};
+const DEMO_KEY="lbl-demo-content", DEMO_INBOX="lbl-demo-inbox";
+const isObj=v=>v&&typeof v==="object"&&!Array.isArray(v);
+function withDefaults(saved,def=DEFAULTS){if(!isObj(saved))return structuredClone(def);const out={};for(const k of Object.keys(def)){if(!(k in saved))out[k]=structuredClone(def[k]);else if(isObj(def[k])&&isObj(saved[k]))out[k]=withDefaults(saved[k],def[k]);else out[k]=saved[k]}for(const k of Object.keys(saved))if(!(k in out))out[k]=saved[k];return out}
+const ls={get(k){try{return localStorage.getItem(k)}catch(_){return null}},set(k,v){try{localStorage.setItem(k,v);return true}catch(_){return false}},del(k){try{localStorage.removeItem(k)}catch(_){}}};
+function demoContent(){try{const s=ls.get(DEMO_KEY);if(s)return withDefaults(JSON.parse(s))}catch(_){}return structuredClone(DEFAULTS)}
+function demoInbox(item){try{const a=JSON.parse(ls.get(DEMO_INBOX)||"[]");a.unshift({key:"demo-"+Date.now(),createdAt:new Date().toISOString(),handled:false,...item});ls.set(DEMO_INBOX,JSON.stringify(a.slice(0,50)))}catch(_){}}
+const get=(o,p)=>p.split(".").reduce((a,k)=>a==null?a:a[k],o);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const money=n=>{n=Number(n)||0;return Number.isInteger(n)?String(n):n.toFixed(2)};
+const isEmail=v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+// "Portraits · Wild Flower": package names repeat across session types, so show both
+const pkgName=(C,p)=>{const c=((C.pricing&&C.pricing.categories)||[]).find(x=>x.id===p.cat);return c?`${c.name} · ${p.name}`:p.name};
+const safeUrl=u=>typeof u==="string"&&/^(\/api\/photo\/[A-Za-z0-9-]+|https:\/\/[^\s"'<>]+|data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+)$/.test(u);
+const isoDaysFromNow=d=>new Date(Date.now()+d*864e5).toISOString().slice(0,10);
+const LOOKS={
+  airy:{name:"Light & airy",f:"brightness(1.15) contrast(.85) saturate(.8)"},
+  film:{name:"Warm film",f:"sepia(.4) saturate(1.3) contrast(1.05) hue-rotate(-8deg)"},
+  moody:{name:"Moody",f:"brightness(.72) contrast(1.25) saturate(.7)"},
+  bw:{name:"Black & white",f:"grayscale(1) contrast(1.08) brightness(1.05)"},
+  pastel:{name:"Soft pastel",f:"brightness(1.08) contrast(.9) saturate(.7) hue-rotate(-6deg)"},
+  vivid:{name:"Bright & vivid",f:"saturate(1.45) contrast(1.08)"},
+  none:{name:"No filter",f:"none"}};
+function slotsFor(m){const out=[];if(!m||!m.start||!m.end)return out;const step=Math.max(5,Math.min(240,Number(m.interval)||20));const toMin=t=>{const [h,mm]=String(t).split(":").map(Number);return h*60+mm};for(let t=toMin(m.start),end=toMin(m.end);t<=end&&out.length<100;t+=step)out.push(`${Math.floor(t/60)}:${String(t%60).padStart(2,"0")}`);return out}
+
+/* cute placeholder "photos" shown until real ones are uploaded */
+const PAL=[["#BFE0F5","#FDF6E3","#FFD86B","#C6E7B8","#9ED08C"],["#F9C6D0","#FFF1E6","#FFB38A","#DCCFF4","#BFAEE6"],["#DCCFF4","#FFEFF3","#FFD86B","#C6E7B8","#A6D69A"],["#FFF1A8","#FFFAF0","#FFA98A","#BFE0F5","#95C7EA"]];
+function rnd(seed){let s=seed*9301+49297;return()=>((s=(s*9301+49297)%233280)/233280)}
+function person(x,y,s,c){return `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-17" y="-8" width="34" height="62" rx="16" fill="${c}"/><circle cy="-24" r="14" fill="#F2D2BD"/><path d="M-14 -28a14 14 0 0 1 28 0c-6-6-22-6-28 0z" fill="#6E5448"/></g>`}
+const _sc={};
+const SCENE_OF={portraits:["senior","couple"],groups:["family"],sports:["senior"],milestones:["couple","newborn"]};
+function scene(type,seed,w=400,h=500){seed=Math.abs(seed|0);if(SCENE_OF[type]){const o=SCENE_OF[type];type=o[seed%o.length]}const key=type+seed+"x"+w+"x"+h;if(_sc[key])return _sc[key];const r=rnd(seed),p=PAL[seed%PAL.length],sh=["#FFFFFF","#F3E3D3","#E8B7C0","#C9D8EA","#EADFF5","#F9E7B5"],pick=()=>sh[Math.floor(r()*sh.length)],g=h*.66,sx=w*(.2+r()*.6),sy=h*(.18+r()*.15),k=Math.min(w,h*.8)/400;let f="";
+if(type==="family"||type==="other"){const n=3+Math.floor(r()*2);for(let i=0;i<n;i++)f+=person(w*(.25+i*(.5/(n-1))),g-(i<2?30:8),(i<2?1.35:.85)*k,pick())}
+else if(type==="couple"){f+=person(w*.44,g-26,1.4*k,pick())+person(w*.56,g-30,1.5*k,pick())}
+else if(type==="senior"){f+=person(w*.5,g-50,2.2*k,pick())}
+else{f+=`<ellipse cx="${w/2}" cy="${g+10}" rx="${w*.3}" ry="${h*.07}" fill="#FFFFFF"/><ellipse cx="${w/2}" cy="${g-4}" rx="${w*.18}" ry="${h*.05}" fill="${p[3]}"/><circle cx="${w*.34}" cy="${g-10}" r="${w*.06}" fill="#F2D2BD"/>`}
+let fl="";for(let i=0;i<14;i++)fl+=`<circle cx="${r()*w}" cy="${g+10+r()*(h-g-10)}" r="${2+r()*4}" fill="${["#FFFFFF","#F7B8C2","#FCEFC7"][i%3]}" opacity=".9"/>`;
+const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${p[0]}"/><stop offset="1" stop-color="${p[1]}"/></linearGradient><radialGradient id="g"><stop offset="0" stop-color="${p[2]}" stop-opacity=".9"/><stop offset="1" stop-color="${p[2]}" stop-opacity="0"/></radialGradient></defs><rect width="${w}" height="${h}" fill="url(#s)"/><circle cx="${sx}" cy="${sy}" r="${w*.35}" fill="url(#g)"/><circle cx="${sx}" cy="${sy}" r="${w*.08}" fill="${p[2]}"/><path d="M0 ${g-40} Q ${w*.3} ${g-90} ${w*.6} ${g-50} T ${w} ${g-60} V ${h} H0Z" fill="${p[3]}"/><path d="M0 ${g} Q ${w*.4} ${g-30} ${w} ${g+5} V ${h} H0Z" fill="${p[4]}"/>${f}${fl}</svg>`;
+return _sc[key]="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg)}
+const photoOr=(photo,kind,seed,w,h)=>safeUrl(photo)?photo:scene(kind||"family",seed,w,h);
+
+/* talking to the site's backend (Netlify Functions) */
+class ApiError extends Error{constructor(m,s){super(m);this.status=s}}
+async function call(path,{method="GET",body,token,raw,type}={}){
+  const ctl=new AbortController();const to=setTimeout(()=>ctl.abort(),method==="GET"?5000:30000);
+  try{
+    const headers={};if(token)headers.authorization="Bearer "+token;
+    if(raw){headers["content-type"]=type}else if(body!==undefined)headers["content-type"]="application/json";
+    const r=await fetch(path,{method,headers,body:raw||(body!==undefined?JSON.stringify(body):undefined),cache:"no-store",signal:ctl.signal});
+    let data=null;try{data=await r.json()}catch(_){}
+    if(!r.ok)throw new ApiError((data&&data.error)||`Something went wrong (${r.status}). Please try again.`,r.status);
+    if(data===null)throw new ApiError("The server sent back something unexpected.",r.status);
+    return data;
+  }catch(e){if(e instanceof ApiError)throw e;throw new ApiError(e.name==="AbortError"?"The connection timed out. Please try again.":"Couldn't reach the server. Check your connection.",0)}
+  finally{clearTimeout(to)}}
+const api={
+  async content(){try{const d=await call("/api/content");return d&&d.live?withDefaults(d.content):null}catch(_){return null}},
+  checkout:b=>call("/api/checkout",{method:"POST",body:b}),
+  booking:id=>call("/api/booking?id="+encodeURIComponent(id)),
+  bookings:token=>call("/api/bookings",{token}),
+  bookingCreate:(token,b)=>call("/api/bookings",{method:"POST",body:b,token}),
+  bookingPatch:(token,b)=>call("/api/bookings",{method:"PATCH",body:b,token}),
+  calendar:(token,test)=>test?call("/api/calendar",{method:"POST",body:{test:true},token}):call("/api/calendar",{token}),
+  inquiry:b=>call("/api/inquiry",{method:"POST",body:b}),
+  login:pw=>call("/api/login",{method:"POST",body:{password:pw}}),
+  save:(token,content)=>call("/api/content",{method:"PUT",body:{content},token}),
+  upload:(token,blob)=>call("/api/upload",{method:"POST",raw:blob,type:blob.type||"image/jpeg",token}),
+  inbox:token=>call("/api/inbox",{token}),
+  inboxPatch:(token,b)=>call("/api/inbox",{method:"PATCH",body:b,token}),
+  inboxDelete:(token,b)=>call("/api/inbox",{method:"DELETE",body:b,token}),
+};
+return{DEFAULTS,DEMO_KEY,DEMO_INBOX,withDefaults,demoContent,demoInbox,ls,get,esc,money,isEmail,safeUrl,pkgName,isoDaysFromNow,LOOKS,slotsFor,scene,photoOr,api,ApiError};
+})();
+
+(()=>{
+const $=id=>document.getElementById(id);
+const TOKEN_KEY="lbl-admin-token";
+let C=null,token=null,LIVE=false,dirty=false,section="business",inbox=[],inboxFilter="all";
+const toastEl=$("aToast");let tt;
+function toast(m,bad){toastEl.textContent=m;toastEl.classList.toggle("bad",!!bad);toastEl.classList.add("show");clearTimeout(tt);tt=setTimeout(()=>toastEl.classList.remove("show"),3600)}
+const esc=LBL.esc;
+const uid=p=>p+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+
+/* ---------- options ---------- */
+const COLORS=["#F9C6D0","#FFF1A8","#BFE0F5","#C6E7B8","#DCCFF4","#FFD8C2","#F7B98A","#FFD2B3","#E4E4E4"];
+const boardCats=()=>(C.gallery.categories||[]).map(c=>[c.id,c.name]);
+const priceCats=()=>(C.pricing.categories||[]).map(c=>[c.id,c.name]);
+const catName=(list,id)=>(list.find(c=>c[0]===id)||[,""])[1];
+const KINDS=[["family","Family"],["couple","Couple"],["newborn","Newborn"],["senior","Senior"]];
+const STATUS=[["open","Open for booking"],["soon","Coming soon (waitlist)"],["hidden","Hidden"]];
+const STATUS_C={open:"#C6E7B8",soon:"#FFF1A8",hidden:"#E4E4E4"};
+
+/* ---------- what can be edited, and where ---------- */
+const SECTIONS=[
+ {id:"business",title:"Business info",c:"#FFD8C2",intro:"Your business name, contact details and the little thank-you at the bottom of every page.",
+  groups:[{title:"Business",fields:[
+   {k:"brand.name",label:"Business name",help:"Shows in the logo, the browser tab and the footer."},
+   {row:[{k:"brand.email",label:"Email",type:"email",help:"Shown in the footer."},{k:"brand.instagram",label:"Instagram handle",placeholder:"@lensbylyssa"}]},
+   {row:[{k:"brand.city",label:"City",placeholder:"St. George, Utah"},{k:"brand.owner",label:"Your first name",help:"Used to sign your pay-link messages."}]},
+   {k:"footer.thanks",label:"Footer message",placeholder:"thanks for visiting!"}]},
+   {title:"Tabs & sections",fields:[
+    {type:"note",text:"Rename the tabs at the top of your site, or hide a whole section (its tab disappears too). The Minis tab is under Mini sessions."},
+    {row3:[{k:"nav.hi",label:"First tab",placeholder:"Hi!"},{k:"nav.board",label:"Gallery tab"},{k:"nav.edits",label:"Editing tab"}]},
+    {row:[{k:"nav.tags",label:"Pricing tab"},{k:"nav.letter",label:"Booking tab"}]},
+    {k:"sections.board",type:"toggle",label:"Show the photo board (gallery)"},
+    {k:"sections.edits",type:"toggle",label:"Show the \"try on an edit\" section"},
+    {k:"sections.tags",type:"toggle",label:"Show the price tags"}]},
+   {title:"Google Calendar",fields:[{type:"calendar"}]}]},
+ {id:"home",title:"Home page",c:"#FFF1A8",intro:"The first thing people see: your headline, intro and the four photos in the draggable collage.",
+  groups:[{title:"Headline",fields:[
+   {k:"home.kicker",label:"Small handwritten line above the headline"},
+   {row:[{k:"home.title",label:"Headline"},{k:"home.highlight",label:"Highlighted word",help:"Gets the yellow marker."}]},
+   {k:"home.lede",label:"Intro paragraph",type:"textarea"},
+   {row:[{k:"home.ctaPrimary",label:"Pink button text"},{k:"home.ctaSecondary",label:"Blue button text"}]},
+   {k:"home.dragHint",label:"Hint next to the collage"}]},
+   {title:"Collage photos",fields:[{k:"home.collage",type:"list",fixed:true,itemTitle:(it,i)=>`Photo ${i+1}: ${it.caption||""}`,thumb:(it,i)=>[it.photo,it.kind,i*5+3],
+    item:[{k:"photo",type:"photo",label:"Photo"},{k:"caption",label:"Handwritten caption"}]}]}]},
+ {id:"board",title:"Photo board",c:"#F9C6D0",intro:"Your gallery. Each photo is pinned to the corkboard and flips over to show its story. Visitors can filter by session type.",
+  groups:[{title:"Section text",fields:[{k:"gallery.title",label:"Title"},{k:"gallery.subtitle",label:"Subtitle"}]},
+   {title:"Groups (the sticky notes visitors tap to filter)",fields:[{k:"gallery.categories",type:"list",itemTitle:it=>it.name||"Group",
+    add:()=>({id:uid("c"),name:"new group"}),addLabel:"Add a group",item:[{k:"name",label:"Name on the sticky note"}]},
+    {type:"note",text:"A group only shows on the board once it has at least one photo. Pick each photo's group below."}]},
+   {title:"Photos",fields:[{k:"gallery.items",type:"list",bulk:true,itemTitle:it=>it.title||"Untitled photo",itemSub:it=>catName(boardCats(),it.cat),thumb:(it,i)=>[it.photo,it.cat,i*4+2],
+    add:()=>({id:uid("g"),cat:(C.gallery.categories||[])[0]?.id||"",title:"New photo",story:"",meta:"",photo:""}),addLabel:"Add one photo",
+    item:[{k:"photo",type:"photo",label:"Photo"},{row:[{k:"title",label:"Title (on the front)"},{k:"cat",label:"Group on the board",type:"select",get options(){return boardCats()}}]},
+     {k:"story",label:"Story (on the back)",type:"textarea"},{k:"meta",label:"Little note under the story",placeholder:"Spring · Snow Canyon"}]}]}]},
+ {id:"edits",title:"Editing styles",c:"#BFE0F5",intro:"The \"try on an edit\" spotlight. Upload one unedited photo, then for each style either upload your real edited version (best!) or pick an automatic filter.",
+  groups:[{title:"Show or hide",fields:[{k:"sections.edits",type:"toggle",label:"Show the \"try on an edit\" section on my site",help:"Turn this off to hide the section and its tab. Your photos and styles stay saved here for when you turn it back on."},
+     {k:"edits.showOptions",type:"toggle",label:"Show the list of style options next to the photo",help:"When this is off, visitors just see the photo with your top style (the first one in the list below)."}]},
+   {title:"Section text",fields:[{k:"edits.title",label:"Title"},{k:"edits.subtitle",label:"Subtitle"}]},
+   {title:"The before photo",fields:[{k:"edits.photo",type:"photo",label:"Straight-out-of-camera photo",kind:"family",seed:17}]},
+   {title:"Styles",fields:[{k:"edits.styles",type:"list",itemTitle:it=>it.name||"Style",thumb:(it,i)=>[it.photo,"family",17],dot:it=>it.color,
+    add:()=>({name:"New style",desc:"",color:"#FFF1A8",look:"airy",photo:""}),addLabel:"Add a style",
+    item:[{row:[{k:"name",label:"Style name"},{k:"desc",label:"Short description"}]},{k:"color",label:"Button color",type:"color"},
+     {k:"photo",type:"photo",label:"Your edited version (optional)",help:"Edit the same before photo in this style and upload it here. Visitors see your real edit."},
+     {k:"look",label:"Automatic filter (used if you don't upload an edited version)",type:"select",options:Object.entries(LBL.LOOKS).map(([k,v])=>[k,v.name])}]}]}]},
+ {id:"pricing",title:"Prices & payments",c:"#C6E7B8",intro:"Your session packages and how people book them. Payments go through secure Stripe checkout, and the prices here are exactly what clients are charged.",
+  groups:[{title:"How people book",fields:[
+    {k:"pricing.bookingMode",label:"When someone likes a package…",type:"select",rerender:true,options:[["message","They message me first. I set the date and send them a pay link (recommended)"],["pay","They can pay right away on the site"]]},
+    {k:"pricing.messageButton",label:"Button text on each price tag",placeholder:"Message me to book",showIf:c=>(c.pricing.bookingMode||"message")==="message"},
+    {k:"pricing.notice.enabled",type:"toggle",label:"Show a note above the price tags"},
+    {k:"pricing.notice.title",label:"Note title",showIf:c=>c.pricing.notice&&c.pricing.notice.enabled},
+    {k:"pricing.notice.text",label:"Note text",type:"textarea",help:"Say anything here, like asking people to message you before paying.",showIf:c=>c.pricing.notice&&c.pricing.notice.enabled}]},
+   {title:"Section text",fields:[{k:"pricing.title",label:"Title"},{k:"pricing.subtitle",label:"Subtitle"}]},
+   {title:"Deposits",fields:[{k:"pricing.allowDeposit",type:"toggle",label:"Let people pay a deposit to hold their date"},{k:"pricing.deposit",type:"money",label:"Deposit amount",showIf:c=>c.pricing.allowDeposit}]},
+   {title:"Session types (the tabs above the price tags)",fields:[{k:"pricing.categories",type:"list",itemTitle:it=>it.name||"Session type",itemSub:it=>it.who||"",
+    add:()=>({id:uid("t"),name:"New type",who:"",sub:"",note:""}),addLabel:"Add a session type",
+    item:[{row:[{k:"name",label:"Name",placeholder:"Portraits"},{k:"who",label:"Who it's for (optional)",placeholder:"1–2 people"}]},{k:"sub",label:"Examples",placeholder:"Individuals • Seniors • Couples"},{k:"note",label:"Extra note (optional)",placeholder:"+$25 a person after 5 people"}]}]},
+   {title:"Packages",fields:[{type:"note",text:"Each package belongs to a session type. Visitors tap a session type to see its packages."},{k:"pricing.packages",type:"list",itemTitle:it=>`${catName(priceCats(),it.cat)||"No type"} · ${it.name||"Package"}`,itemSub:it=>"$"+LBL.money(it.price),dot:it=>it.color,
+    add:()=>({id:uid("p"),cat:(C.pricing.categories||[])[0]?.id||"",name:"New package",price:100,time:"45 minutes",color:"#F9C6D0",perks:["20+ edited pictures"]}),addLabel:"Add a package",
+    item:[{k:"cat",label:"Session type",type:"select",get options(){return priceCats()}},{row:[{k:"name",label:"Package name"},{k:"price",label:"Price",type:"money"}]},{row:[{k:"time",label:"Session length",placeholder:"45 minutes"},{k:"color",label:"Tag color",type:"color"}]},
+     {k:"perks",label:"What's included",type:"lines",help:"One item per line."}]}]}]},
+ {id:"letter",title:"Booking note",c:"#DCCFF4",intro:"The fill-in-the-blank letter at the bottom of the home page. Notes land in your Inbox.",
+  groups:[{title:"Text",fields:[{k:"letter.title",label:"Title"},{k:"letter.subtitle",label:"Subtitle"},{k:"letter.greeting",label:"Greeting",placeholder:"Dear Lyssa,"}]},
+   {title:"Questions",fields:[{k:"letter.askStyle",type:"toggle",label:"Ask which editing style they'd like (lists your editing styles in the note)"}]}]},
+ {id:"minis",title:"Mini sessions",c:"#F7B98A",intro:"Seasonal mini sessions. Set the date and time window and the site makes the time stickers. When someone pays, their time is booked automatically.",
+  groups:[{title:"Minis page",fields:[{k:"minisPage.enabled",type:"toggle",label:"Show the Minis tab"},{k:"minisPage.promo",type:"toggle",label:"Show the little mini banner on the home page"},
+    {row:[{k:"minisPage.tabLabel",label:"Tab name"},{k:"minisPage.title",label:"Booking section title"}]},{k:"minisPage.subtitle",label:"Booking section subtitle"},
+    {k:"minisPage.bookingMode",label:"When someone picks a mini time…",type:"select",rerender:true,options:[["pay","They pay right away and the time is theirs"],["request","They request it. I confirm and send them a pay link"]]},
+    {k:"minisPage.notice.enabled",type:"toggle",label:"Show a note above the mini booking area"},
+    {k:"minisPage.notice.title",label:"Note title",showIf:c=>c.minisPage.notice&&c.minisPage.notice.enabled},
+    {k:"minisPage.notice.text",label:"Note text",type:"textarea",showIf:c=>c.minisPage.notice&&c.minisPage.notice.enabled}]},
+   {title:"Your mini sessions",fields:[{k:"minis",type:"list",itemTitle:it=>it.name||"Mini session",itemSub:it=>`${(STATUS.find(s=>s[0]===it.status)||[,""])[1]} · ${it.date||""}`,thumb:(it,i)=>[it.photo,it.kind,(it.id||"").length*3+3],status:it=>it.status,
+    add:()=>({id:uid("m"),name:"New Minis",tab:"New minis",status:"soon",color:"#F9C6D0",date:LBL.isoDaysFromNow(45),where:"",start:"10:00",end:"12:00",interval:20,price:95,len:"15 min",photos:8,taken:[],photo:"",kind:"family",kicker:"mini sessions are here! ✿",title:"New",lede:""}),addLabel:"Add a mini session",
+    item:[{row:[{k:"name",label:"Name",placeholder:"Pumpkin Patch Minis"},{k:"status",label:"Status",type:"select",options:STATUS}]},
+     {row:[{k:"tab",label:"Short name (sticky note)"},{k:"color",label:"Color",type:"color"}]},
+     {row3:[{k:"date",label:"Date",type:"date"},{k:"start",label:"First start time",type:"time"},{k:"end",label:"Last start time",type:"time"}]},
+     {row3:[{k:"interval",label:"Minutes between starts",type:"number"},{k:"len",label:"Session length",placeholder:"15 min"},{k:"photos",label:"Edited photos included",type:"number"}]},
+     {row:[{k:"price",label:"Price",type:"money"},{k:"where",label:"Location"}]},
+     {type:"slots",label:"Time slots"},
+     {k:"useCalendar",type:"toggle",label:"Hide times that are busy on my Google Calendar"},
+     {k:"photo",type:"photo",label:"Ticket photo",kindKey:"kind"},
+     {row:[{k:"kicker",label:"Small handwritten line"},{k:"title",label:"Big headline word(s)",help:"\"minis\" is added after it."}]},
+     {k:"lede",label:"Description",type:"textarea"}]}]},
+   {title:"Add-on stickers",fields:[{k:"addons",type:"list",itemTitle:it=>it.label||"Add-on",itemSub:it=>Number(it.price)?"$"+LBL.money(it.price):"free",dot:it=>it.color,
+    add:()=>({id:uid("a"),label:"New add-on",note:"",price:20,color:"#FFF1A8"}),addLabel:"Add an add-on",
+    item:[{row:[{k:"label",label:"Name"},{k:"price",label:"Price (0 = free)",type:"money"}]},{row:[{k:"note",label:"Little note"},{k:"color",label:"Color",type:"color"}]}]}]},
+   {title:"Mini moments (photo strip)",fields:[{k:"minisPage.momentsTitle",label:"Title"},{k:"minisPage.moments",type:"list",bulk:true,itemTitle:it=>it.caption||"Photo",thumb:(it,i)=>[it.photo,it.kind,i*3+2],
+    add:()=>({photo:"",kind:"family",caption:""}),addLabel:"Add one photo",item:[{k:"photo",type:"photo",label:"Photo"},{k:"caption",label:"Caption"}]}]},
+   {title:"Mini questions",fields:[{k:"minisPage.faq",type:"list",itemTitle:it=>it.q||"Question",add:()=>({q:"New question?",a:""}),addLabel:"Add a question",
+    item:[{k:"q",label:"Question"},{k:"a",label:"Answer",type:"textarea"}]}]}]},
+ {id:"bookings",title:"Bookings",c:"#C6E7B8",intro:"Your schedule. Create a booking once you and a client agree on a date and time. You'll get a personal pay link to send them. When they pay, it's marked paid and added to your Google Calendar."},
+ {id:"inbox",title:"Inbox",c:"#F9C6D0",intro:"Booking notes, mini waitlist sign-ups and payments. Stripe also emails you a receipt for every payment."},
+ {id:"help",title:"Help",c:"#E4E4E4"}
+];
+
+/* ---------- path helpers ---------- */
+const getP=(o,p)=>p.split(".").reduce((a,k)=>a==null?a:a[k],o);
+function setP(o,p,v){const ks=p.split(".");let a=o;ks.slice(0,-1).forEach(k=>{a=a[k]});a[ks[ks.length-1]]=v}
+function markDirty(){dirty=true;updatePill()}
+function updatePill(){const p=$("savePill");p.className="pill "+(dirty?"dirty":LIVE?"ok":"demo");p.textContent=dirty?"Unsaved changes":LIVE?"All changes saved":"Preview mode · saved in this browser";$("saveBtn").disabled=!dirty}
+addEventListener("beforeunload",e=>{if(dirty){e.preventDefault();e.returnValue=""}});
+
+/* ---------- photos: resize in the browser, then upload ---------- */
+function resizeImage(file,maxSide,quality){return new Promise((res,rej)=>{const url=URL.createObjectURL(file);const img=new Image();img.onload=()=>{const s=Math.min(1,maxSide/Math.max(img.naturalWidth,img.naturalHeight));const c=document.createElement("canvas");c.width=Math.round(img.naturalWidth*s);c.height=Math.round(img.naturalHeight*s);c.getContext("2d").drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(url);c.toBlob(b=>b?res(b):rej(new Error("Couldn't read that photo.")),"image/jpeg",quality)};img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error("That file doesn't look like a photo."))};img.src=url})}
+const blobToDataUrl=b=>new Promise(r=>{const fr=new FileReader();fr.onload=()=>r(fr.result);fr.readAsDataURL(b)});
+async function uploadPhoto(file){
+  if(!/^image\/(jpeg|png|webp)$/.test(file.type))throw new Error("Please choose a JPG, PNG or WebP photo.");
+  if(LIVE){const blob=await resizeImage(file,2200,.86);const r=await LBL.api.upload(token,blob);return r.url}
+  const blob=await resizeImage(file,1000,.78);return blobToDataUrl(blob);
+}
+function pickFiles(many){return new Promise(res=>{const inp=$(many?"filePickMany":"filePick");inp.value="";inp.onchange=()=>res([...inp.files]);inp.click()})}
+
+/* ---------- field renderers ---------- */
+function field(f,obj,path,ctx){
+  if(f.row||f.row3){const d=document.createElement("div");d.className=f.row3?"row3":"row2";(f.row||f.row3).forEach(x=>d.appendChild(field(x,obj,path,ctx)));return d}
+  if(f.type==="slots")return slotsField(obj,ctx);
+  if(f.type==="note"){const n=document.createElement("p");n.className="help";n.textContent=f.text;return n}
+  if(f.type==="calendar")return calendarField();
+  const full=path?path+"."+f.k:f.k,val=getP(obj,f.k),id="f_"+full.replace(/[^a-z0-9]/gi,"_");
+  const w=document.createElement("div");w.className="fld";
+  if(f.showIf&&!f.showIf(C)){w.hidden=true}
+  const label=t=>`<label for="${id}">${esc(t)}</label>`,help=f.help?`<span class="help">${esc(f.help)}</span>`:"";
+  const set=v=>{setP(obj,f.k,v);markDirty();if(ctx&&ctx.onChange)ctx.onChange()};
+  switch(f.type){
+    case "textarea":w.innerHTML=label(f.label)+`<textarea id="${id}" placeholder="${esc(f.placeholder||"")}">${esc(val)}</textarea>`+help;w.querySelector("textarea").oninput=e=>set(e.target.value);break;
+    case "lines":w.innerHTML=label(f.label)+`<textarea id="${id}" rows="4">${esc((val||[]).join("\n"))}</textarea>`+help;w.querySelector("textarea").oninput=e=>set(e.target.value.split("\n").map(s=>s.trim()).filter(Boolean));break;
+    case "number":w.innerHTML=label(f.label)+`<input type="number" id="${id}" min="0" value="${esc(val)}">`+help;w.querySelector("input").oninput=e=>set(Number(e.target.value)||0);break;
+    case "money":w.innerHTML=label(f.label)+`<div class="money"><span>$</span><input type="number" id="${id}" min="0" step="1" value="${esc(val)}"></div>`+help;w.querySelector("input").oninput=e=>set(Math.max(0,Number(e.target.value)||0));break;
+    case "date":case "time":case "email":w.innerHTML=label(f.label)+`<input type="${f.type}" id="${id}" value="${esc(val)}">`+help;w.querySelector("input").oninput=e=>set(e.target.value);break;
+    case "select":w.innerHTML=label(f.label)+`<select id="${id}">${f.options.map(([v,t])=>`<option value="${esc(v)}" ${v===val?"selected":""}>${esc(t)}</option>`).join("")}</select>`+help;w.querySelector("select").onchange=e=>{set(e.target.value);if(f.rerender)render()};break;
+    case "toggle":w.innerHTML=`<label class="toggle"><input type="checkbox" id="${id}" ${val?"checked":""}>${esc(f.label)}</label>`+help;w.querySelector("input").onchange=e=>{set(e.target.checked);render()};break;
+    case "color":w.innerHTML=`<span class="lbl">${esc(f.label)}</span><div class="swatches" role="group" aria-label="${esc(f.label)}">${COLORS.map(c=>`<button type="button" style="--c:${c}" aria-label="Color ${c}" aria-pressed="${c===val}" data-c="${c}"></button>`).join("")}</div>`;
+      w.querySelectorAll("button").forEach(b=>b.onclick=()=>{set(b.dataset.c);w.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b))});break;
+    case "photo":{const kind=f.kindKey?obj[f.kindKey]:(f.kind||obj.kind||obj.cat||"family");const seed=f.seed||7;
+      const draw=()=>{const has=LBL.safeUrl(getP(obj,f.k));w.innerHTML=`<span class="lbl">${esc(f.label)}</span><div class="photo"><img class="thumb" alt="" src="${LBL.photoOr(getP(obj,f.k),kind,seed,240,240)}"><div style="display:grid;gap:6px">${has?"":'<span class="sample">sample picture — upload yours!</span>'}<div class="acts"><button class="btn small yellow" type="button" data-up>${has?"Replace photo":"Upload photo"}</button>${has?'<button class="btn small ghost" type="button" data-rm>Remove</button>':""}</div></div></div>`+help;
+        w.querySelector("[data-up]").onclick=async()=>{const [file]=await pickFiles(false);if(!file)return;w.querySelector(".photo").classList.add("busy");w.querySelector("[data-up]").textContent="Uploading…";
+          try{const url=await uploadPhoto(file);setP(obj,f.k,url);markDirty();if(ctx&&ctx.onChange)ctx.onChange();draw();toast("Photo added. Don't forget to save!")}catch(e){toast(e.message,true);draw()}};
+        const rm=w.querySelector("[data-rm]");if(rm)rm.onclick=()=>{setP(obj,f.k,"");markDirty();if(ctx&&ctx.onChange)ctx.onChange();draw()}};
+      draw();break}
+    case "list":return listField(f,obj);
+    default:w.innerHTML=label(f.label)+`<input type="text" id="${id}" value="${esc(val)}" placeholder="${esc(f.placeholder||"")}">`+help;w.querySelector("input").oninput=e=>set(e.target.value);
+  }
+  return w;
+}
+const openItems=new Set();
+function listField(f,obj){
+  const arr=getP(obj,f.k)||[];setP(obj,f.k,arr);
+  const w=document.createElement("div");w.className="list";
+  arr.forEach((it,i)=>{
+    const d=document.createElement("details");d.className="item";const key=f.k+":"+(it.id||i);if(openItems.has(key))d.open=true;
+    d.ontoggle=()=>{d.open?openItems.add(key):openItems.delete(key)};
+    const sum=document.createElement("summary");
+    const head=()=>{const th=f.thumb?f.thumb(it,i):null;sum.innerHTML=`<span class="chev">▸</span>${th?`<img alt="" src="${LBL.photoOr(th[0],th[1],th[2],120,120)}">`:""}${f.dot?`<span class="dot" style="--c:${esc(f.dot(it))}"></span>`:""}<span class="t">${esc(f.itemTitle?f.itemTitle(it,i):"Item "+(i+1))}${f.itemSub?`<br><span class="sub">${esc(f.itemSub(it))}</span>`:""}</span>${f.status?`<span class="status" style="--c:${STATUS_C[f.status(it)]||"#fff"}">${esc((STATUS.find(s=>s[0]===f.status(it))||[,""])[1].split(" (")[0])}</span>`:""}`};
+    head();d.appendChild(sum);
+    const inside=document.createElement("div");inside.className="inside";
+    const ctx={onChange:head,item:it};
+    f.item.forEach(x=>inside.appendChild(field(x,it,"",ctx)));
+    if(!f.fixed){const tools=document.createElement("div");tools.className="tools";
+      tools.innerHTML=`<button class="btn small ghost" type="button" data-u ${i===0?"disabled":""}>Move up</button><button class="btn small ghost" type="button" data-d ${i===arr.length-1?"disabled":""}>Move down</button><button class="btn small danger" type="button" data-x>Delete</button>`;
+      tools.querySelector("[data-u]").onclick=()=>{[arr[i-1],arr[i]]=[arr[i],arr[i-1]];markDirty();render()};
+      tools.querySelector("[data-d]").onclick=()=>{[arr[i+1],arr[i]]=[arr[i],arr[i+1]];markDirty();render()};
+      const x=tools.querySelector("[data-x]");x.onclick=()=>{if(x.dataset.sure){arr.splice(i,1);markDirty();render();toast("Deleted. Save to make it official.")}else{x.dataset.sure=1;x.textContent="Tap again to delete";setTimeout(()=>{x.dataset.sure="";x.textContent="Delete"},3000)}};
+      inside.appendChild(tools)}
+    d.appendChild(inside);w.appendChild(d)});
+  if(!f.fixed){const row=document.createElement("div");row.className="addrow";
+    const add=document.createElement("button");add.className="btn small";add.type="button";add.textContent="+ "+(f.addLabel||"Add");
+    add.onclick=()=>{const n=f.add();arr.push(n);openItems.add(f.k+":"+(n.id||arr.length-1));markDirty();render()};row.appendChild(add);
+    if(f.bulk){const many=document.createElement("button");many.className="btn small yellow";many.type="button";many.textContent="+ Add several photos at once";
+      many.onclick=async()=>{const files=await pickFiles(true);if(!files.length)return;many.disabled=true;let done=0;
+        for(const file of files){many.textContent=`Uploading ${++done} of ${files.length}…`;try{const url=await uploadPhoto(file);const n=f.add();n.photo=url;if("title" in n)n.title=file.name.replace(/\.[^.]+$/,"").replace(/[-_]+/g," ");else if("caption" in n)n.caption="";arr.push(n)}catch(e){toast(e.message,true)}}
+        markDirty();render();toast(`${files.length} photo${files.length>1?"s":""} added. Add titles, then save!`)};row.appendChild(many)}
+    w.appendChild(row)}
+  return w;
+}
+function slotsField(m,ctx){
+  const w=document.createElement("div");w.className="fld";
+  const draw=()=>{const all=LBL.slotsFor(m),taken=new Set(m.taken||[]),paid=new Set(m.booked||[]);
+    w.innerHTML=`<span class="lbl">Time slots</span><span class="help">Tap a time to mark it booked (for people who paid you another way). Green times were paid online; manage those in your Inbox.</span><div class="slots">${all.map(s=>`<button type="button" data-s="${s}" class="${paid.has(s)?"paid":taken.has(s)?"taken":""}" ${paid.has(s)?"disabled":""} aria-pressed="${taken.has(s)}">${fmt12(s)}</button>`).join("")||'<span class="help">Set a first and last start time to create slots.</span>'}</div><div class="legend"><span style="--c:#fff">open</span><span style="--c:var(--lemon)">booked by you</span><span style="--c:var(--grass)">paid online</span></div>`;
+    w.querySelectorAll("button[data-s]").forEach(b=>b.onclick=()=>{const s=b.dataset.s;m.taken=m.taken||[];const i=m.taken.indexOf(s);i>=0?m.taken.splice(i,1):m.taken.push(s);markDirty();draw()})};
+  draw();const prev=ctx.onChange;ctx.onChange=()=>{prev&&prev();draw()};return w;
+}
+const fmt12=hm=>{let [h,m]=String(hm).split(":").map(Number);const ap=h>=12?"pm":"am";h=h%12||12;return `${h}:${String(m).padStart(2,"0")}${ap}`};
+
+/* ---------- inbox ---------- */
+async function loadInbox(){
+  if(LIVE){try{inbox=(await LBL.api.inbox(token)).items}catch(e){if(e.status===401)return signOut(true);toast(e.message,true)}}
+  else{try{inbox=JSON.parse(LBL.ls.get(LBL.DEMO_INBOX)||"[]")}catch(_){inbox=[]}}
+  renderNav();if(section==="inbox")render();
+}
+function saveDemoInbox(){LBL.ls.set(LBL.DEMO_INBOX,JSON.stringify(inbox))}
+function inboxView(){
+  const wrap=document.createElement("div");
+  const counts={all:inbox.length,payment:0,inquiry:0,waitlist:0};inbox.forEach(m=>{const k=m.kind==="mini-request"?"inquiry":m.kind;counts[k]=(counts[k]||0)+1});
+  const F=[["all","Everything"],["inquiry","Booking notes & requests"],["payment","Payments"],["waitlist","Waitlist"]];
+  wrap.innerHTML=`<div class="filters" role="group" aria-label="Show">${F.map(([k,t])=>`<button type="button" data-f="${k}" aria-pressed="${k===inboxFilter}">${t} (${counts[k]||0})</button>`).join("")}<button type="button" data-refresh style="margin-left:auto">Refresh</button></div>`;
+  wrap.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{inboxFilter=b.dataset.f;render()});
+  wrap.querySelector("[data-refresh]").onclick=()=>loadInbox().then(()=>toast("Inbox up to date"));
+  const list=inbox.filter(m=>inboxFilter==="all"||m.kind===inboxFilter||(inboxFilter==="inquiry"&&m.kind==="mini-request"));
+  if(!list.length){wrap.insertAdjacentHTML("beforeend",`<p class="empty">nothing here yet ✿</p>`);return wrap}
+  list.forEach(m=>{const d=document.createElement("div");d.className="msg"+(m.handled?" done":"");
+    const when=new Date(m.createdAt).toLocaleString("en-US",{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"});
+    const title=m.kind==="payment"?`$${LBL.money(m.amount)} from ${m.name||m.email}`:m.kind==="waitlist"?`${m.email} joined the ${m.mini} list`:m.kind==="mini-request"?`${m.name} requested ${m.mini} at ${fmt12(m.slot)}`:`${m.name} wants a ${m.session||""} session`;
+    const rows=[["Email",m.email],["Phone",m.phone],["Mini",m.mini&&m.slot?`${m.mini} · ${m.date} at ${fmt12(m.slot)}`:""],["Package",m.package?(m.package+(m.deposit==="yes"?" (deposit)":m.kind==="payment"?" (paid in full)":"")):""],["Add-ons",m.addons],["Who's coming",m.people],["Date hoped for",m.kind!=="payment"||!m.slot?m.date:""],["Editing style",m.style]].filter(r=>r[1]);
+    d.innerHTML=`<div class="head"><span class="kind ${m.kind==="mini-request"?"inquiry":m.kind}">${m.kind==="payment"?"payment":m.kind==="waitlist"?"waitlist":m.kind==="mini-request"?"mini request":"booking note"}</span><b>${esc(title)}</b><span class="when">${esc(when)}</span></div>
+      ${m.doubleBooked?'<p class="alert">Heads up: this time was already booked by someone else. Reach out to reschedule, or refund in Stripe.</p>':""}
+      ${m.slotReleased?'<p class="anote warm">You released this time slot, so it is open for booking again.</p>':""}
+      <dl>${rows.map(([k,v])=>`<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}</dl>
+      ${m.message?`<p class="quote">${esc(m.message)}</p>`:""}
+      <div class="acts"><button class="btn small ghost" type="button" data-copy>Copy email</button><button class="btn small ${m.handled?"ghost":""}" type="button" data-done>${m.handled?"Mark as not done":"Mark as done ✓"}</button>${(m.kind==="inquiry"||m.kind==="mini-request")&&!m.bookingId?'<button class="btn small yellow" type="button" data-sched>Schedule &amp; send pay link</button>':""}${m.bookingId?'<button class="btn small ghost" type="button" data-see>See booking</button>':""}${m.kind==="payment"&&m.slot&&!m.slotReleased&&!m.bookingId?'<button class="btn small ghost" type="button" data-release>Free up this time slot</button>':""}<button class="btn small danger" type="button" data-del>Delete</button></div>`;
+    d.querySelector("[data-copy]").onclick=async()=>{try{await navigator.clipboard.writeText(m.email);toast("Email copied")}catch(_){toast(m.email)}};
+    d.querySelector("[data-done]").onclick=async()=>{m.handled=!m.handled;if(LIVE){try{await LBL.api.inboxPatch(token,{key:m.key,handled:m.handled})}catch(e){toast(e.message,true)}}else saveDemoInbox();renderNav();render()};
+    const sch=d.querySelector("[data-sched]");if(sch)sch.onclick=()=>openBookingForm(prefillFromMessage(m));
+    const see=d.querySelector("[data-see]");if(see)see.onclick=()=>{bFilter="all";highlight=m.bookingId;go("bookings")};
+    const rel=d.querySelector("[data-release]");if(rel)rel.onclick=async()=>{if(!rel.dataset.sure){rel.dataset.sure=1;rel.textContent="Tap again to free the slot (after refunding)";return}
+      if(LIVE){try{await LBL.api.inboxPatch(token,{key:m.key,releaseSlot:true});m.slotReleased=true;const fresh=await LBL.api.content();if(fresh)syncBooked(fresh)}catch(e){return toast(e.message,true)}}else{m.slotReleased=true;saveDemoInbox()}render();toast("Time slot is open again")};
+    const del=d.querySelector("[data-del]");del.onclick=async()=>{if(!del.dataset.sure){del.dataset.sure=1;del.textContent="Tap again to delete";setTimeout(()=>{if(del.isConnected){del.dataset.sure="";del.textContent="Delete"}},3000);return}
+      if(LIVE){try{await LBL.api.inboxDelete(token,{key:m.key})}catch(e){return toast(e.message,true)}}inbox=inbox.filter(x=>x!==m);if(!LIVE)saveDemoInbox();renderNav();render()};
+    wrap.appendChild(d)});
+  return wrap;
+}
+function syncBooked(fresh){(C.minis||[]).forEach(m=>{const f=(fresh.minis||[]).find(x=>x.id===m.id);m.booked=f?f.booked||[]:[]})}
+
+
+/* ---------- bookings: schedule + personal pay links ---------- */
+let bookings=[],bFilter="upcoming",bForm=null,highlight=null,calOn=false,calInfo=null;
+const DEMO_BOOK="lbl-demo-bookings";
+function go(id){section=id;renderNav();render();scrollTo({top:0})}
+async function loadBookings(){
+  if(LIVE){try{const r=await LBL.api.bookings(token);bookings=r.items;calOn=r.calendar}catch(e){if(e.status===401)return signOut(true);toast(e.message,true)}}
+  else{try{bookings=JSON.parse(LBL.ls.get(DEMO_BOOK)||"[]")}catch(_){bookings=[]}}
+  renderNav();if(section==="bookings")render()}
+const saveDemoBookings=()=>LBL.ls.set(DEMO_BOOK,JSON.stringify(bookings));
+const localToday=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`};
+const niceD=d=>{const x=new Date(d+"T12:00");return isNaN(x)?d||"":x.toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric",year:"numeric"})};
+const B_STATUS={awaiting_payment:["Waiting for payment","#FFF1A8"],deposit_paid:["Deposit paid","#FFD8C2"],paid:["Paid","#C6E7B8"],cancelled:["Cancelled","#E4E4E4"]};
+const r2=n=>Math.round(Number(n||0)*100)/100;
+const fullOf=b=>Number(b.fullPrice)||Number(b.amount)||0;
+const paidOf=b=>b.paid!=null?Number(b.paid):r2((b.payments||[]).reduce((t,p)=>t+Number(p.amount||0),0));
+function dueOf(b){if(LIVE&&b.due!=null)return Number(b.due);if(b.status==="cancelled"||b.payType==="none")return 0;const pd=paidOf(b);return pd?Math.max(0,r2(fullOf(b)-pd)):r2(b.amount)}
+const waiting=b=>b.status!=="cancelled"&&b.payType!=="none"&&dueOf(b)>0;
+// preview mode: the invoice opens inside the preview page (the real one lives at yoursite.com/?pay=…)
+const demoLink=id=>(document.getElementById("admin-root")?location.href.split("#")[0]:location.origin+"/")+"#invoice="+id;
+function payMessage(b){return String(C.bookingMessage||"Your pay link: {link}").replace(/\{(\w+)\}/g,(_,k)=>({first:(b.name||"").split(" ")[0],name:b.name,session:b.title,date:niceD(b.date),time:fmt12(b.start),link:b.payUrl||"",amount:"$"+LBL.money(dueOf(b)),owner:C.brand.owner||""}[k]??`{${k}}`))}
+async function copy(text,msg){try{await navigator.clipboard.writeText(text);toast(msg)}catch(_){prompt?toast(text):0}}
+function prefillFromMessage(m){
+  const f={name:m.name,email:m.email,phone:m.phone,notes:m.message||"",inquiryKey:m.key,date:m.date||"",start:"17:00"};
+  if(m.kind==="mini-request"&&m.miniId){f.what="m:"+m.miniId;f.slot=m.slot;f.addons=m.addons;f.people=m.people}
+  else{const p=(C.pricing.packages||[]).find(x=>LBL.pkgName(C,x)===m.package)||(C.pricing.packages||[]).find(x=>x.name===m.package);f.what=p?"p:"+p.id:"c"}
+  return f}
+function openBookingForm(prefill,editing){bForm={prefill:prefill||{},editing:editing||null};go("bookings")}
+function whatOptions(){return [...(C.pricing.packages||[]).map(p=>["p:"+p.id,`${LBL.pkgName(C,p)} ($${LBL.money(p.price)})`]),...(C.minis||[]).filter(m=>m.status!=="hidden").map(m=>["m:"+m.id,`${m.name} · ${m.date}`]),["c","Something else (custom)"]]}
+function freeSlots(m,keep){const bad=new Set([...(m.taken||[]),...(m.booked||[])]);bookings.filter(b=>b.miniId===m.id&&b.status!=="cancelled").forEach(b=>bad.add(b.slot));if(keep)bad.delete(keep);return LBL.slotsFor(m).filter(s=>!bad.has(s))}
+const durFrom=t=>{t=String(t||"");const n=parseFloat(t);if(!n)return 60;return /hour|hr/i.test(t)?Math.round(n*60):Math.round(n)};
+function deriveWhat(st,editing){const p=st.what.startsWith("p:")?(C.pricing.packages||[]).find(x=>x.id===st.what.slice(2)):null,m=st.what.startsWith("m:")?(C.minis||[]).find(x=>x.id===st.what.slice(2)):null;
+  if(p){st.title=LBL.pkgName(C,p)+" session";st.fullPrice=Number(p.price);st.durationMin=durFrom(p.time)}
+  if(m){st.title=m.name;st.fullPrice=Number(m.price);st.date=m.date;st.location=m.where;const free=freeSlots(m,editing&&editing.slot);if(!free.includes(st.slot))st.slot=free[0]||""}
+  if(!p&&!m)st.fullPrice=st.fullPrice||st.amount||0}
+function bookingFormEl(){
+  const {prefill,editing}=bForm;const st={what:"c",payType:"full",addToCalendar:true,durationMin:60,...prefill};
+  if(!("amount" in st)){st.amount=0}
+  const box=document.createElement("div");box.className="group";box.style.borderColor="var(--ink)";
+  const draw=()=>{
+    const pkg=st.what.startsWith("p:")?(C.pricing.packages||[]).find(p=>p.id===st.what.slice(2)):null;
+    const mini=st.what.startsWith("m:")?(C.minis||[]).find(m=>m.id===st.what.slice(2)):null;
+    const slots=mini?freeSlots(mini,editing&&editing.slot):[];
+    box.innerHTML=`<h3>${editing?"Edit booking":"New booking"}</h3>
+    ${!editing&&st.inquiryKey?'<p class="help">Filled in from their message. Double-check the date and time you agreed on.</p>':""}
+    <div class="row3"><div class="fld"><label for="bk_name">Client name</label><input type="text" id="bk_name" value="${esc(st.name||"")}"></div><div class="fld"><label for="bk_email">Email</label><input type="email" id="bk_email" value="${esc(st.email||"")}"></div><div class="fld"><label for="bk_phone">Phone</label><input type="text" id="bk_phone" value="${esc(st.phone||"")}"></div></div>
+    <div class="row2"><div class="fld"><label for="bk_what">What are they booking?</label><select id="bk_what">${whatOptions().map(([v,t])=>`<option value="${esc(v)}" ${v===st.what?"selected":""}>${esc(t)}</option>`).join("")}</select></div><div class="fld"><label for="bk_title">Session name (they'll see this)</label><input type="text" id="bk_title" value="${esc(st.title||"")}"></div></div>
+    ${mini?`<div class="row2"><div class="fld"><label for="bk_slot">Mini time</label><select id="bk_slot">${slots.map(s=>`<option value="${s}" ${s===st.slot?"selected":""}>${fmt12(s)}</option>`).join("")||"<option value=''>No open times left</option>"}</select><span class="help">${esc(niceD(mini.date))} · ${esc(mini.where||"")}</span></div><div class="fld"><label for="bk_addons">Add-ons (for your notes)</label><input type="text" id="bk_addons" value="${esc(st.addons||"")}"></div></div>`
+    :`<div class="row3"><div class="fld"><label for="bk_date">Date</label><input type="date" id="bk_date" value="${esc(st.date||"")}"></div><div class="fld"><label for="bk_start">Start time</label><input type="time" id="bk_start" value="${esc(st.start||"")}"></div><div class="fld"><label for="bk_len">Length (minutes)</label><input type="number" id="bk_len" min="5" value="${esc(st.durationMin||60)}"></div></div>
+    <div class="fld"><label for="bk_loc">Location</label><input type="text" id="bk_loc" value="${esc(st.location||"")}" placeholder="Snow Canyon, Jenny's Canyon trailhead"></div>`}
+    <div class="row2"><div class="fld"><label for="bk_pay">Payment</label><select id="bk_pay">${[["full","Pay in full"],["deposit","Deposit to hold the date"],["custom","Custom amount"],["none","No payment needed (paid another way / free)"]].map(([v,t])=>`<option value="${v}" ${v===st.payType?"selected":""}>${t}</option>`).join("")}</select></div>
+     ${st.payType==="none"?"<div></div>":`<div class="fld"><label for="bk_amt">Amount they'll pay</label><div class="money"><span>$</span><input type="number" id="bk_amt" min="0" step="1" value="${esc(st.amount)}"></div>${st.payType==="deposit"?`<span class="help">Full price $${LBL.money(st.fullPrice||0)}. The rest is due on session day.</span>`:""}</div>`}</div>
+    ${st.payType==="none"?"":`<div class="row2"><div class="fld"><label for="bk_due">Pay by</label><input type="date" id="bk_due" value="${esc(st.dueDate||"")}"><span class="help">Leave blank for ${Number(C.invoice?.dueDays)||3} days from now (or the session day, if sooner).</span></div><div class="fld"><label for="bk_inote">Note on their invoice</label><textarea id="bk_inote" rows="2" placeholder="${esc(C.invoice?.note||"")}">${esc(st.invoiceNote||"")}</textarea><span class="help">Leave blank to use your usual note (Bookings → Invoice settings).</span></div></div>`}
+    <div class="fld"><label for="bk_notes">Notes (private, go on your calendar)</label><textarea id="bk_notes">${esc(st.notes||"")}</textarea></div>
+    ${LIVE?(calOn?`<label class="toggle"><input type="checkbox" id="bk_cal" ${st.addToCalendar?"checked":""}>Put it on my Google Calendar now (yellow until paid, then green)</label>`:'<p class="help">Google Calendar isn\'t connected yet, so this won\'t appear on your calendar. See Business info.</p>'):'<p class="help">Preview mode: bookings are saved in this browser, and pay links work once the site is live.</p>'}
+    <p class="alert" id="bk_err" hidden></p>
+    <div class="addrow"><button class="btn" type="button" id="bk_save">${editing?"Save booking":st.payType==="none"?"Add to my schedule":"Create booking & get pay link"}</button><button class="btn ghost" type="button" id="bk_cancel">Never mind</button></div>`;
+    const v=id=>box.querySelector("#"+id);
+    const grab=()=>{["name","email","phone","title","addons","notes"].forEach(k=>{const el=v("bk_"+k);if(el)st[k]=el.value});
+      if(v("bk_date"))st.date=v("bk_date").value;if(v("bk_start"))st.start=v("bk_start").value;if(v("bk_len"))st.durationMin=Number(v("bk_len").value)||60;if(v("bk_loc"))st.location=v("bk_loc").value;
+      if(v("bk_slot"))st.slot=v("bk_slot").value;if(v("bk_amt"))st.amount=Number(v("bk_amt").value)||0;if(v("bk_cal"))st.addToCalendar=v("bk_cal").checked;if(v("bk_due"))st.dueDate=v("bk_due").value;if(v("bk_inote"))st.invoiceNote=v("bk_inote").value};
+    const applyWhat=()=>{deriveWhat(st,editing);applyPay()};
+    const applyPay=()=>{if(st.payType==="full")st.amount=st.fullPrice||st.amount;else if(st.payType==="deposit")st.amount=Math.min(Number(C.pricing.deposit)||0,st.fullPrice||Infinity)};
+    v("bk_what").onchange=e=>{grab();st.what=e.target.value;applyWhat();draw()};
+    v("bk_pay").onchange=e=>{grab();st.payType=e.target.value;applyPay();draw()};
+    v("bk_cancel").onclick=()=>{bForm=null;render()};
+    v("bk_save").onclick=async()=>{grab();const err=v("bk_err");err.hidden=true;
+      const mini=st.what.startsWith("m:")?st.what.slice(2):"";
+      const payload={name:st.name,email:st.email,phone:st.phone,title:st.title,date:st.date,start:mini?st.slot:st.start,durationMin:st.durationMin,location:st.location,notes:st.notes,payType:st.payType,amount:st.payType==="none"?0:st.amount,fullPrice:st.fullPrice||st.amount,miniId:mini,slot:mini?st.slot:"",addons:st.addons||"",people:st.people||"",inquiryKey:st.inquiryKey||"",addToCalendar:st.addToCalendar,dueDate:st.dueDate||"",invoiceNote:st.invoiceNote||""};
+      const btn=v("bk_save");btn.disabled=true;btn.textContent="Saving…";
+      try{
+        let saved;
+        if(LIVE){saved=editing?(await LBL.api.bookingPatch(token,{id:editing.id,action:"update",fields:payload})).booking:(await LBL.api.bookingCreate(token,payload)).booking}
+        else{if(!payload.name)throw new Error("Add the client's name.");if(!/^\d{4}-\d{2}-\d{2}$/.test(payload.date||(mini&&(C.minis.find(m=>m.id===mini)||{}).date)||""))throw new Error("Pick a date for the session.");if(!payload.start)throw new Error("Pick a start time.");
+          if(mini)payload.date=(C.minis.find(m=>m.id===mini)||{}).date;
+          if(payload.payType==="full")payload.fullPrice=Math.max(payload.fullPrice,payload.amount);
+          if(!payload.dueDate&&payload.payType!=="none"){const d=new Date();d.setDate(d.getDate()+(Number(C.invoice?.dueDays)||3));const soon=d.toISOString().slice(0,10);payload.dueDate=soon<payload.date?soon:payload.date}
+          saved=editing?Object.assign(editing,payload):{id:uid("b"),status:payload.payType==="none"?"paid":"awaiting_payment",createdAt:new Date().toISOString(),payments:[],invoiceNo:"LBL-"+(1001+bookings.length),...payload};
+          saved.payUrl=demoLink(saved.id);if(!editing)bookings.push(saved);saveDemoBookings();
+          if(payload.inquiryKey){const it=inbox.find(x=>x.key===payload.inquiryKey);if(it){it.handled=true;it.bookingId=saved.id;saveDemoInbox()}}}
+        if(LIVE){await loadBookings();if(payload.inquiryKey)loadInbox()}
+        bForm=null;highlight=saved.id;bFilter="all";render();toast(editing?"Booking saved":saved.status==="paid"?"Added to your schedule":"Booking created! Copy the pay link below and send it.")
+      }catch(e){err.textContent=e.message;err.hidden=false;btn.disabled=false;btn.textContent=editing?"Save booking":"Create booking & get pay link"}};
+  };
+  if(!editing&&!prefill.title){const keepDate=st.date;deriveWhat(st,null);if(!st.what.startsWith("m:"))st.date=keepDate;if(st.payType==="full")st.amount=st.fullPrice||0}
+  draw();return box}
+function bookingsView(){
+  const wrap=document.createElement("div");const today=localToday();
+  const top=document.createElement("div");top.className="filters";
+  top.innerHTML=`<button type="button" class="btn small" data-new style="background:var(--pink);color:var(--ink)">+ New booking</button><span class="help" style="align-self:center">${LIVE?(calOn?"Google Calendar connected ✓":"Google Calendar not connected yet"):"Preview mode"}</span><button type="button" data-refresh style="margin-left:auto">Refresh</button>`;
+  top.querySelector("[data-new]").onclick=()=>openBookingForm({what:(C.pricing.packages||[])[0]?"p:"+C.pricing.packages[0].id:"c",date:"",start:"17:00"});
+  top.querySelector("[data-refresh]").onclick=()=>loadBookings().then(()=>toast("Up to date"));
+  wrap.appendChild(top);
+  if(bForm)wrap.appendChild(bookingFormEl());
+  const F=[["upcoming","Upcoming"],["awaiting","Waiting for payment"],["paid","Paid"],["past","Past"],["cancelled","Cancelled"],["all","All"]];
+  const match=(b,f)=>f==="all"||(f==="upcoming"&&b.status!=="cancelled"&&b.date>=today)||(f==="awaiting"&&waiting(b))||(f==="paid"&&b.status==="paid")||(f==="past"&&b.status!=="cancelled"&&b.date<today)||(f==="cancelled"&&b.status==="cancelled");
+  const fl=document.createElement("div");fl.className="filters";fl.innerHTML=F.map(([k,t])=>`<button type="button" data-f="${k}" aria-pressed="${k===bFilter}">${t} (${bookings.filter(b=>match(b,k)).length})</button>`).join("");
+  fl.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{bFilter=b.dataset.f;render()});wrap.appendChild(fl);
+  const list=bookings.filter(b=>match(b,bFilter)).sort((a,b)=>(bFilter==="past"?-1:1)*`${a.date} ${a.start}`.localeCompare(`${b.date} ${b.start}`));
+  if(!list.length)wrap.insertAdjacentHTML("beforeend",`<p class="empty">${bFilter==="upcoming"?"no upcoming sessions yet ✿":"nothing here ✿"}</p>`);
+  list.forEach(b=>{const d=document.createElement("div");d.className="msg"+(b.status==="cancelled"?" done":"");if(b.id===highlight)d.style.borderColor="var(--ink)";
+    const [stLabel,stColor]=B_STATUS[b.status]||["",""];
+    const rows=[["When",`${niceD(b.date)} at ${fmt12(b.start)} (${b.durationMin} min)`],["Where",b.location],["Price",b.payType==="none"?"No payment through the site":`$${LBL.money(fullOf(b))}${b.payType==="deposit"?` (deposit $${LBL.money(b.amount)} first)`:""}`],["Paid so far",paidOf(b)?`$${LBL.money(paidOf(b))}`:""],["Still due",waiting(b)?`$${LBL.money(dueOf(b))}${b.dueDate?` · pay by ${niceD(b.dueDate)}`:""}`:""],["Invoice",b.invoiceNo],["Email",b.email],["Phone",b.phone],["Add-ons",b.addons],["Who's coming",b.people]].filter(r=>r[1]);
+    d.innerHTML=`<div class="head"><span class="status" style="--c:${stColor}">${stLabel}</span><b>${esc(b.name)} · ${esc(b.title)}</b></div>
+      ${b.doubleBooked?'<p class="alert">This mini time was already taken when they paid. Reach out to reschedule, or refund in Stripe.</p>':""}
+      ${b.calendarError?`<p class="alert">Couldn't update Google Calendar: ${esc(b.calendarError)}</p>`:""}
+      <dl>${rows.map(([k,v])=>`<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}</dl>
+      ${b.notes?`<p class="quote">${esc(b.notes)}</p>`:""}
+      ${(b.payments||[]).length?`<ul class="pays">${b.payments.map(p=>`<li><b>$${LBL.money(p.amount)}</b> · ${esc(p.method||"")} · ${esc(niceD(String(p.at||"").slice(0,10)))}</li>`).join("")}</ul>`:""}
+      ${b.stripeInvoice&&!b.stripeInvoice.voided?`<p class="help">${b.stripeInvoice.paid?"Stripe invoice paid ✓":`Stripe invoice for $${LBL.money(b.stripeInvoice.amount)} emailed ${esc(niceD(String(b.stripeInvoice.sentAt||"").slice(0,10)))}. <a href="${esc(b.stripeInvoice.url||"#")}" target="_blank" rel="noopener">See it</a>`}</p>`:""}
+      ${waiting(b)?`<div class="fld"><span class="lbl">Their invoice &amp; pay link${b.status==="deposit_paid"?" (for the balance)":""}</span><input type="text" readonly value="${esc(b.payUrl||"")}" onclick="this.select()"></div>`:""}
+      <div class="acts">${b.payType!=="none"&&b.status!=="cancelled"?`<a class="btn small ghost" href="${esc(b.payUrl||"#")}" target="_blank" rel="noopener">${waiting(b)?"View invoice":"View receipt"}</a>`:""}${waiting(b)?`<button class="btn small yellow" type="button" data-copymsg>Copy message with link</button><button class="btn small ghost" type="button" data-copylink>Copy link only</button>${b.email?`<a class="btn small ghost" data-mail href="mailto:${esc(b.email)}?subject=${encodeURIComponent("Your session with "+(C.brand.name||""))}&body=${encodeURIComponent(payMessage(b))}">Email it</a>`:""}<button class="btn small ghost" type="button" data-sinv>${b.stripeInvoice&&!b.stripeInvoice.voided&&!b.stripeInvoice.paid?"Re-send Stripe invoice":"Email a Stripe invoice instead"}</button><button class="btn small ghost" type="button" data-paid>Mark $${LBL.money(dueOf(b))} paid (cash/Venmo)</button>`:""}
+      ${b.status!=="cancelled"?`<button class="btn small ghost" type="button" data-edit>Edit</button><button class="btn small danger" type="button" data-cancel>Cancel booking</button>`:""}</div>
+      ${b.status==="paid"&&b.stripeSession?'<p class="help">Need to refund? Do it in your Stripe dashboard, then cancel the booking here to free the time.</p>':""}`;
+    const on=(sel,fn)=>{const el=d.querySelector(sel);if(el)el.onclick=fn};
+    on("[data-copymsg]",()=>copy(payMessage(b),"Message copied. Paste it in a text or email!"));
+    on("[data-copylink]",()=>copy(b.payUrl,"Pay link copied"));
+    on("[data-edit]",()=>openBookingForm({...b,what:b.miniId?"m:"+b.miniId:(((C.pricing.packages||[]).find(p=>b.title===LBL.pkgName(C,p)+" session")||{}).id?"p:"+(C.pricing.packages||[]).find(p=>b.title===LBL.pkgName(C,p)+" session").id:"c")},b));
+    const act=async(action,btn,sure)=>{if(sure&&!btn.dataset.sure){btn.dataset.sure=1;btn.textContent=sure;return}
+      if(LIVE){try{await LBL.api.bookingPatch(token,{id:b.id,action});await loadBookings();const fresh=await LBL.api.content();if(fresh)syncBooked(fresh)}catch(e){return toast(e.message,true)}}
+      else{if(action==="cancel")b.status="cancelled";else if(action==="stripeInvoice")return toast("Preview mode: Stripe invoices send once the site is live.");
+        else{const amt=dueOf(b);b.payments=[...(b.payments||[]),{amount:amt,method:"cash / other",at:new Date().toISOString()}];b.paidOutside=true;b.status=paidOf({payments:b.payments})+0.005>=fullOf(b)?"paid":"deposit_paid"}saveDemoBookings()}
+      render();toast(action==="cancel"?"Booking cancelled. The time is open again.":action==="stripeInvoice"?`Stripe emailed ${b.email} an invoice ✓`:b.status==="paid"?"Marked as paid in full":"Payment recorded")};
+    on("[data-sinv]",function(){if(!b.email)return toast("Add their email first (Edit).",true);act("stripeInvoice",this,`Tap again: Stripe emails ${b.email} ($${LBL.money(dueOf(b))}, Stripe adds a 0.4% fee)`)});
+    on("[data-paid]",function(){act("markPaid",this,"Tap again to mark paid")});
+    on("[data-cancel]",function(){act("cancel",this,"Tap again to cancel")});
+    wrap.appendChild(d)});
+  const g=document.createElement("div");g.className="group";g.style.marginTop="24px";g.innerHTML="<h3>Pay link message</h3>";
+  g.appendChild(field({k:"bookingMessage",label:"The message you send with a pay link",type:"textarea",help:"Use {first}, {session}, {date}, {time}, {amount} (what's due now), {link} and {owner}. They get filled in for each client. Press Save changes after editing."},C,""));
+  wrap.appendChild(g);
+  const ig=document.createElement("div");ig.className="group";ig.innerHTML="<h3>Invoice settings</h3><p class=\"help\">Every booking gets a cute invoice page at its pay link. Clients can pay there, see what they've paid, and save it as a PDF.</p>";
+  [{k:"title",label:"Invoice heading",type:"text"},{k:"dueDays",label:"Days to pay (default)",type:"number",help:"Used when you leave \"Pay by\" blank."},{k:"note",label:"Thank-you note on every invoice",type:"textarea"},{k:"terms",label:"Terms (small print at the bottom)",type:"textarea"}].forEach(f=>ig.appendChild(field(f,C.invoice||(C.invoice={}),"invoice")));
+  wrap.appendChild(ig);
+  return wrap}
+function calendarField(){const w=document.createElement("div");w.className="fld";
+  const draw=(info,busy)=>{w.innerHTML=`<span class="lbl">Connection</span>${!LIVE?'<p class="help">Preview mode: connect Google Calendar once the site is live (see the setup guide).</p>':!info?'<p class="help">Checking…</p>':!info.configured?'<p class="help">Not connected yet. Whoever set up your site can connect it in about 15 minutes using the setup guide. Once connected, bookings appear on your calendar and busy times are hidden from mini sessions.</p>':info.ok?`<p class="help" style="color:var(--ok)">Connected to ${esc(info.calendarId)} ✓</p>`:`<p class="alert">Connected, but something's wrong: ${esc(info.error)}</p>`}
+    ${LIVE&&info&&info.configured?`<div class="addrow"><button class="btn small ghost" type="button" data-test ${busy?"disabled":""}>${busy?"Testing…":"Send a test event"}</button></div>`:""}`;
+    const t=w.querySelector("[data-test]");if(t)t.onclick=async()=>{draw(info,true);try{const r=await LBL.api.calendar(token,true);calInfo=r;draw(r);toast(r.ok?"Test worked! Your calendar is connected.":"Test failed. See the message.",!r.ok)}catch(e){draw(info);toast(e.message,true)}}};
+  draw(calInfo);if(LIVE&&!calInfo)LBL.api.calendar(token).then(r=>{calInfo=r;draw(r)}).catch(e=>draw({configured:true,ok:false,error:e.message}));
+  return w}
+/* ---------- help ---------- */
+function helpView(){const d=document.createElement("div");d.className="help group";d.innerHTML=`
+<h3>Changing words or photos</h3><p>Pick a section on the left, make your changes, then press <b>Save changes</b> at the top. Your site updates right away.</p>
+<h3>Photos</h3><ul><li>Upload photos straight from your phone or computer. They're resized for the web automatically.</li><li>On the photo board, use <b>Add several photos at once</b> to upload a whole batch, then give each one a title and type.</li><li>Tip: portrait (tall) photos look best on the board and collage.</li></ul>
+<h3>Payments</h3><ul><li>Clients pay through Stripe. You'll get an email from Stripe for every payment, and it shows up here in your Inbox.</li><li>Money lands in your bank account on Stripe's normal schedule (usually 2 business days).</li><li>Refunds are done in your Stripe dashboard. If you refund a mini session, press <b>Free up this time slot</b> on that payment in your Inbox.</li></ul>
+<h3>Booking a session (message first)</h3><ul><li>When someone sends a note, press <b>Schedule &amp; send pay link</b> on it in your Inbox, or press <b>+ New booking</b> under Bookings.</li><li>Set the date, time and amount you agreed on. You'll get a personal pay link. Tap <b>Copy message with link</b> and text or email it.</li><li>The link opens their own invoice page. They can pay there, and it shows what's paid and what's left.</li><li><b>Deposits:</b> after the deposit the booking turns orange ("Deposit paid"). Send the same link again for the balance. It updates itself.</li><li>Prefer an email from Stripe? Press <b>Email a Stripe invoice instead</b>. Stripe adds a 0.4% fee for those. If they pay one way, the other is cancelled automatically so nobody pays twice.</li><li>When they pay in full, the booking turns green, shows up in your Inbox, and turns green on your Google Calendar.</li><li>Paid in cash or Venmo? Press <b>Mark … paid</b>.</li></ul>
+<h3>Mini sessions</h3><ul><li>Set the status to <b>Coming soon</b> to collect waitlist emails, then switch to <b>Open for booking</b> when you're ready.</li><li>Paid times turn green and can't be double-booked. Tap a time to block it yourself (for cash or Venmo bookings).</li><li>Set a finished mini to <b>Hidden</b> to remove it from the site.</li></ul>
+${LIVE?"":`<h3>Preview mode</h3><p>You're trying the admin panel before the site is live. Changes are saved in this browser only.</p><p><button class="btn small danger" type="button" id="resetDemo">Reset to the sample content</button></p>`}`;
+  const r=d.querySelector("#resetDemo");if(r)r.onclick=()=>{if(!r.dataset.sure){r.dataset.sure=1;r.textContent="Tap again to reset everything";return}LBL.ls.del(LBL.DEMO_KEY);LBL.ls.del(LBL.DEMO_INBOX);C=LBL.demoContent();inbox=[];dirty=false;updatePill();render();toast("Back to the sample content")};
+  return d}
+
+/* ---------- screens ---------- */
+function renderNav(){const n=$("nav");const unread=inbox.filter(m=>!m.handled).length;n.innerHTML="";
+  SECTIONS.forEach(s=>{const b=document.createElement("button");b.type="button";b.style.setProperty("--c",s.c);b.setAttribute("aria-current",s.id===section);b.innerHTML=`<i></i>${esc(s.title)}${s.id==="inbox"&&unread?`<span class="badge">${unread}</span>`:""}${s.id==="bookings"&&bookings.filter(waiting).length?`<span class="badge" style="background:var(--warn)">${bookings.filter(waiting).length}</span>`:""}`;b.onclick=()=>{section=s.id;render();renderNav();scrollTo({top:0})};n.appendChild(b)})}
+function render(){const s=SECTIONS.find(x=>x.id===section);$("secTitle").textContent=s.title;const body=$("body");body.innerHTML="";
+  if(s.intro){const p=document.createElement("p");p.className="a-intro";p.textContent=s.intro;body.appendChild(p)}
+  if(section==="pricing"&&!LIVE)body.insertAdjacentHTML("beforeend",'<p class="anote" style="margin-bottom:16px">Payments switch on when the site goes live with a Stripe account. The prices you set here are exactly what clients are charged.</p>');
+  if(section==="inbox"){body.appendChild(inboxView());return}
+  if(section==="bookings"){body.appendChild(bookingsView());return}
+  if(section==="help"){body.appendChild(helpView());return}
+  s.groups.forEach(g=>{const box=document.createElement("div");box.className="group";box.innerHTML=`<h3>${esc(g.title)}</h3>`;g.fields.forEach(f=>box.appendChild(field(f,C,"")));body.appendChild(box)});
+  $("sideBrand").textContent=C.brand.name||"My site";}
+
+/* ---------- save ---------- */
+async function save(){const b=$("saveBtn");b.disabled=true;b.textContent="Saving…";
+  try{
+    if(LIVE){await LBL.api.save(token,C)}
+    else{const copy=structuredClone(C);(copy.minis||[]).forEach(m=>delete m.booked);if(!LBL.ls.set(LBL.DEMO_KEY,JSON.stringify(copy)))throw new Error("This browser's preview storage is full. Try fewer or smaller photos in preview mode.")}
+    dirty=false;updatePill();toast(LIVE?"Saved! Your site is updated.":"Saved in this browser (preview mode).")
+  }catch(e){if(e.status===401){toast("Please sign in again. Your changes are still here.",true);return showLogin(true)}toast(e.message,true);updatePill()}
+  finally{b.textContent="Save changes";b.disabled=!dirty}}
+$("saveBtn").onclick=save;
+addEventListener("keydown",e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="s"&&!$("appView").hidden){e.preventDefault();if(dirty)save()}});
+
+/* ---------- sign in / out ---------- */
+function showLogin(keepContent){$("appView").hidden=true;$("loginView").hidden=false;$("loginDemo").hidden=LIVE;$("pw").focus();if(!keepContent)C=null}
+async function enter(){
+  if(!C){const live=await LBL.api.content();C=live||LBL.demoContent()}
+  $("loginView").hidden=true;$("appView").hidden=false;$("loginBrand").textContent=C.brand.name;
+  if(!LIVE){$("viewSite").removeAttribute("target");$("viewSite").href=window.__ADMIN_EMBEDDED?"#hi":"../"}
+  updatePill();renderNav();render();loadInbox();loadBookings();
+}
+function signOut(expired){LBL.ls.del(TOKEN_KEY);token=null;if(expired)toast("Please sign in again.",true);showLogin()}
+$("signOut").onclick=()=>{if(dirty&&!$("signOut").dataset.sure){$("signOut").dataset.sure=1;$("signOut").textContent="Unsaved changes! Tap again";return}dirty=false;signOut()};
+$("loginForm").addEventListener("submit",async e=>{e.preventDefault();const err=$("loginErr");err.hidden=true;const pw=$("pw").value;
+  if(!LIVE){enter();return}
+  $("loginBtn").disabled=true;$("loginBtn").textContent="Signing in…";
+  try{const r=await LBL.api.login(pw);token=r.token;LBL.ls.set(TOKEN_KEY,token);$("pw").value="";await enter()}
+  catch(x){err.textContent=x.message;err.hidden=false}
+  finally{$("loginBtn").disabled=false;$("loginBtn").textContent="Sign in"}});
+
+(async()=>{
+  const live=await LBL.api.content();LIVE=!!live;if(live)C=live;
+  $("loginBrand").textContent=(C||LBL.demoContent()).brand.name;
+  token=LBL.ls.get(TOKEN_KEY);
+  if(LIVE&&token){enter()}else showLogin(true);
+})();
+})();
+</script>
+
+</body>
+</html>

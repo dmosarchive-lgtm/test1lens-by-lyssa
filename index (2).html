@@ -1,0 +1,897 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lens By Lyssa</title>
+<meta name="description" content="Lens By Lyssa: playful family, couples, newborn, senior and mini-session photography in St. George, Utah.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Quicksand:wght@500;600;700&family=Gochi+Hand&display=swap">
+<style>
+
+/* Deliberately single-theme: a paper scrapbook */
+:root{
+  color-scheme:light;
+  --paper:#FDFBF5; --grid:#DCE8F3; --ink:#35415A; --ink-soft:#6C7690;
+  --pink:#F9C6D0; --pink-d:#E88AA0; --lemon:#FFF1A8; --sky:#BFE0F5; --grass:#C6E7B8; --lav:#DCCFF4; --cork:#E9CFA8;
+  --disp:"Fredoka", "Arial Rounded MT Bold", system-ui, sans-serif;
+  --body:"Quicksand", "Trebuchet MS", system-ui, sans-serif;
+  --hand:"Gochi Hand", "Comic Sans MS", cursive;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background-color:var(--paper);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:28px 28px;color:var(--ink);font:600 17px/1.6 var(--body);padding-inline:16px;overflow-x:hidden}
+h1,h2,h3{font-family:var(--disp);font-weight:700;margin:0;line-height:1.08;text-wrap:balance}
+p{margin:0}
+.wrap{max-width:1100px;margin-inline:auto}
+.hand{font-family:var(--hand);font-weight:400}
+:focus-visible{outline:3px dashed var(--pink-d);outline-offset:4px}
+
+/* notebook divider tabs */
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;display:flex;justify-content:center;gap:6px;padding-top:10px;background:linear-gradient(var(--paper) 70%,rgba(253,251,245,0))}
+.tabs a{font-family:var(--disp);font-weight:600;text-decoration:none;color:var(--ink);padding:10px 18px 8px;border-radius:14px 14px 0 0;border:2px solid var(--ink);border-bottom:0;background:var(--c);transform:translateY(6px);transition:transform .25s cubic-bezier(.3,1.6,.5,1);box-shadow:0 -2px 0 rgba(0,0,0,.02)}
+.tabs a:hover,.tabs a.here{transform:translateY(0)}
+.tabs::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--ink)}
+@media (max-width:520px){.tabs{gap:3px}.tabs a{padding:7px 8px 5px;font-size:.82rem}}
+
+.washi{display:inline-block;background:repeating-linear-gradient(45deg,var(--pink) 0 10px,#fbd8df 10px 20px);opacity:.9;height:26px;width:110px;position:absolute;border-radius:2px}
+
+/* hero collage */
+.hero{display:grid;grid-template-columns:.9fr 1.1fr;gap:30px;align-items:center;padding-block:50px 30px}
+@media (max-width:860px){.hero{grid-template-columns:1fr}}
+.hero h1{font-size:clamp(2.6rem,6.5vw,4.6rem);color:var(--ink)}
+.hero h1 .hl{background:var(--lemon);padding:0 .15em;border-radius:6px;display:inline-block;transform:rotate(-2deg)}
+.hero p.lede{font-size:1.1rem;color:var(--ink-soft);margin-block:18px 24px;max-width:40ch}
+.btn{display:inline-flex;align-items:center;gap:8px;font:600 1.05rem var(--disp);color:var(--ink);text-decoration:none;cursor:pointer;background:var(--pink);border:2px solid var(--ink);border-radius:999px;padding:12px 24px;transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+.btn:hover{transform:rotate(-3deg) scale(1.05)}
+.btn.sky{background:var(--sky)}
+.board{position:relative;height:460px;max-width:100%;touch-action:none}
+.pol{position:absolute;width:190px;max-width:48%;background:#fff;padding:9px 9px 34px;box-shadow:0 8px 18px -8px rgba(53,65,90,.45);cursor:grab;user-select:none;touch-action:none;transition:box-shadow .2s}
+.pol img{display:block;width:100%;pointer-events:none}
+.pol span{position:absolute;left:0;right:0;bottom:6px;text-align:center;font-family:var(--hand);font-size:1.15rem}
+.pol.grab{cursor:grabbing;box-shadow:0 22px 30px -10px rgba(53,65,90,.5);z-index:10}
+.sticker{position:absolute;cursor:grab;user-select:none;touch-action:none;filter:drop-shadow(0 3px 2px rgba(53,65,90,.25));animation:bob 3s ease-in-out infinite alternate}
+.sticker.grab{cursor:grabbing;animation:none}
+@keyframes bob{to{transform:translateY(-6px) rotate(6deg)}}
+.hint{position:absolute;right:0;bottom:-6px;font-family:var(--hand);font-size:1.3rem;color:var(--pink-d);transform:rotate(-4deg)}
+
+section{padding-block:60px 30px;position:relative;scroll-margin-top:50px}
+.title{text-align:center;margin-bottom:28px;position:relative}
+.title h2{font-size:clamp(2.2rem,5vw,3.2rem);display:inline-block;background:#fff;border:2px solid var(--ink);padding:8px 24px;border-radius:16px;transform:rotate(-1.5deg);box-shadow:5px 5px 0 var(--c,var(--lav))}
+.title p{margin-top:14px;color:var(--ink-soft);font-size:1.02rem}
+
+/* corkboard + flip cards */
+.cork{background:var(--cork);background-image:radial-gradient(rgba(120,80,40,.12) 1px,transparent 1.5px),radial-gradient(rgba(255,255,255,.25) 1px,transparent 1.5px);background-size:9px 9px,13px 13px;border:10px solid #C9A77A;border-radius:18px;padding:30px 22px;box-shadow:inset 0 0 30px rgba(90,60,30,.25)}
+.notes{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-bottom:24px}
+.note{font-family:var(--hand);font-size:1.3rem;border:0;cursor:pointer;background:var(--c);color:var(--ink);padding:10px 16px 8px;box-shadow:2px 3px 0 rgba(53,65,90,.2);transform:rotate(var(--r,-2deg));transition:transform .25s}
+.note:hover{transform:rotate(0) scale(1.08)}
+.note[aria-pressed="true"]{outline:3px solid var(--ink);outline-offset:2px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:26px}
+.card{perspective:900px;border:0;background:none;padding:0;cursor:pointer;font:inherit;color:inherit;transform:rotate(var(--r,0deg));transition:transform .3s}
+.card:hover{transform:rotate(0) translateY(-4px)}
+.card.hide{display:none}
+.card.pop{animation:pin .45s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes pin{from{transform:translateY(-30px) rotate(8deg);opacity:0}}
+.inner{position:relative;display:grid;transition:transform .7s cubic-bezier(.3,1.3,.5,1);transform-style:preserve-3d}
+.card[aria-pressed="true"] .inner{transform:rotateY(180deg)}
+.face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:#fff;padding:10px 10px 38px;box-shadow:0 8px 16px -8px rgba(53,65,90,.5)}
+.face img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover}
+.face .cap{position:absolute;left:0;right:0;bottom:8px;text-align:center;font-family:var(--hand);font-size:1.2rem}
+.back{transform:rotateY(180deg);background:var(--lemon);background-image:repeating-linear-gradient(transparent 0 27px,rgba(53,65,90,.15) 27px 28px);padding:26px 18px;text-align:left;display:flex;flex-direction:column;gap:6px;font-family:var(--hand);font-size:1.2rem;line-height:1.4}
+.back b{font-family:var(--disp);font-size:1.15rem}
+.pin{position:absolute;top:-10px;left:50%;width:22px;height:22px;margin-left:-11px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff 0 12%,var(--pc,#E88AA0) 14%);box-shadow:0 3px 3px rgba(0,0,0,.3);z-index:2}
+
+/* spotlight editing */
+.spot-wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:30px;align-items:center}
+@media (max-width:860px){.spot-wrap{grid-template-columns:1fr}}
+.spot{position:relative;border:10px solid #fff;box-shadow:0 14px 26px -12px rgba(53,65,90,.5);transform:rotate(1deg);cursor:crosshair;touch-action:none;max-width:100%}
+.spot img{display:block;width:100%}
+.spot .ed{position:absolute;inset:0;width:100%;height:100%;-webkit-mask-image:radial-gradient(circle var(--rad,110px) at var(--x,50%) var(--y,50%),#000 98%,transparent 100%);mask-image:radial-gradient(circle var(--rad,110px) at var(--x,50%) var(--y,50%),#000 98%,transparent 100%);transition:filter .5s}
+.spot .ring{position:absolute;left:var(--x,50%);top:var(--y,50%);width:calc(var(--rad,110px)*2);height:calc(var(--rad,110px)*2);transform:translate(-50%,-50%);border:3px dashed #fff;border-radius:50%;pointer-events:none}
+.spot .tape1{top:-16px;left:30px;transform:rotate(-8deg)}
+.spot .tape2{bottom:-14px;right:30px;transform:rotate(6deg);background:repeating-linear-gradient(45deg,var(--sky) 0 10px,#d6ecf9 10px 20px)}
+.chooser{display:grid;gap:12px}
+#edits.solo .spot-wrap{grid-template-columns:1fr;max-width:760px;margin:0 auto}
+.sbtn{display:flex;align-items:center;gap:14px;font:inherit;color:inherit;cursor:pointer;text-align:left;background:#fff;border:2px solid var(--ink);border-radius:18px;padding:12px 16px;transition:transform .25s cubic-bezier(.3,1.6,.5,1),background .2s}
+.sbtn:hover{transform:rotate(-1.5deg)}
+.sbtn[aria-pressed="true"]{background:var(--c)}
+.sbtn .dot{width:34px;height:34px;border-radius:50%;border:2px solid var(--ink);background:var(--c);flex:none}
+.sbtn b{font-family:var(--disp);font-weight:600;display:block}
+.sbtn small{color:var(--ink-soft);font-size:.9rem}
+
+/* gift tags */
+.string{position:relative;padding-top:40px}
+.string::before{content:"";position:absolute;left:-16px;right:-16px;top:16px;height:40px;border-top:3px dotted var(--ink);border-radius:50%}
+.notes.types{margin-bottom:14px}
+.notes.types .note{display:flex;flex-direction:column;align-items:center;line-height:1.05;font-size:1.45rem;padding:10px 18px 8px}
+.notes.types .note small{font-family:var(--body,inherit);font-size:.78rem;font-weight:700;opacity:.75;margin-top:2px}
+.type-info{text-align:center;margin:0 auto 22px;max-width:640px}
+.type-info p{margin:2px 0;font-style:italic;color:var(--ink-soft);font-weight:700}
+.type-info .hand{font-style:normal;font-size:1.35rem;color:var(--pink-d,#D86F8B)}
+.tags.swap{animation:tagsIn .5s cubic-bezier(.3,1.4,.5,1) both}
+@keyframes tagsIn{from{opacity:0;transform:translateY(-18px) rotate(-1deg)}}
+.tags{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+@media (max-width:860px){.tags{grid-template-columns:1fr;max-width:400px;margin-inline:auto}}
+.tag{position:relative;background:var(--c);border:2px solid var(--ink);border-radius:18px;padding:40px 22px 24px;clip-path:polygon(22% 0,78% 0,100% 12%,100% 100%,0 100%,0 12%);transform-origin:50% -30px;animation:swing 4s ease-in-out infinite alternate;display:flex;flex-direction:column;gap:12px}
+.tag:nth-child(2){animation-delay:-1.3s}.tag:nth-child(3){animation-delay:-2.6s}
+.tag:hover{animation-play-state:paused}
+@keyframes swing{from{transform:rotate(-2.5deg)}to{transform:rotate(2.5deg)}}
+.tag .hole{position:absolute;top:12px;left:50%;width:18px;height:18px;margin-left:-9px;border-radius:50%;background:var(--paper);border:2px solid var(--ink)}
+.tag h3{font-size:1.7rem;text-align:center}
+.tag .price{font-family:var(--disp);font-size:2.8rem;text-align:center;line-height:1}
+.tag .price small{font-size:1rem;font-family:var(--hand);display:block}
+.tag ul{margin:0;padding:0;list-style:none;display:grid;gap:4px;flex:1}
+.tag li::before{content:"♡ ";color:var(--pink-d)}
+.tag .btn{justify-content:center;background:#fff}
+
+/* letter form */
+.letter{max-width:760px;margin-inline:auto;background:#fff;background-image:repeating-linear-gradient(transparent 0 43px,#cfe0ef 43px 44px);border:2px solid var(--ink);border-radius:6px;padding:34px 34px 30px 64px;position:relative;box-shadow:8px 8px 0 var(--lav);transition:transform .9s cubic-bezier(.6,-.3,.4,1),opacity .9s}
+.letter::before{content:"";position:absolute;left:42px;top:0;bottom:0;width:2px;background:var(--pink)}
+@media (max-width:560px){.letter{padding:26px 18px 24px 36px}.letter::before{left:22px}}
+.letter p.line{font-family:var(--hand);font-size:1.45rem;line-height:44px}
+.blank{font:inherit;font-family:var(--hand);font-size:1.35rem;color:#3E6FB0;border:0;border-bottom:2px dashed var(--ink-soft);background:transparent;padding:0 4px;min-width:0;width:auto;max-width:100%}
+.blank:focus{outline:none;border-bottom-color:var(--pink-d);background:var(--lemon)}
+select.blank{cursor:pointer}
+textarea.blank{display:block;width:100%;line-height:44px;border-bottom:0;resize:vertical;min-height:88px}
+.sign{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-top:10px}
+.err{font-family:var(--disp);color:#C0405C;font-size:.95rem}
+.letter.fly{transform:translateY(-60px) rotate(-8deg) scale(.4);opacity:0}
+.envelope{max-width:520px;margin-inline:auto;text-align:center;display:grid;gap:12px;justify-items:center;animation:drop .7s cubic-bezier(.3,1.5,.5,1)}
+.envelope svg{max-width:100%}
+@keyframes drop{from{transform:translateY(-40px) scale(.7);opacity:0}}
+
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,calc(100% + 40px));visibility:hidden;background:var(--ink);color:#fff;padding:12px 20px;border-radius:14px;z-index:70;transition:transform .4s cubic-bezier(.3,1.5,.5,1),visibility .4s;max-width:calc(100% - 32px);text-align:center}
+.toast.show{transform:translate(-50%,0);visibility:visible}
+footer{text-align:center;padding-block:50px 40px}
+footer .hand{font-size:1.8rem;color:var(--pink-d)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+body{margin:0}
+/* ---- two pages ---- */
+.page{display:none}
+.page.on{display:block;animation:pageIn .65s cubic-bezier(.3,1.1,.4,1)}
+@keyframes pageIn{from{opacity:0;transform:translateY(24px) rotate(-.6deg)}}
+.tabs a.minitab{background:#F7B98A;position:relative}
+.tabs a.minitab sup{font-family:var(--hand);font-weight:400;font-size:.95rem;color:#C0405C;margin-left:3px}
+.tabs .gap{flex:none;width:14px}
+.promo{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin:6px auto 0;max-width:820px;text-decoration:none;color:var(--ink);background:#fff;border:2px dashed var(--ink);border-radius:18px;padding:12px 18px;transform:rotate(-.6deg);transition:transform .3s cubic-bezier(.3,1.6,.5,1),background .3s}
+.promo:hover{transform:rotate(0) scale(1.02);background:#FFF1A8}
+.promo .new{font-family:var(--hand);font-size:1.3rem;background:#F7B98A;border:2px solid var(--ink);border-radius:999px;padding:0 10px;transform:rotate(-4deg)}
+.promo .left{font-family:var(--disp);font-weight:700;color:var(--pink-d)}
+#page-home .hero{overflow-x:clip}
+@media (max-width:520px){.tabs .gap{width:4px}.tabs a{padding:7px 7px 5px!important;font-size:.78rem!important}.tabs a.minitab sup{display:none}}
+.tabs{overflow-x:auto;scrollbar-width:none;justify-content:safe center}
+.tabs::-webkit-scrollbar{display:none}
+.tabs a{flex:none}
+@media (prefers-reduced-motion:reduce){.page.on{animation:none}}
+
+/* ===== MINIS PAGE (scoped) ===== */
+#page-minis{ --peach:#FFD8C2; --pumpkin:#F7B98A;
+  --season:var(--pumpkin)}
+#page-minis .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:600 1.05rem var(--disp);color:var(--ink);text-decoration:none;cursor:pointer;background:var(--pink);border:2px solid var(--ink);border-radius:999px;padding:12px 24px;transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+#page-minis .btn:hover{transform:rotate(-3deg) scale(1.05)}
+#page-minis .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+#page-minis .btn.sky{background:var(--sky)}
+#page-minis .btn.lemon{background:var(--lemon)}
+#page-minis .btn.w{background:#fff}
+#page-minis .washi{position:absolute;height:24px;width:100px;background:repeating-linear-gradient(45deg,var(--pink) 0 10px,#fbd8df 10px 20px);opacity:.9;border-radius:2px}
+#page-minis .washi.y{background:repeating-linear-gradient(45deg,var(--lemon) 0 10px,#fff7cc 10px 20px)}
+#page-minis .brand span{color:var(--pink-d)}
+@media (max-width:640px){}
+#page-minis .hero{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center;padding-block:44px 30px}
+@media (max-width:860px){#page-minis .hero{grid-template-columns:1fr}}
+#page-minis .hero h1{font-size:clamp(2.6rem,6vw,4.4rem)}
+#page-minis .hero h1 .hl{background:var(--season);padding:0 .15em;border-radius:8px;display:inline-block;transform:rotate(-2deg);transition:background .5s}
+#page-minis .lede{font-size:1.1rem;color:var(--ink-soft);margin-block:16px 22px;max-width:42ch}
+#page-minis .ticket{position:relative;background:#fff;border:2px solid var(--ink);border-radius:22px;display:grid;grid-template-columns:1fr auto;box-shadow:8px 8px 0 var(--season);transform:rotate(1.5deg);transition:box-shadow .5s}
+#page-minis .ticket::before,#page-minis .ticket::after{content:"";position:absolute;right:118px;width:28px;height:28px;border-radius:50%;background:var(--paper);border:2px solid var(--ink)}
+#page-minis .ticket::before{top:-15px;clip-path:inset(50% 0 0 0)}
+#page-minis .ticket::after{bottom:-15px;clip-path:inset(0 0 50% 0)}
+#page-minis .t-main{padding:22px;border-right:2px dashed var(--ink);display:grid;gap:10px}
+#page-minis .t-main .ph{position:relative;border:2px solid var(--ink);border-radius:12px;overflow:hidden;aspect-ratio:16/10;max-width:100%}
+#page-minis .t-main .ph img{width:100%;height:100%;object-fit:cover;display:block}
+#page-minis .t-main h2{font-size:1.8rem}
+#page-minis .t-meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.95rem;color:var(--ink-soft)}
+#page-minis .t-stub{width:132px;padding:18px 12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center}
+#page-minis .t-stub .price{font-family:var(--disp);font-weight:700;font-size:2.2rem;line-height:1}
+#page-minis .t-stub .hand{font-size:1.1rem}
+@media (max-width:520px){#page-minis .ticket{grid-template-columns:1fr}
+#page-minis .t-main{border-right:0;border-bottom:2px dashed var(--ink)}
+#page-minis .ticket::before,#page-minis .ticket::after{display:none}
+#page-minis .t-stub{width:auto;flex-direction:row;gap:14px}}
+#page-minis .countdown{display:flex;gap:10px;flex-wrap:wrap}
+#page-minis .cd{background:var(--c);border:2px solid var(--ink);border-radius:16px;min-width:74px;padding:8px 10px;text-align:center;transform:rotate(var(--r))}
+#page-minis .cd b{display:block;font-family:var(--disp);font-size:2rem;line-height:1;font-variant-numeric:tabular-nums}
+#page-minis .cd span{font-family:var(--hand);font-size:1.05rem}
+#page-minis .meter{margin-top:18px;display:grid;gap:6px}
+#page-minis .meter .row{display:flex;justify-content:space-between;font-family:var(--hand);font-size:1.25rem}
+#page-minis .pencil{height:26px;border:2px solid var(--ink);border-radius:6px 16px 16px 6px;background:#fff;position:relative;overflow:hidden}
+#page-minis .pencil i{position:absolute;left:0;top:0;bottom:0;width:0;background:repeating-linear-gradient(90deg,var(--season) 0 14px,color-mix(in srgb,var(--season) 70%,#fff) 14px 28px);transition:width 1.2s cubic-bezier(.3,1.2,.5,1)}
+#page-minis section{padding-block:60px 30px;scroll-margin-top:70px}
+#page-minis .title{text-align:center;margin-bottom:28px}
+#page-minis .title h2{font-size:clamp(2.1rem,5vw,3.1rem);display:inline-block;background:#fff;border:2px solid var(--ink);padding:8px 24px;border-radius:16px;transform:rotate(-1.5deg);box-shadow:5px 5px 0 var(--c,var(--lav))}
+#page-minis .title p{margin-top:14px;color:var(--ink-soft)}
+#page-minis .seasons{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-bottom:26px}
+#page-minis .season{font-family:var(--hand);font-size:1.35rem;border:0;cursor:pointer;background:var(--c);color:var(--ink);padding:10px 18px 8px;box-shadow:2px 3px 0 rgba(53,65,90,.2);transform:rotate(var(--r));transition:transform .25s;position:relative}
+#page-minis .season:hover{transform:rotate(0) scale(1.06)}
+#page-minis .season[aria-pressed="true"]{outline:3px solid var(--ink);outline-offset:2px}
+#page-minis .season small{display:block;font-size:.95rem;opacity:.75}
+#page-minis .book{display:grid;grid-template-columns:1.15fr .85fr;gap:26px;align-items:start}
+@media (max-width:900px){#page-minis .book{grid-template-columns:1fr}}
+#page-minis .panel{background:#fff;border:2px solid var(--ink);border-radius:22px;padding:22px;box-shadow:6px 6px 0 var(--c,var(--season));position:relative}
+#page-minis .panel h3{font-size:1.5rem;margin-bottom:4px}
+#page-minis .panel .mhint{color:var(--ink-soft);font-size:.95rem;margin-bottom:14px}
+#page-minis .slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:12px}
+#page-minis .slot{aspect-ratio:1;border-radius:50%;border:2px dashed var(--ink);background:var(--paper);font:700 1rem var(--disp);color:var(--ink);cursor:pointer;display:grid;place-items:center;position:relative;transition:transform .3s cubic-bezier(.3,1.7,.5,1),background .3s;max-width:100%}
+#page-minis .slot:hover:not(:disabled){transform:scale(1.08) rotate(-4deg);background:var(--lemon)}
+#page-minis .slot[aria-pressed="true"]{border-style:solid;background:var(--pink);animation:m-boing .5s cubic-bezier(.3,1.7,.5,1)}
+#page-minis .slot[aria-pressed="true"]::after{content:"♡";position:absolute;top:-6px;right:-2px;font-size:1.3rem;color:var(--pink-d)}
+@keyframes m-boing{0%{transform:scale(.7)}60%{transform:scale(1.15) rotate(6deg)}100%{transform:none}}
+#page-minis .slot:disabled{cursor:not-allowed;color:var(--ink-soft);opacity:.75}
+#page-minis .slot:disabled::before{content:"booked!";position:absolute;inset:auto -6px 38% -6px;transform:rotate(-14deg);font-family:var(--hand);font-weight:400;font-size:1.05rem;color:#C0405C;border:2px solid #C0405C;border-radius:6px;background:rgba(255,255,255,.85);padding:0 4px}
+#page-minis .soon{display:grid;gap:14px;justify-items:center;text-align:center;padding:30px 10px}
+#page-minis .soon form{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+#page-minis .soon input{font:inherit;border:2px solid var(--ink);border-radius:999px;padding:10px 16px;min-width:0;width:240px;max-width:100%;background:var(--paper)}
+#page-minis .addons{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
+#page-minis .addon{position:relative}
+#page-minis .addon input{position:absolute;opacity:0;width:1px;height:1px}
+#page-minis .addon label{display:grid;gap:2px;cursor:pointer;border:2px solid var(--ink);border-radius:16px;padding:12px 14px;background:var(--paper);transition:transform .3s cubic-bezier(.3,1.6,.5,1),background .3s;position:relative;overflow:hidden;height:100%}
+#page-minis .addon label::after{content:"";position:absolute;right:0;bottom:0;width:22px;height:22px;background:linear-gradient(135deg,transparent 50%,var(--ink) 50% 54%,#fff 54%);transition:width .3s,height .3s}
+#page-minis .addon label:hover{transform:rotate(-1.5deg)}
+#page-minis .addon label:hover::after{width:30px;height:30px}
+#page-minis .addon input:checked+label{background:var(--c);transform:rotate(1deg)}
+#page-minis .addon input:focus-visible+label{outline:3px dashed var(--pink-d);outline-offset:3px}
+#page-minis .addon b{font-family:var(--disp);font-weight:600}
+#page-minis .addon small{font-family:var(--hand);font-size:1.05rem}
+#page-minis .receipt{margin-top:18px;border-top:2px dashed var(--ink);padding-top:12px;display:grid;gap:4px;font-variant-numeric:tabular-nums}
+#page-minis .receipt .ln{display:flex;justify-content:space-between;gap:10px}
+#page-minis .receipt .tot{font-family:var(--disp);font-size:1.4rem;font-weight:700;border-top:2px solid var(--ink);padding-top:6px;margin-top:4px}
+#page-minis form.bform{display:grid;gap:12px}
+#page-minis .f{display:grid;gap:4px}
+#page-minis .f label{font-family:var(--disp);font-weight:600;font-size:.9rem}
+#page-minis .f input,#page-minis .f select,#page-minis .f textarea{font:inherit;font-size:1rem;color:var(--ink);background:var(--paper);border:2px solid var(--ink);border-radius:12px;padding:10px 12px}
+#page-minis .f input:focus,#page-minis .f textarea:focus,#page-minis .f select:focus{outline:none;background:var(--lemon)}
+#page-minis .f textarea{min-height:70px;resize:vertical}
+#page-minis .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:520px){#page-minis .two,#page-minis .addons{grid-template-columns:1fr}}
+#page-minis .chosen{font-family:var(--hand);font-size:1.25rem;background:var(--lemon);border-radius:10px;padding:6px 12px}
+#page-minis .err{color:#C0405C;font-family:var(--disp);font-size:.95rem}
+#page-minis .done{display:grid;gap:12px;justify-items:center;text-align:center;animation:m-pop .6s cubic-bezier(.3,1.5,.5,1)}
+@keyframes m-pop{from{transform:scale(.7);opacity:0}}
+#page-minis .reel{display:flex;gap:22px;overflow-x:auto;padding:20px 6px 26px;scroll-snap-type:x mandatory;scrollbar-width:thin}
+#page-minis .reel figure{flex:none;width:210px;margin:0;background:#fff;padding:9px 9px 36px;box-shadow:0 8px 16px -8px rgba(53,65,90,.5);transform:rotate(var(--r));scroll-snap-align:center;position:relative;transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
+#page-minis .reel figure:hover{transform:rotate(0) translateY(-6px)}
+#page-minis .reel img{display:block;width:100%}
+#page-minis .reel figcaption{position:absolute;left:0;right:0;bottom:6px;text-align:center;font-family:var(--hand);font-size:1.15rem}
+#page-minis .faqs{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:960px;margin-inline:auto}
+@media (max-width:760px){#page-minis .faqs{grid-template-columns:1fr}}
+#page-minis details{background:#fff;border:2px solid var(--ink);border-radius:12px;box-shadow:4px 4px 0 var(--c)}
+#page-minis summary{list-style:none;cursor:pointer;padding:12px 16px;font-family:var(--disp);font-weight:600;display:flex;justify-content:space-between;gap:8px;background:var(--c);border-radius:10px}
+#page-minis summary::-webkit-details-marker{display:none}
+#page-minis summary::after{content:"✿";transition:transform .4s}
+#page-minis details[open] summary{border-radius:10px 10px 0 0}
+#page-minis details[open] summary::after{transform:rotate(180deg)}
+#page-minis details p{padding:10px 16px 14px;font-family:var(--hand);font-size:1.2rem}
+#page-minis .full{text-align:center;margin-top:40px;display:grid;gap:12px;justify-items:center}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:90;overflow:hidden}
+.confetti i{position:absolute;top:-40px;font-style:normal;font-size:1.8rem;animation:m-fall linear forwards}
+@keyframes m-fall{to{transform:translateY(110vh) rotate(540deg)}}
+@media (prefers-reduced-motion:reduce){#page-minis *,#page-minis *::before,#page-minis *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+/* ---- Lens By Lyssa additions ---- */
+/* ---- private invoice page ---- */
+body.invoice-mode .tabs,body.invoice-mode .page,body.invoice-mode footer,body.invoice-mode .promo{display:none!important}
+#invoiceView{padding-block:18px}
+.inv{position:relative;max-width:720px;margin:0 auto;background:#fff;background-image:repeating-linear-gradient(transparent 0 35px,#e3edf6 35px 36px);border:2px solid var(--ink);border-radius:16px;padding:34px 34px 26px;box-shadow:8px 8px 0 var(--pink);animation:invIn .6s cubic-bezier(.3,1.4,.5,1)}
+@keyframes invIn{from{transform:translateY(24px) rotate(-1.5deg);opacity:0}}
+.inv-tape{top:-13px;left:50%;margin-left:-55px}
+.inv-head{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:flex-start}
+.inv-hi{font-size:1.6rem;color:var(--pink-d)}
+.inv h1{font-size:clamp(2.2rem,6vw,3rem)}
+.inv-meta{display:grid;grid-template-columns:auto auto;gap:2px 12px;margin:6px 0 0;font-size:.95rem;font-variant-numeric:tabular-nums}
+.inv-meta dt{color:var(--ink-soft)}.inv-meta dd{margin:0;text-align:right;font-family:var(--disp)}
+.inv-parties{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0 16px}
+.inv-parties>div{display:grid;gap:2px}
+.inv-parties .lbl{font-family:var(--hand);font-size:1.2rem;color:var(--pink-d)}
+.inv-parties b{font-family:var(--disp);font-size:1.15rem}
+.inv-parties span:not(.lbl){font-size:.92rem;color:var(--ink-soft)}
+.inv-session{background:var(--lemon);border-radius:4px;padding:14px 18px;box-shadow:3px 4px 0 rgba(53,65,90,.15);transform:rotate(-.8deg);margin-bottom:20px;display:grid;gap:2px}
+.inv-session b{font-family:var(--disp);font-size:1.25rem}
+.inv-lines{display:grid;gap:6px;font-variant-numeric:tabular-nums}
+.inv-lines .ln{display:flex;justify-content:space-between;gap:14px;padding-bottom:6px;border-bottom:2px dashed #d7dde6}
+.inv-lines .ln.paid span{color:#2E8B57}.inv-lines .ln span:last-child{white-space:nowrap}
+.inv-lines .ln.due{border-bottom:0;border-top:2px solid var(--ink);padding-top:10px;margin-top:4px;font-family:var(--disp);font-weight:700;font-size:1.5rem}
+.inv-plan{margin-top:10px;font-size:.95rem;color:var(--ink-soft)}
+.inv-note{margin-top:18px;font-family:var(--hand);font-size:1.4rem;line-height:1.35;white-space:pre-line}
+.inv-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.inv-actions .btn{justify-content:center}
+#invPay{flex:1 1 240px}
+.inv-terms{margin-top:16px;font-size:.85rem;color:var(--ink-soft);white-space:pre-line}
+.inv-stamp{position:absolute;z-index:3;right:36px;top:206px;border:5px double #2E8B57;color:#2E8B57;font-family:var(--disp);font-weight:700;font-size:2.1rem;letter-spacing:.12em;padding:4px 18px;border-radius:12px;transform:rotate(-14deg);background:rgba(255,255,255,.75);animation:stampIn .6s cubic-bezier(.3,1.6,.5,1) both;pointer-events:none}
+.inv-stamp.dep{border-color:#D08A2E;color:#C07A1E;font-size:1.4rem}
+@keyframes stampIn{from{transform:rotate(-30deg) scale(2.4);opacity:0}}
+@media (max-width:560px){.inv{padding:28px 18px 22px}.inv-parties{grid-template-columns:1fr}.inv-stamp{top:auto;bottom:120px;right:14px}}
+@media print{
+  body{background:#fff!important;padding:0!important}
+  body>*:not(#invoiceView){display:none!important}
+  #invoiceView{display:block!important;padding:0}
+  #invoiceView>p,.inv-actions,#invSecure,.inv-tape{display:none!important}
+  .inv{box-shadow:none;animation:none;border-width:1px}
+}
+
+.notice{position:relative;max-width:760px;margin:0 auto 34px;background:#fff;background-image:repeating-linear-gradient(transparent 0 29px,#cfe0ef 29px 30px);background-position:0 46px;border:2px solid var(--ink);border-radius:12px;padding:18px 22px 16px;box-shadow:5px 5px 0 var(--lemon);transform:rotate(-.6deg)}
+.notice b{font-family:var(--disp);font-size:1.2rem;display:block;margin-bottom:6px}
+.notice p{font-family:var(--hand);font-size:1.3rem;line-height:30px;white-space:pre-line}
+.notice .pin{position:absolute;top:-11px;left:50%;width:22px;height:22px;margin-left:-11px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff 0 12%,#E88AA0 14%);box-shadow:0 3px 3px rgba(0,0,0,.3)}
+#page-minis .notice{margin-top:-6px}
+#linkDetails{display:grid;gap:4px;border-top:2px dashed var(--ink);padding-top:10px;font-variant-numeric:tabular-nums}
+#linkDetails .ln{display:flex;justify-content:space-between;gap:12px}
+#linkDetails .ln span:first-child{color:var(--ink-soft)}
+#linkDetails .tot{font-family:var(--disp);font-size:1.3rem;font-weight:700;border-top:2px solid var(--ink);padding-top:6px;margin-top:4px}
+#linkDetails .tot span:first-child{color:var(--ink)}
+[hidden]{display:none!important}
+.logo-row{display:flex;justify-content:center;padding-top:14px}
+.logo{display:inline-flex;align-items:center;gap:10px;font-family:var(--disp);font-weight:700;font-size:1.35rem;color:var(--ink);text-decoration:none}
+.logo .by{font-family:var(--hand);font-weight:400;color:var(--pink-d);font-size:1.25rem}
+.logo svg{flex:none}
+.modal{position:fixed;inset:0;z-index:80;background:rgba(53,65,90,.45);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);display:flex;padding:16px;overflow-y:auto}
+.modal[hidden]{display:none!important}
+.sheet{position:relative;background:var(--paper);background-image:repeating-linear-gradient(transparent 0 35px,#cfe0ef 35px 36px);border:2px solid var(--ink);border-radius:18px;box-shadow:8px 8px 0 var(--c,var(--pink));padding:26px 24px 22px;width:min(480px,100%);margin:auto;animation:sheetIn .45s cubic-bezier(.3,1.5,.5,1)}
+@keyframes sheetIn{from{transform:translateY(20px) rotate(-2deg) scale(.95);opacity:0}}
+.sheet h3{font-size:1.7rem;margin-bottom:4px}
+.sheet .x{position:absolute;top:-16px;right:-14px;width:40px;height:40px;border-radius:50%;border:2px solid var(--ink);background:var(--pink);cursor:pointer;font-weight:700;color:var(--ink)}
+.sheet form{display:grid;gap:12px;margin-top:14px}
+.sheet .f{display:grid;gap:4px}
+.sheet label{font-family:var(--disp);font-weight:600;font-size:.9rem}
+.sheet .f,.sheet .two>*{min-width:0}
+.sheet input:not([type=radio]),.sheet textarea{width:100%;min-width:0;font:inherit;font-size:1rem;color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:12px;padding:10px 12px}
+.sheet input:not([type=radio]):focus,.sheet textarea:focus{outline:none;background:var(--lemon)}
+.sheet .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:480px){.sheet .two{grid-template-columns:1fr}}
+.choice{display:grid;gap:8px}
+.choice label{display:flex;gap:10px;align-items:flex-start;background:#fff;border:2px solid var(--ink);border-radius:14px;padding:10px 12px;cursor:pointer;font-family:var(--body);font-weight:600;font-size:.98rem}
+.choice input{margin-top:4px;accent-color:var(--pink-d)}
+.choice b{font-family:var(--disp)}
+.secure{font-size:.85rem;color:var(--ink-soft);text-align:center}
+.sheet .err{color:#C0405C;font-family:var(--disp);font-size:.95rem;min-height:1.2em}
+.demo-note{font-size:.9rem;background:var(--lemon);border:2px dashed var(--ink);border-radius:12px;padding:8px 12px}
+.card.hide{display:none}
+body.loading main,body.loading .promo{visibility:hidden}
+.loader{position:fixed;inset:0;display:none;place-items:center;font-family:var(--hand);font-size:1.6rem;color:var(--pink-d);z-index:5}
+body.loading .loader{display:grid}
+.loader span{animation:bob 1s ease-in-out infinite alternate}
+</style>
+
+
+</head>
+<body>
+<div class="loader" aria-hidden="true"><span>✿ loading ✿</span></div>
+
+<div class="logo-row wrap"><a class="logo" href="#hi" aria-label="Home"><svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect x="3" y="9" width="28" height="20" rx="6" fill="#F9C6D0" stroke="#35415A" stroke-width="2.5"/><rect x="11" y="5" width="12" height="6" rx="2" fill="#FFF1A8" stroke="#35415A" stroke-width="2.5"/><circle cx="17" cy="19" r="6" fill="#BFE0F5" stroke="#35415A" stroke-width="2.5"/><circle cx="17" cy="19" r="2" fill="#35415A"/></svg><span id="brandName">Lens By Lyssa</span></a></div>
+
+<nav class="tabs wrap" aria-label="Main">
+  <a href="#hi" data-nav="hi" style="--c:var(--lemon)">Hi!</a>
+  <a href="#board" data-nav="board" style="--c:var(--pink)">Gallery</a>
+  <a href="#edits" data-nav="edits" style="--c:var(--sky)">Edits</a>
+  <a href="#tags" data-nav="tags" style="--c:var(--grass)">Pricing</a>
+  <a href="#letter" data-nav="letter" style="--c:var(--lav)">Book</a>
+  <span class="gap" aria-hidden="true"></span>
+  <a href="#minis" class="minitab" id="miniTab"><span id="miniTabLabel">Minis</span><sup>new!</sup></a>
+</nav>
+
+<main class="wrap page on" id="page-home">
+  <div class="hero" id="hi">
+    <div>
+      <p class="hand" style="font-size:1.6rem;color:var(--pink-d)" data-t="home.kicker"></p>
+      <h1><span data-t="home.title"></span> <span class="hl" data-t="home.highlight"></span></h1>
+      <p class="lede" data-t="home.lede"></p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn" href="#letter" data-t="home.ctaPrimary"></a><a class="btn sky" href="#board" data-t="home.ctaSecondary"></a></div>
+    </div>
+    <div class="board" id="collage" aria-label="Photo collage. Drag the photos and stickers around.">
+      <div class="pol" style="left:4%;top:30px;--rot:-8deg"><img data-collage="0" alt=""><span data-t="home.collage.0.caption"></span></div>
+      <div class="pol" style="left:38%;top:0;--rot:5deg"><img data-collage="1" alt=""><span data-t="home.collage.1.caption"></span></div>
+      <div class="pol" style="left:20%;top:190px;--rot:-2deg"><img data-collage="2" alt=""><span data-t="home.collage.2.caption"></span></div>
+      <div class="pol" style="left:56%;top:200px;--rot:9deg"><img data-collage="3" alt=""><span data-t="home.collage.3.caption"></span></div>
+      <svg class="sticker" style="left:80%;top:20px" width="60" height="60" viewBox="0 0 60 60" aria-hidden="true"><path d="M30 52 C8 36 4 22 14 14 c8-6 14 0 16 6 c2-6 8-12 16-6 c10 8 6 22-16 38z" fill="#F9C6D0" stroke="#35415A" stroke-width="3"/></svg>
+      <svg class="sticker" style="left:2%;top:340px;animation-delay:-1s" width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><path d="M32 4l8 18 20 2-15 13 5 20-18-11-18 11 5-20L4 24l20-2z" fill="#FFF1A8" stroke="#35415A" stroke-width="3" stroke-linejoin="round"/></svg>
+      <svg class="sticker" style="left:86%;top:330px;animation-delay:-2s" width="58" height="58" viewBox="0 0 58 58" aria-hidden="true"><g transform="translate(29 29)" stroke="#35415A" stroke-width="3"><g fill="#BFE0F5"><circle cy="-13" r="10"/><circle cx="13" r="10"/><circle cy="13" r="10"/><circle cx="-13" r="10"/></g><circle r="8" fill="#FFF1A8"/></g></svg>
+      <span class="hint" data-t="home.dragHint"></span>
+    </div>
+  </div>
+
+  <a class="promo" id="promo" href="#minis" hidden></a>
+
+  <section id="board">
+    <div class="title" style="--c:var(--pink)"><h2 data-t="gallery.title"></h2><p data-t="gallery.subtitle"></p></div>
+    <div class="cork">
+      <div class="notes" role="group" aria-label="Filter photos" id="notes"></div>
+      <div class="cards" id="cards"></div>
+    </div>
+  </section>
+
+  <section id="edits">
+    <div class="title" style="--c:var(--sky)"><h2 data-t="edits.title"></h2><p data-t="edits.subtitle"></p></div>
+    <div class="spot-wrap">
+      <div class="spot" id="spot">
+        <span class="washi tape1"></span><span class="washi tape2"></span>
+        <img id="spotRaw" alt="Sample photo before editing">
+        <img id="spotEd" class="ed" alt="" aria-hidden="true">
+        <div class="ring"></div>
+      </div>
+      <div class="chooser" id="chooser" role="group" aria-label="Editing styles"></div>
+    </div>
+  </section>
+
+  <section id="tags">
+    <div class="title" style="--c:var(--grass)"><h2 data-t="pricing.title"></h2><p data-t="pricing.subtitle"></p></div>
+    <div class="notice" id="priceNotice" hidden><span class="pin" aria-hidden="true"></span><b id="priceNoticeTitle"></b><p id="priceNoticeText"></p></div>
+    <div class="notes types" id="typeTabs" role="group" aria-label="Session types"></div>
+    <div class="type-info" id="typeInfo" hidden><p id="typeSub"></p><p class="hand" id="typeNote"></p></div>
+    <div class="string"><div class="tags" id="tagList"></div></div>
+  </section>
+
+  <section id="letter">
+    <div class="title" style="--c:var(--lav)"><h2 data-t="letter.title"></h2><p data-t="letter.subtitle"></p></div>
+    <div id="letterWrap">
+      <form class="letter" id="bookForm" novalidate>
+        <p hidden><label>Leave blank <input name="website" id="hp" tabindex="-1" autocomplete="off"></label></p>
+        <p class="line" data-t="letter.greeting"></p>
+        <p class="line">My name is <input class="blank" id="fName" size="12" value="" placeholder="your name" aria-label="Your name" autocomplete="name"> and I'd love a
+          <select class="blank" id="fSession" aria-label="Session type"></select>
+          session, maybe around <input class="blank" id="fDate" type="date" aria-label="Preferred date">.
+          I'm eyeing the <select class="blank" id="fPkg" aria-label="Package"></select> package<span id="fStyleWrap"> with a <select class="blank" id="fStyle" aria-label="Editing style"></select> edit</span>.
+        </p>
+        <p class="line">You can reach me at <input class="blank" id="fEmail" type="email" size="18" placeholder="your email" aria-label="Your email" autocomplete="email"> or <input class="blank" id="fPhone" type="tel" size="12" placeholder="phone (optional)" aria-label="Your phone (optional)" autocomplete="tel">.</p>
+        <p class="line">A little about us:</p>
+        <textarea class="blank" id="fMsg" aria-label="Tell me about your people" placeholder="kids, pets, ideas, anything!"></textarea>
+        <div class="sign"><span class="hand" style="font-size:1.4rem">xoxo ♡</span><span class="err" id="formErr" role="alert"></span><button class="btn" type="submit">Fold &amp; send ✉</button></div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<main class="wrap page" id="page-minis" aria-label="Mini sessions">
+  <div class="hero">
+    <div>
+      <p class="hand" style="font-size:1.6rem;color:var(--pink-d)" id="heroKicker"></p>
+      <h1 id="heroTitle"></h1>
+      <p class="lede" id="heroLede"></p>
+      <div class="countdown" id="countdown" aria-label="Time until mini session day"></div>
+      <div class="meter"><div class="row"><span id="spotsTxt">spots left</span><span id="spotsNum"></span></div><div class="pencil" aria-hidden="true"><i id="spotsBar"></i></div></div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:22px"><button class="btn" type="button" data-jump="m-book">Grab a spot →</button><button class="btn w" type="button" data-jump="m-past">See the vibe</button></div>
+    </div>
+    <div class="ticket" id="ticket">
+      <div class="t-main"><div class="ph"><img id="tImg" alt="Mini session photo"></div><h2 id="tName"></h2><div class="t-meta" id="tMeta"></div></div>
+      <div class="t-stub"><span class="hand">just</span><span class="price" id="tPrice"></span><span class="hand" id="tLen"></span></div>
+    </div>
+  </div>
+
+  <section id="m-book">
+    <div class="title" style="--c:var(--pink)"><h2 data-t="minisPage.title"></h2><p data-t="minisPage.subtitle"></p></div>
+    <div class="notice" id="miniNotice" hidden><span class="pin" aria-hidden="true"></span><b id="miniNoticeTitle"></b><p id="miniNoticeText"></p></div>
+    <div class="seasons" id="seasons" role="group" aria-label="Choose a mini session"></div>
+    <div id="bookArea"></div>
+  </section>
+
+  <section id="m-past">
+    <div class="title" style="--c:var(--lemon)"><h2 data-t="minisPage.momentsTitle"></h2><p>Scroll sideways for more.</p></div>
+    <div class="reel" id="reel" tabindex="0" aria-label="Mini session photos"></div>
+  </section>
+
+  <section id="m-faq">
+    <div class="title" style="--c:var(--sky)"><h2>Mini questions</h2><p>Everything you need to know about mini day.</p></div>
+    <div class="faqs" id="miniFaq"></div>
+    <div class="full"><p class="hand" style="font-size:1.4rem">want more time, more locations, more everything?</p><a class="btn sky" href="#tags">See full sessions</a></div>
+  </section>
+</main>
+
+<section id="invoiceView" class="wrap" hidden aria-label="Your invoice">
+  <div class="inv" id="inv">
+    <span class="washi inv-tape"></span>
+    <div class="inv-stamp" id="invStamp" hidden></div>
+    <div class="inv-head">
+      <div><p class="hand inv-hi" id="invHi">hi friend! ✿</p><h1 id="invTitle">Invoice</h1></div>
+      <dl class="inv-meta" id="invMeta"></dl>
+    </div>
+    <div class="inv-parties"><div><span class="lbl">from</span><b id="invFrom"></b><span id="invFromSub"></span></div><div><span class="lbl">for</span><b id="invFor"></b></div></div>
+    <div class="inv-session" id="invSession"></div>
+    <div class="inv-lines" id="invLines"></div>
+    <p class="inv-plan" id="invPlan" hidden></p>
+    <p class="inv-note" id="invNote" hidden></p>
+    <p class="err" id="invErr" role="alert"></p>
+    <div class="inv-actions" id="invActions">
+      <button class="btn" type="button" id="invPay" hidden>Pay securely →</button>
+      <a class="btn sky" id="invStripe" hidden target="_blank" rel="noopener">Pay the emailed Stripe invoice</a>
+      <button class="btn w" type="button" id="invPrint">Save as PDF</button>
+    </div>
+    <p class="secure" id="invSecure">Secure checkout by Stripe · cards, Apple Pay &amp; Google Pay</p>
+    <p class="inv-terms" id="invTerms" hidden></p>
+  </div>
+  <p style="text-align:center;margin:18px 0 40px"><a href="./#hi" id="invBack" class="hand" style="font-size:1.3rem;color:var(--pink-d)">← visit the website</a></p>
+</section>
+
+<footer><p class="hand" data-t="footer.thanks"></p><p data-t="brand.email"></p><p style="color:var(--ink-soft)"><span data-t="brand.name"></span> · <span data-t="brand.city"></span> · <span data-t="brand.instagram"></span></p></footer>
+
+<!-- package checkout -->
+<div class="modal" id="payModal" hidden role="dialog" aria-modal="true" aria-labelledby="payTitle">
+  <div class="sheet" id="paySheet">
+    <button class="x" type="button" data-close aria-label="Close">✕</button>
+    <h3 id="payTitle"></h3>
+    <p id="paySub" style="color:var(--ink-soft)"></p>
+    <form id="payForm" novalidate>
+      <div class="choice" id="payChoice"></div>
+      <div class="two"><div class="f"><label for="pName">Your name</label><input id="pName" autocomplete="name"></div><div class="f"><label for="pEmail">Email</label><input id="pEmail" type="email" autocomplete="email"></div></div>
+      <div class="two"><div class="f"><label for="pPhone">Phone</label><input id="pPhone" type="tel" autocomplete="tel"></div><div class="f"><label for="pDate">Hoped-for date</label><input id="pDate" type="date"></div></div>
+      <div class="f"><label for="pMsg">Anything I should know?</label><textarea id="pMsg" rows="2"></textarea></div>
+      <p class="err" id="payErr" role="alert"></p>
+      <button class="btn" type="submit" id="payBtn" style="justify-content:center">Continue to secure checkout →</button>
+      <p class="secure">Secure checkout by Stripe · cards, Apple Pay &amp; Google Pay</p>
+    </form>
+  </div>
+</div>
+
+<!-- thank-you after payment -->
+<div class="modal" id="thanksModal" hidden role="dialog" aria-modal="true" aria-labelledby="thanksTitle">
+  <div class="sheet" style="--c:var(--grass);text-align:center">
+    <button class="x" type="button" data-close aria-label="Close">✕</button>
+    <p class="hand" style="font-size:1.8rem;color:var(--pink-d)">yay! ✿</p>
+    <h3 id="thanksTitle">You're all booked!</h3>
+    <p id="thanksText" style="margin-top:8px">Your payment went through and a receipt is on its way to your email. I'll be in touch soon with all the details.</p>
+    <button class="btn" type="button" data-close style="margin-top:16px">Yay, thanks!</button>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* Shared by the site and the admin panel. */
+const LBL=(()=>{
+const DEFAULTS={"version": 1, "brand": {"name": "Lens By Lyssa", "owner": "Lyssa", "email": "hello@lensbylyssa.com", "instagram": "@lensbylyssa", "city": "St. George, Utah", "serviceArea": "St. George + 30 mi"}, "nav": {"hi": "Hi!", "board": "Gallery", "edits": "Edits", "tags": "Pricing", "letter": "Book"}, "sections": {"board": true, "edits": true, "tags": true}, "home": {"kicker": "Lens By Lyssa ✿", "title": "Photos as sweet as your", "highlight": "everyday", "lede": "Playful portraits, groups, sports and milestone sessions in St. George. Messy hair, big giggles, and all the little details you never want to forget.", "ctaPrimary": "Write me a note ✎", "ctaSecondary": "Peek at the board", "dragHint": "psst, drag us around!", "collage": [{"photo": "", "kind": "family", "caption": "best day ever"}, {"photo": "", "kind": "couple", "caption": "us ♡"}, {"photo": "", "kind": "newborn", "caption": "hello, world"}, {"photo": "", "kind": "senior", "caption": "class of '27"}]}, "gallery": {"title": "The photo board", "subtitle": "Tap a sticky note to filter. Tap a photo to flip it over and read the story behind it.", "items": [{"id": "g1", "cat": "groups", "title": "Picnic at Snow Canyon", "story": "The kids built a 'castle' out of picnic blankets. We shot for 10 minutes before anyone noticed the camera.", "meta": "Spring · Snow Canyon", "photo": ""}, {"id": "g2", "cat": "portraits", "title": "Anniversary stroll", "story": "Ten years married and still laughing at the same jokes. Warm film edit.", "meta": "Fall · Pioneer Park", "photo": ""}, {"id": "g3", "cat": "sports", "title": "Game day", "story": "Senior night under the lights. Caught the winning pin from the corner of the mat.", "meta": "Winter · Dixie High", "photo": ""}, {"id": "g4", "cat": "portraits", "title": "Class of '27", "story": "Letterman jacket plus red rocks. We did golden hour, then sparklers.", "meta": "Spring · Red Cliffs", "photo": ""}, {"id": "g5", "cat": "groups", "title": "Roommate chaos", "story": "Four roommates, one blanket fort, zero chill.", "meta": "Summer · Tuacahn", "photo": ""}, {"id": "g6", "cat": "milestones", "title": "She said yes!", "story": "He hid behind the juniper. She had no idea. Tears all around.", "meta": "Fall · Kayenta", "photo": ""}, {"id": "g7", "cat": "milestones", "title": "Almost here", "story": "A golden hour maternity walk, three weeks before baby's arrival.", "meta": "Spring · Sand Hollow", "photo": ""}, {"id": "g8", "cat": "sports", "title": "First season", "story": "Soccer Saturdays, mud included. Soft B&W edit.", "meta": "Fall · Little Valley", "photo": ""}, {"id": "g9", "cat": "groups", "title": "Grandma's garden", "story": "Three generations, one very fluffy dog.", "meta": "Spring · Santa Clara", "photo": ""}], "categories": [{"id": "portraits", "name": "portraits"}, {"id": "groups", "name": "groups"}, {"id": "sports", "name": "sports"}, {"id": "milestones", "name": "milestones"}]}, "edits": {"title": "Try on an edit", "subtitle": "Move your finger or mouse over the photo. The edited version shows through the circle.", "photo": "", "styles": [{"name": "Light & Airy", "desc": "Bright, soft, dreamy", "color": "#FFF1A8", "look": "airy", "photo": ""}, {"name": "Warm Film", "desc": "Golden and nostalgic", "color": "#FFD2B3", "look": "film", "photo": ""}, {"name": "Moody", "desc": "Deep and cinematic", "color": "#DCCFF4", "look": "moody", "photo": ""}, {"name": "Black & White", "desc": "Timeless and classic", "color": "#E4E4E4", "look": "bw", "photo": ""}], "showOptions": false}, "pricing": {"title": "Little price tags", "subtitle": "Every session comes with a style guide, posing help, and a private online gallery.", "allowDeposit": true, "deposit": 25, "packages": [{"id": "portraits-wildflower", "cat": "portraits", "name": "Wild Flower", "price": 60, "time": "30 minutes", "color": "#F9C6D0", "perks": ["20+ edited pictures", "1 outfit"]}, {"id": "portraits-sunbeam", "cat": "portraits", "name": "Sunbeam", "price": 80, "time": "45 minutes", "color": "#FFF1A8", "perks": ["40+ edited pictures", "2 outfits"]}, {"id": "portraits-honeybee", "cat": "portraits", "name": "Honeybee", "price": 120, "time": "60–90 minutes", "color": "#F7C98A", "perks": ["60+ edited pictures", "2+ outfits"]}, {"id": "groups-wildflower", "cat": "groups", "name": "Wild Flower", "price": 75, "time": "45 minutes", "color": "#F9C6D0", "perks": ["20+ edited pictures"]}, {"id": "groups-sunbeam", "cat": "groups", "name": "Sunbeam", "price": 100, "time": "60 minutes", "color": "#FFF1A8", "perks": ["40+ edited pictures"]}, {"id": "groups-honeybee", "cat": "groups", "name": "Honeybee", "price": 125, "time": "90 minutes", "color": "#F7C98A", "perks": ["60+ edited pictures"]}, {"id": "sports-wildflower", "cat": "sports", "name": "Wild Flower", "price": 50, "time": "15 minutes of your event", "color": "#F9C6D0", "perks": ["15+ edited pictures"]}, {"id": "sports-sunbeam", "cat": "sports", "name": "Sunbeam", "price": 80, "time": "45 minutes of your event", "color": "#FFF1A8", "perks": ["30+ edited pictures"]}, {"id": "sports-honeybee", "cat": "sports", "name": "Honeybee", "price": 110, "time": "Your full event", "color": "#F7C98A", "perks": ["45+ edited pictures"]}, {"id": "milestones-wildflower", "cat": "milestones", "name": "Wild Flower", "price": 60, "time": "45 minutes", "color": "#F9C6D0", "perks": ["20+ edited pictures"]}, {"id": "milestones-sunbeam", "cat": "milestones", "name": "Sunbeam", "price": 80, "time": "60 minutes", "color": "#FFF1A8", "perks": ["40+ edited pictures"]}, {"id": "milestones-honeybee", "cat": "milestones", "name": "Honeybee", "price": 120, "time": "75–90 minutes", "color": "#F7C98A", "perks": ["60+ edited pictures"]}], "bookingMode": "message", "messageButton": "Message me to book", "notice": {"enabled": true, "title": "Before you book ✿", "text": "Please send me a note before paying! Tell me about your people and the dates you're hoping for. Once we pick your date and time together, I'll send you a personal link to pay and lock it in."}, "categories": [{"id": "portraits", "name": "Portraits", "who": "1–2 people", "sub": "Individuals • Seniors • Couples", "note": ""}, {"id": "groups", "name": "Groups", "who": "3–5 people", "sub": "Families • Friends • Roommates", "note": "+$25 a person after 5 people"}, {"id": "sports", "name": "Sports", "who": "", "sub": "Action shots • Games • Events", "note": ""}, {"id": "milestones", "name": "Milestones", "who": "", "sub": "Proposals • Maternity • Adventures • Parties", "note": ""}]}, "letter": {"title": "Write me a note", "subtitle": "Fill in the blanks and I'll write back within 48 hours.", "greeting": "Dear Lyssa,", "askStyle": false}, "footer": {"thanks": "thanks for visiting!"}, "minisPage": {"enabled": true, "tabLabel": "Minis", "promo": true, "title": "Pick your mini", "subtitle": "Choose a season, tap a time sticker, add any extras, and you're in!", "momentsTitle": "Mini moments", "moments": [{"photo": "", "kind": "family", "caption": "pumpkin patch vibes"}, {"photo": "", "kind": "couple", "caption": "holiday cozy"}, {"photo": "", "kind": "newborn", "caption": "spring blooms"}, {"photo": "", "kind": "senior", "caption": "sparkler magic"}, {"photo": "", "kind": "family", "caption": "hay bale giggles"}], "faq": [{"q": "What's a mini session?", "a": "A short, sweet 15-minute session at a set place and date. Same gorgeous editing as a full session, smaller price."}, {"q": "Who can come?", "a": "Up to 6 people (grandparents too!). Well-behaved pets are always welcome."}, {"q": "What if it rains?", "a": "If weather cancels mini day, everyone moves to the backup date in the same time slot."}, {"q": "When do we get photos?", "a": "Within 2 weeks, in a private online gallery. Add the sneak-peek sticker to see a few in 48 hours."}], "bookingMode": "pay", "notice": {"enabled": false, "title": "Good to know ✿", "text": "Mini sessions are first come, first served. Pick your time and pay to lock it in. Questions? Send me a note on the home page first!"}}, "minis": [{"id": "fall", "name": "Pumpkin Patch Minis", "tab": "Pumpkin patch", "status": "open", "color": "#F7B98A", "date": "2026-10-17", "where": "A pumpkin patch near St. George", "start": "16:00", "end": "18:40", "interval": 20, "price": 95, "len": "15 min", "photos": 8, "taken": [], "photo": "", "kind": "family", "kicker": "mini sessions are here! ✿", "title": "Pumpkin patch", "lede": "15 quick, giggly minutes at the pumpkin patch. Perfect for holiday cards, grandma's fridge and growing-up-too-fast memories.", "useCalendar": true}, {"id": "holiday", "name": "Cozy Holiday Minis", "tab": "Cozy holiday", "status": "open", "color": "#F9C6D0", "date": "2026-11-21", "where": "Twinkle-light set, downtown St. George", "start": "10:00", "end": "12:40", "interval": 20, "price": 110, "len": "15 min", "photos": 10, "taken": [], "photo": "", "kind": "couple", "kicker": "'tis the season ✿", "title": "Cozy holiday", "lede": "Matching pajamas, twinkle lights and hot cocoa smiles. Your holiday card, done.", "useCalendar": true}, {"id": "spring", "name": "Spring Bloom Minis", "tab": "Spring blooms", "status": "soon", "color": "#C6E7B8", "date": "2027-04-10", "where": "A wildflower field (location TBA)", "start": "09:00", "end": "11:40", "interval": 20, "price": 95, "len": "15 min", "photos": 8, "taken": [], "photo": "", "kind": "newborn", "kicker": "coming this spring ✿", "title": "Spring bloom", "lede": "Wildflowers, sunhats and brand-new babies. Join the list and you'll hear first when spots open.", "useCalendar": true}, {"id": "summer", "name": "Summer Sparkler Minis", "tab": "Summer sparklers", "status": "soon", "color": "#FFF1A8", "date": "2027-06-26", "where": "Sand Hollow at sunset", "start": "19:00", "end": "20:20", "interval": 20, "price": 100, "len": "15 min", "photos": 8, "taken": [], "photo": "", "kind": "senior", "kicker": "coming this summer ✿", "title": "Summer sparkler", "lede": "Golden hour, sparklers and sandy toes. Join the list for first dibs.", "useCalendar": true}], "addons": [{"id": "extra", "label": "+5 extra photos", "note": "more favorites!", "price": 30, "color": "#F9C6D0"}, {"id": "prints", "label": "Print pack", "note": "five 5×7 prints", "price": 25, "color": "#BFE0F5"}, {"id": "peek", "label": "48-hour sneak peek", "note": "can't wait? same!", "price": 15, "color": "#FFF1A8"}, {"id": "pet", "label": "Bring the pup", "note": "always free ♡", "price": 0, "color": "#C6E7B8"}], "bookingMessage": "Hi {first}! Your {session} is all set for {date} at {time}. Here's your personal link to pay and lock it in: {link}\n\nCan't wait! ✿ {owner}", "invoice": {"dueDays": 3, "title": "Invoice", "note": "Thank you so much for choosing me to capture your people! I can't wait for our session. ✿", "terms": "Deposits hold your date and are non-refundable, but can be moved to a new date once. The remaining balance is due by your session day."}};
+const DEMO_KEY="lbl-demo-content", DEMO_INBOX="lbl-demo-inbox";
+const isObj=v=>v&&typeof v==="object"&&!Array.isArray(v);
+function withDefaults(saved,def=DEFAULTS){if(!isObj(saved))return structuredClone(def);const out={};for(const k of Object.keys(def)){if(!(k in saved))out[k]=structuredClone(def[k]);else if(isObj(def[k])&&isObj(saved[k]))out[k]=withDefaults(saved[k],def[k]);else out[k]=saved[k]}for(const k of Object.keys(saved))if(!(k in out))out[k]=saved[k];return out}
+const ls={get(k){try{return localStorage.getItem(k)}catch(_){return null}},set(k,v){try{localStorage.setItem(k,v);return true}catch(_){return false}},del(k){try{localStorage.removeItem(k)}catch(_){}}};
+function demoContent(){try{const s=ls.get(DEMO_KEY);if(s)return withDefaults(JSON.parse(s))}catch(_){}return structuredClone(DEFAULTS)}
+function demoInbox(item){try{const a=JSON.parse(ls.get(DEMO_INBOX)||"[]");a.unshift({key:"demo-"+Date.now(),createdAt:new Date().toISOString(),handled:false,...item});ls.set(DEMO_INBOX,JSON.stringify(a.slice(0,50)))}catch(_){}}
+const get=(o,p)=>p.split(".").reduce((a,k)=>a==null?a:a[k],o);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const money=n=>{n=Number(n)||0;return Number.isInteger(n)?String(n):n.toFixed(2)};
+const isEmail=v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+// "Portraits · Wild Flower": package names repeat across session types, so show both
+const pkgName=(C,p)=>{const c=((C.pricing&&C.pricing.categories)||[]).find(x=>x.id===p.cat);return c?`${c.name} · ${p.name}`:p.name};
+const safeUrl=u=>typeof u==="string"&&/^(\/api\/photo\/[A-Za-z0-9-]+|https:\/\/[^\s"'<>]+|data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+)$/.test(u);
+const isoDaysFromNow=d=>new Date(Date.now()+d*864e5).toISOString().slice(0,10);
+const LOOKS={
+  airy:{name:"Light & airy",f:"brightness(1.15) contrast(.85) saturate(.8)"},
+  film:{name:"Warm film",f:"sepia(.4) saturate(1.3) contrast(1.05) hue-rotate(-8deg)"},
+  moody:{name:"Moody",f:"brightness(.72) contrast(1.25) saturate(.7)"},
+  bw:{name:"Black & white",f:"grayscale(1) contrast(1.08) brightness(1.05)"},
+  pastel:{name:"Soft pastel",f:"brightness(1.08) contrast(.9) saturate(.7) hue-rotate(-6deg)"},
+  vivid:{name:"Bright & vivid",f:"saturate(1.45) contrast(1.08)"},
+  none:{name:"No filter",f:"none"}};
+function slotsFor(m){const out=[];if(!m||!m.start||!m.end)return out;const step=Math.max(5,Math.min(240,Number(m.interval)||20));const toMin=t=>{const [h,mm]=String(t).split(":").map(Number);return h*60+mm};for(let t=toMin(m.start),end=toMin(m.end);t<=end&&out.length<100;t+=step)out.push(`${Math.floor(t/60)}:${String(t%60).padStart(2,"0")}`);return out}
+
+/* cute placeholder "photos" shown until real ones are uploaded */
+const PAL=[["#BFE0F5","#FDF6E3","#FFD86B","#C6E7B8","#9ED08C"],["#F9C6D0","#FFF1E6","#FFB38A","#DCCFF4","#BFAEE6"],["#DCCFF4","#FFEFF3","#FFD86B","#C6E7B8","#A6D69A"],["#FFF1A8","#FFFAF0","#FFA98A","#BFE0F5","#95C7EA"]];
+function rnd(seed){let s=seed*9301+49297;return()=>((s=(s*9301+49297)%233280)/233280)}
+function person(x,y,s,c){return `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-17" y="-8" width="34" height="62" rx="16" fill="${c}"/><circle cy="-24" r="14" fill="#F2D2BD"/><path d="M-14 -28a14 14 0 0 1 28 0c-6-6-22-6-28 0z" fill="#6E5448"/></g>`}
+const _sc={};
+const SCENE_OF={portraits:["senior","couple"],groups:["family"],sports:["senior"],milestones:["couple","newborn"]};
+function scene(type,seed,w=400,h=500){seed=Math.abs(seed|0);if(SCENE_OF[type]){const o=SCENE_OF[type];type=o[seed%o.length]}const key=type+seed+"x"+w+"x"+h;if(_sc[key])return _sc[key];const r=rnd(seed),p=PAL[seed%PAL.length],sh=["#FFFFFF","#F3E3D3","#E8B7C0","#C9D8EA","#EADFF5","#F9E7B5"],pick=()=>sh[Math.floor(r()*sh.length)],g=h*.66,sx=w*(.2+r()*.6),sy=h*(.18+r()*.15),k=Math.min(w,h*.8)/400;let f="";
+if(type==="family"||type==="other"){const n=3+Math.floor(r()*2);for(let i=0;i<n;i++)f+=person(w*(.25+i*(.5/(n-1))),g-(i<2?30:8),(i<2?1.35:.85)*k,pick())}
+else if(type==="couple"){f+=person(w*.44,g-26,1.4*k,pick())+person(w*.56,g-30,1.5*k,pick())}
+else if(type==="senior"){f+=person(w*.5,g-50,2.2*k,pick())}
+else{f+=`<ellipse cx="${w/2}" cy="${g+10}" rx="${w*.3}" ry="${h*.07}" fill="#FFFFFF"/><ellipse cx="${w/2}" cy="${g-4}" rx="${w*.18}" ry="${h*.05}" fill="${p[3]}"/><circle cx="${w*.34}" cy="${g-10}" r="${w*.06}" fill="#F2D2BD"/>`}
+let fl="";for(let i=0;i<14;i++)fl+=`<circle cx="${r()*w}" cy="${g+10+r()*(h-g-10)}" r="${2+r()*4}" fill="${["#FFFFFF","#F7B8C2","#FCEFC7"][i%3]}" opacity=".9"/>`;
+const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${p[0]}"/><stop offset="1" stop-color="${p[1]}"/></linearGradient><radialGradient id="g"><stop offset="0" stop-color="${p[2]}" stop-opacity=".9"/><stop offset="1" stop-color="${p[2]}" stop-opacity="0"/></radialGradient></defs><rect width="${w}" height="${h}" fill="url(#s)"/><circle cx="${sx}" cy="${sy}" r="${w*.35}" fill="url(#g)"/><circle cx="${sx}" cy="${sy}" r="${w*.08}" fill="${p[2]}"/><path d="M0 ${g-40} Q ${w*.3} ${g-90} ${w*.6} ${g-50} T ${w} ${g-60} V ${h} H0Z" fill="${p[3]}"/><path d="M0 ${g} Q ${w*.4} ${g-30} ${w} ${g+5} V ${h} H0Z" fill="${p[4]}"/>${f}${fl}</svg>`;
+return _sc[key]="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg)}
+const photoOr=(photo,kind,seed,w,h)=>safeUrl(photo)?photo:scene(kind||"family",seed,w,h);
+
+/* talking to the site's backend (Netlify Functions) */
+class ApiError extends Error{constructor(m,s){super(m);this.status=s}}
+async function call(path,{method="GET",body,token,raw,type}={}){
+  const ctl=new AbortController();const to=setTimeout(()=>ctl.abort(),method==="GET"?5000:30000);
+  try{
+    const headers={};if(token)headers.authorization="Bearer "+token;
+    if(raw){headers["content-type"]=type}else if(body!==undefined)headers["content-type"]="application/json";
+    const r=await fetch(path,{method,headers,body:raw||(body!==undefined?JSON.stringify(body):undefined),cache:"no-store",signal:ctl.signal});
+    let data=null;try{data=await r.json()}catch(_){}
+    if(!r.ok)throw new ApiError((data&&data.error)||`Something went wrong (${r.status}). Please try again.`,r.status);
+    if(data===null)throw new ApiError("The server sent back something unexpected.",r.status);
+    return data;
+  }catch(e){if(e instanceof ApiError)throw e;throw new ApiError(e.name==="AbortError"?"The connection timed out. Please try again.":"Couldn't reach the server. Check your connection.",0)}
+  finally{clearTimeout(to)}}
+const api={
+  async content(){try{const d=await call("/api/content");return d&&d.live?withDefaults(d.content):null}catch(_){return null}},
+  checkout:b=>call("/api/checkout",{method:"POST",body:b}),
+  booking:id=>call("/api/booking?id="+encodeURIComponent(id)),
+  bookings:token=>call("/api/bookings",{token}),
+  bookingCreate:(token,b)=>call("/api/bookings",{method:"POST",body:b,token}),
+  bookingPatch:(token,b)=>call("/api/bookings",{method:"PATCH",body:b,token}),
+  calendar:(token,test)=>test?call("/api/calendar",{method:"POST",body:{test:true},token}):call("/api/calendar",{token}),
+  inquiry:b=>call("/api/inquiry",{method:"POST",body:b}),
+  login:pw=>call("/api/login",{method:"POST",body:{password:pw}}),
+  save:(token,content)=>call("/api/content",{method:"PUT",body:{content},token}),
+  upload:(token,blob)=>call("/api/upload",{method:"POST",raw:blob,type:blob.type||"image/jpeg",token}),
+  inbox:token=>call("/api/inbox",{token}),
+  inboxPatch:(token,b)=>call("/api/inbox",{method:"PATCH",body:b,token}),
+  inboxDelete:(token,b)=>call("/api/inbox",{method:"DELETE",body:b,token}),
+};
+return{DEFAULTS,DEMO_KEY,DEMO_INBOX,withDefaults,demoContent,demoInbox,ls,get,esc,money,isEmail,safeUrl,pkgName,isoDaysFromNow,LOOKS,slotsFor,scene,photoOr,api,ApiError};
+})();
+
+/* =========================================================
+   Lens By Lyssa — the public site.
+   All words, photos and prices come from the admin panel (/admin).
+   ========================================================= */
+const $=id=>document.getElementById(id);
+const toast=$("toast");let tt;function say(m){toast.textContent=m;toast.classList.add("show");clearTimeout(tt);tt=setTimeout(()=>toast.classList.remove("show"),3800)}
+const reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
+let C=null;              // current content
+let LIVE=false;          // true when running on Netlify with the admin backend
+
+/* ---------- load content ---------- */
+async function boot(){
+  document.body.classList.add("loading");
+  const fallback=setTimeout(()=>{if(!C)apply(LBL.demoContent(),false)},1500);
+  const live=await LBL.api.content();
+  clearTimeout(fallback);
+  if(live){apply(live,true)}else if(!C){apply(LBL.demoContent(),false)}
+  // in demo mode, pick up edits made in the admin panel (same browser)
+  addEventListener("storage",e=>{if(!LIVE&&e.key===LBL.DEMO_KEY)apply(LBL.demoContent(),false)});
+  handleReturnFromCheckout();
+}
+function apply(content,live){C=content;LIVE=live;document.body.classList.remove("loading");renderAll()}
+window.__reloadDemo=()=>{if(!LIVE)apply(LBL.demoContent(),false)};
+
+/* ---------- generic text binding ---------- */
+function bindText(){
+  document.querySelectorAll("[data-t]").forEach(el=>{el.textContent=LBL.get(C,el.dataset.t)??""});
+  $("brandName").textContent=C.brand.name;
+  const nav=C.nav||{},sec=C.sections||{};
+  document.querySelectorAll("[data-nav]").forEach(a=>{const k=a.dataset.nav;a.textContent=nav[k]||a.textContent;const off=sec[k]===false;a.hidden=off;const el=$(k);if(el)el.hidden=off});
+  document.querySelectorAll('a[href="#board"].btn').forEach(a=>a.hidden=sec.board===false);
+  const notice=(id,n)=>{$(id).hidden=!(n&&n.enabled&&(n.text||n.title));if(n){$(id+"Title").textContent=n.title||"";$(id+"Text").textContent=n.text||""}};
+  $("fStyleWrap").hidden=!(C.letter&&C.letter.askStyle)||sec.edits===false||!(C.edits.styles||[]).length;
+  notice("priceNotice",C.pricing.notice);notice("miniNotice",C.minisPage.notice);
+  document.title=C.brand.name+" · "+(C.brand.city||"Photography");
+}
+function renderAll(){
+  bindText();renderCollage();renderBoard();renderEdits();renderTags();renderLetter();renderMinis();
+}
+
+/* ---------- hero collage ---------- */
+function renderCollage(){
+  document.querySelectorAll("img[data-collage]").forEach(img=>{const i=+img.dataset.collage,p=C.home.collage[i]||{};img.src=LBL.photoOr(p.photo,p.kind||"family",i*5+3,400,500);img.alt=p.caption||"Sample photo"});
+}
+(()=>{const board=$("collage");let z=5;
+board.querySelectorAll(".pol,.sticker").forEach(el=>{const rot=getComputedStyle(el).getPropertyValue("--rot")||"0deg";if(el.classList.contains("pol"))el.style.transform=`rotate(${rot})`;
+el.addEventListener("pointerdown",e=>{e.preventDefault();el.setPointerCapture(e.pointerId);el.classList.add("grab");el.style.zIndex=++z;const b=board.getBoundingClientRect(),sx=e.clientX,sy=e.clientY,ox=el.offsetLeft,oy=el.offsetTop;
+const mv=ev=>{const nx=Math.min(Math.max(ox+ev.clientX-sx,-20),b.width-el.offsetWidth+20),ny=Math.min(Math.max(oy+ev.clientY-sy,-20),b.height-el.offsetHeight+20);el.style.left=nx+"px";el.style.top=ny+"px";if(el.classList.contains("pol"))el.style.transform=`rotate(${(ev.clientX-sx)/25}deg) scale(1.05)`};
+const up=()=>{el.classList.remove("grab");if(el.classList.contains("pol"))el.style.transform=`rotate(${(Math.random()*14-7).toFixed(1)}deg)`;el.removeEventListener("pointermove",mv);el.removeEventListener("pointerup",up)};
+el.addEventListener("pointermove",mv);el.addEventListener("pointerup",up)})})})();
+
+/* ---------- photo board ---------- */
+const NOTE_C=["#F9C6D0","#BFE0F5","#C6E7B8","#DCCFF4","#FFD8C2","#FFF1A8"],NOTE_R=["2deg","-1deg","3deg","-2deg","1deg","-3deg"];
+let CATS=[];
+let curCat="all";
+function renderBoard(){
+  CATS=[{id:"all",name:"everything!",c:"#FFF1A8",r:"-3deg"},...(C.gallery.categories||[]).map((c,i)=>({id:c.id,name:c.name,c:NOTE_C[i%6],r:NOTE_R[i%6]}))];if(!CATS.find(c=>c.id===curCat))curCat="all";
+  const items=C.gallery.items||[];const present=new Set(items.map(i=>i.cat));
+  $("notes").innerHTML="";CATS.filter(c=>c.id==="all"||present.has(c.id)).forEach(c=>{const b=document.createElement("button");b.className="note";b.type="button";b.style.setProperty("--c",c.c);b.style.setProperty("--r",c.r);b.textContent=c.name;b.setAttribute("aria-pressed",c.id===curCat);b.onclick=()=>{curCat=c.id;filterBoard(true)};$("notes").appendChild(b)});
+  const pins=["#E88AA0","#6FA8DC","#8BC77A","#F2B84B","#A98BDB"];$("cards").innerHTML="";
+  items.forEach((s,i)=>{const b=document.createElement("button");b.className="card";b.type="button";b.dataset.cat=s.cat;b.style.setProperty("--r",((i%3)-1)*2.2+"deg");b.setAttribute("aria-pressed","false");b.setAttribute("aria-label",(s.title||"Photo")+". Tap to flip.");
+    b.innerHTML=`<span class="pin" style="--pc:${pins[i%5]}"></span><div class="inner"><div class="face"><img alt="${LBL.esc(s.title)}" src="${LBL.photoOr(s.photo,s.cat,i*4+2,400,500)}"><div class="cap">${LBL.esc(s.title)}</div></div><div class="face back"><b>${LBL.esc(s.title)}</b><span>${LBL.esc(s.story)}</span><span style="margin-top:auto;color:var(--ink-soft)">${LBL.esc(s.meta)}</span></div></div>`;
+    b.onclick=()=>b.setAttribute("aria-pressed",b.getAttribute("aria-pressed")!=="true");$("cards").appendChild(b)});
+  filterBoard(false)}
+function filterBoard(anim){[...$("notes").children].forEach(x=>x.setAttribute("aria-pressed",x.textContent===CATS.find(c=>c.id===curCat).name));let k=0;[...$("cards").children].forEach(c=>{const show=curCat==="all"||c.dataset.cat===curCat;c.classList.toggle("hide",!show);c.classList.remove("pop");if(show&&anim){void c.offsetWidth;c.style.animationDelay=(k++*.06)+"s";c.classList.add("pop")}})}
+
+/* ---------- editing spotlight ---------- */
+const ed=$("spotEd"),spot=$("spot");
+function renderEdits(){
+  const raw=LBL.photoOr(C.edits.photo,"family",17,800,600);$("spotRaw").src=raw;
+  const styles=C.edits.styles||[];$("chooser").innerHTML="";
+  const pick=(s,btn)=>{if(LBL.safeUrl(s.photo)){ed.src=s.photo;ed.style.filter="none"}else{ed.src=raw;ed.style.filter=LBL.LOOKS[s.look]?.f||"none"}[...$("chooser").children].forEach(x=>x.setAttribute("aria-pressed",x===btn))};
+  const opts=!!C.edits.showOptions&&styles.length>1;$("chooser").hidden=!opts;$("edits").classList.toggle("solo",!opts);
+  styles.forEach((s,i)=>{const b=document.createElement("button");b.className="sbtn";b.type="button";b.style.setProperty("--c",s.color||"#FFF1A8");b.innerHTML=`<span class="dot"></span><span><b>${LBL.esc(s.name)}</b><small>${LBL.esc(s.desc)}</small></span>`;b.onclick=()=>pick(s,b);$("chooser").appendChild(b);if(i===0)pick(s,b)});
+}
+function setSpot(x,y){spot.style.setProperty("--x",x+"px");spot.style.setProperty("--y",y+"px")}
+spot.addEventListener("pointermove",e=>{const r=spot.getBoundingClientRect();setSpot(e.clientX-r.left-10,e.clientY-r.top-10)});
+(()=>{let t=0,idle=true;spot.addEventListener("pointerenter",()=>idle=false);spot.addEventListener("pointerleave",()=>idle=true);if(reduce)return;
+(function loop(){t+=.012;if(idle&&spot.clientWidth){setSpot(spot.clientWidth*(.5+.28*Math.sin(t)),spot.clientHeight*(.5+.2*Math.sin(t*1.7)))}requestAnimationFrame(loop)})()})();
+new ResizeObserver(()=>spot.style.setProperty("--rad",Math.max(70,spot.clientWidth*.18)+"px")).observe(spot);
+
+/* ---------- price tags + checkout ---------- */
+let curType=null;
+function renderTags(){
+  const all=C.pricing.packages||[],types=(C.pricing.categories||[]).filter(t=>all.some(p=>p.cat===t.id));
+  const loose=all.filter(p=>!types.some(t=>t.id===p.cat));
+  if(loose.length)types.push({id:"",name:types.length?"More":"",who:"",sub:"",note:""});
+  if(!types.find(t=>t.id===curType))curType=types[0]?types[0].id:"";
+  const bar=$("typeTabs");bar.innerHTML="";bar.hidden=types.length<2;
+  types.forEach((t,i)=>{const b=document.createElement("button");b.type="button";b.className="note";b.style.setProperty("--c",NOTE_C[i%6]);b.style.setProperty("--r",NOTE_R[(i+2)%6]);b.innerHTML=`${LBL.esc(t.name)}${t.who?`<small>${LBL.esc(t.who)}</small>`:""}`;b.setAttribute("aria-pressed",t.id===curType);b.onclick=()=>{curType=t.id;renderTags();const tl=$("tagList");tl.classList.remove("swap");void tl.offsetWidth;tl.classList.add("swap")};bar.appendChild(b)});
+  const t=types.find(x=>x.id===curType)||{};
+  $("typeInfo").hidden=!(t.sub||t.note);$("typeSub").textContent=t.sub||"";$("typeNote").textContent=t.note||"";$("typeNote").hidden=!t.note;
+  $("tagList").innerHTML="";(t.id?all.filter(p=>p.cat===t.id):loose).forEach(p=>{const d=document.createElement("article");d.className="tag";d.style.setProperty("--c",p.color||"#F9C6D0");d.innerHTML=`<span class="hole"></span><h3>${LBL.esc(p.name)}</h3><div class="price">$${LBL.money(p.price)}<small>${LBL.esc(p.time)}</small></div><ul>${(p.perks||[]).map(x=>`<li>${LBL.esc(x)}</li>`).join("")}</ul><button class="btn" type="button">${LBL.esc(payMode()?"Pay & book":(C.pricing.messageButton||"Message me to book"))}</button>`;d.querySelector("button").onclick=()=>payMode()?openPay(p):messageAbout(p);$("tagList").appendChild(d)})}
+const payMode=()=>(C.pricing.bookingMode||"message")==="pay";
+function messageAbout(p){const ss=$("fSession"),pk=$("fPkg");if(ss&&p.cat){ss.value=p.cat;fillPkgs()}if(pk){pk.value=LBL.pkgName(C,p);fitBlanks()}location.hash="#letter";setTimeout(()=>{const n=$("fName");if(n)n.focus({preventScroll:true})},600);say(`Great choice! Tell me about your people and the dates you're hoping for.`)}
+let payPkg=null,lastFocus=null;
+function openModal(id){lastFocus=document.activeElement;$(id).hidden=false;const f=$(id).querySelector("input,button:not([data-close])")||$(id).querySelector("button");f&&f.focus()}
+function closeModal(el){el.hidden=true;lastFocus&&lastFocus.focus&&lastFocus.focus()}
+document.addEventListener("click",e=>{const x=e.target.closest("[data-close]");if(x)closeModal(x.closest(".modal"));if(e.target.classList&&e.target.classList.contains("modal"))closeModal(e.target)});
+addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelectorAll(".modal:not([hidden])").forEach(closeModal)});
+function openPay(p){payPkg=p;$("paySheet").style.setProperty("--c",p.color||"#F9C6D0");$("payTitle").textContent=`${LBL.pkgName(C,p)} · $${LBL.money(p.price)}`;$("paySub").textContent=p.time||"";$("payErr").textContent="";
+  const dep=C.pricing.allowDeposit&&Number(C.pricing.deposit)>0&&Number(C.pricing.deposit)<Number(p.price);
+  $("payChoice").innerHTML=dep?`<label><input type="radio" name="payWhat" value="full" checked><span><b>Pay in full · $${LBL.money(p.price)}</b><br>You're all set, nothing more to pay.</span></label><label><input type="radio" name="payWhat" value="deposit"><span><b>Hold my date · $${LBL.money(C.pricing.deposit)} deposit</b><br>The rest ($${LBL.money(p.price-C.pricing.deposit)}) is due on session day.</span></label>`:"";
+  if(!$("pDate").value)$("pDate").value=LBL.isoDaysFromNow(21);
+  const old=$("payForm").querySelector(".demo-note");if(old)old.remove();
+  if(!LIVE)$("payForm").insertAdjacentHTML("afterbegin",'<p class="demo-note">Preview mode: checkout turns on once the site is live with Stripe.</p>');
+  openModal("payModal")}
+$("payForm").addEventListener("submit",async e=>{e.preventDefault();const err=$("payErr");err.textContent="";
+  const name=$("pName").value.trim(),email=$("pEmail").value.trim();
+  if(!name){err.textContent="Please add your name.";return}if(!LBL.isEmail(email)){err.textContent="Please check your email address.";return}
+  const deposit=(document.querySelector('input[name="payWhat"]:checked')||{}).value==="deposit";
+  if(!LIVE){err.textContent="Preview only: nothing was charged. On the live site this opens Stripe checkout.";return}
+  $("payBtn").disabled=true;$("payBtn").textContent="Opening checkout…";
+  try{const r=await LBL.api.checkout({type:"package",id:payPkg.id,deposit,name,email,phone:$("pPhone").value,date:$("pDate").value,message:$("pMsg").value});location.href=r.url}
+  catch(x){err.textContent=x.message;$("payBtn").disabled=false;$("payBtn").textContent="Continue to secure checkout →"}});
+const fmtDay=d=>{const x=new Date(String(d).slice(0,10)+"T12:00");return isNaN(x)?"":x.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})};
+async function showInvoice(id,justPaid){
+  document.body.classList.add("invoice-mode");$("invoiceView").hidden=false;scrollTo({top:0});
+  const err=$("invErr");err.textContent="";
+  ["invPay","invPrint"].forEach(k=>$(k).hidden=false);$("invSecure").hidden=false;
+  let b;try{b=LIVE?await LBL.api.booking(id):demoBooking(id)}catch(x){$("invHi").textContent="hmm…";$("invTitle").textContent="Invoice not found";err.textContent=x.message;["invPay","invStripe","invPrint"].forEach(k=>$(k).hidden=true);$("invSecure").hidden=true;return}
+  const brand=b.brand||C.brand;
+  $("invHi").textContent=`hi ${b.firstName||"friend"}! ✿`;$("invTitle").textContent=b.invoiceTitle||"Invoice";
+  $("invMeta").innerHTML=[["No.",b.invoiceNo],["Issued",fmtDay(b.issued)],["Due",b.due>0?fmtDay(b.dueDate):""]].filter(r=>r[1]).map(([k,v])=>`<dt>${k}</dt><dd>${LBL.esc(v)}</dd>`).join("");
+  $("invFrom").textContent=brand.name||"";$("invFromSub").textContent=[brand.email,brand.city].filter(Boolean).join(" · ");$("invFor").textContent=b.firstName||"";
+  $("invSession").innerHTML=`<b>${LBL.esc(b.title)}</b><span>${LBL.esc(niceDate(b.date))} at ${LBL.esc(t12(b.start))}${b.durationMin?` · ${b.durationMin} minutes`:""}</span>${b.location?`<span>${LBL.esc(b.location)}</span>`:""}${b.addons?`<span>Add-ons: ${LBL.esc(b.addons)}</span>`:""}`;
+  const lines=[`<div class="ln"><span>${LBL.esc(b.title)}</span><span>$${LBL.money(b.fullPrice)}</span></div>`];
+  (b.payments||[]).forEach(p=>lines.push(`<div class="ln paid"><span>Paid ${LBL.esc(fmtDay(p.at))} ♡ thank you!</span><span>−$${LBL.money(p.amount)}</span></div>`));
+  const firstIsDeposit=b.payType==="deposit"&&!b.paid&&b.due<b.fullPrice;
+  lines.push(`<div class="ln due"><span>${b.status==="cancelled"?"Cancelled":b.due<=0?"Balance":firstIsDeposit?"Deposit due now":b.paid>0?"Balance due":"Amount due"}</span><span>$${LBL.money(Math.max(0,b.due))}</span></div>`);
+  $("invLines").innerHTML=lines.join("");
+  const plan=$("invPlan");plan.hidden=true;
+  if(firstIsDeposit){plan.hidden=false;plan.textContent=`Your deposit holds your date. The remaining $${LBL.money(b.fullPrice-b.due)} is due by your session day. You can pay it with this same link.`}
+  else if(b.status==="deposit_paid"&&b.due>0){plan.hidden=false;plan.textContent="Your deposit is in and your date is held! Pay the remaining balance any time before your session with the button below."}
+  $("invNote").hidden=!b.note;$("invNote").textContent=b.note?`${b.note}${brand.owner?"\n— "+brand.owner:""}`:"";
+  $("invTerms").hidden=!b.terms;$("invTerms").textContent=b.terms||"";
+  const st=$("invStamp");st.hidden=!(b.status==="paid"||b.status==="deposit_paid"||b.status==="cancelled");st.className="inv-stamp"+(b.status==="deposit_paid"?" dep":"");st.textContent=b.status==="paid"?"PAID":b.status==="deposit_paid"?"DEPOSIT PAID":"CANCELLED";
+  const pay=$("invPay"),canPay=b.due>0&&b.status!=="cancelled";pay.hidden=!canPay;$("invSecure").hidden=!canPay;
+  $("invStripe").hidden=!(canPay&&b.stripeInvoiceUrl);if(b.stripeInvoiceUrl)$("invStripe").href=b.stripeInvoiceUrl;
+  if(canPay){pay.disabled=false;pay.textContent=`Pay $${LBL.money(b.due)} securely →`;
+    pay.onclick=async()=>{if(!LIVE){err.textContent="Preview mode: this button opens Stripe checkout once the site is live.";return}pay.disabled=true;pay.textContent="Opening checkout…";err.textContent="";try{const r=await LBL.api.checkout({type:"booking",id});location.href=r.url}catch(x){err.textContent=x.message;pay.disabled=false;pay.textContent=`Pay $${LBL.money(b.due)} securely →`}}}
+  if(justPaid&&!justPaid.done){justPaid.done=true;confetti();say("Payment received! Thank you ♡");
+    // Stripe confirms within a few seconds; refresh until the invoice shows it
+    for(let i=0;i<6;i++){await new Promise(r=>setTimeout(r,1800));let nb;try{nb=await LBL.api.booking(id)}catch(_){break}if(nb.paid>b.paid){return showInvoice(id,justPaid)}}}
+}
+$("invPrint").onclick=()=>window.print();
+// preview mode: build the invoice from bookings made in the admin panel (same browser)
+function demoBooking(id){let all=[];try{all=JSON.parse(LBL.ls.get("lbl-demo-bookings")||"[]")}catch(_){}
+  const b=all.find(x=>x.id===id);if(!b)throw new Error("We couldn't find that invoice. Double-check the link?");
+  const full=Number(b.fullPrice)||Number(b.amount)||0,payments=b.payments||[],paid=payments.reduce((t,p)=>t+Number(p.amount||0),0);
+  const due=b.status==="cancelled"||b.payType==="none"?0:paid?Math.max(0,full-paid):Number(b.amount)||0;
+  return {...b,firstName:(b.name||"").split(" ")[0],issued:b.createdAt,paid,due,payments,fullPrice:full,note:b.invoiceNote||C.invoice?.note,terms:C.invoice?.terms,invoiceTitle:C.invoice?.title,brand:C.brand}}
+$("invBack").onclick=e=>{if(!new URLSearchParams(location.search).get("pay")){e.preventDefault();location.hash="#hi"}};
+function hideInvoice(){if(!document.body.classList.contains("invoice-mode"))return;document.body.classList.remove("invoice-mode");$("invoiceView").hidden=true}
+addEventListener("hashchange",()=>{const h=location.hash.match(/^#invoice=(.+)$/);if(h)showInvoice(decodeURIComponent(h[1]),null);else if(!new URLSearchParams(location.search).get("pay"))hideInvoice()});
+function handleReturnFromCheckout(){const q=new URLSearchParams(location.search);const paid=q.get("paid");if(q.get("pay")){showInvoice(q.get("pay"),q.get("paid")?{}:null);return}{const h=location.hash.match(/^#invoice=(.+)$/);if(h){showInvoice(decodeURIComponent(h[1]),null);return}}if(q.get("canceled"))say("Checkout canceled. Nothing was charged.");
+  if(paid){$("thanksText").textContent=paid==="mini"?"Your mini session spot is booked and a receipt is on its way to your email. See you on mini day!":"Your payment went through and a receipt is on its way to your email. I'll be in touch soon with all the details.";openModal("thanksModal");confetti()}
+  if(paid||q.get("canceled")){try{history.replaceState(null,"",location.pathname+location.hash)}catch(_){}}}
+
+/* ---------- booking letter ---------- */
+function fillPkgs(){const pk=$("fPkg"),ss=$("fSession");const pv=pk.value;const list=(C.pricing.packages||[]).filter(p=>!ss.value||ss.value==="other"||p.cat===ss.value||!(C.pricing.categories||[]).some(t=>t.id===p.cat));
+  pk.innerHTML=list.map(p=>`<option value="${LBL.esc(LBL.pkgName(C,p))}">${LBL.esc((ss.value&&ss.value!=="other"?p.name:LBL.pkgName(C,p)).toLowerCase())}</option>`).join("")+'<option value="not sure yet">not sure yet</option>';
+  if([...pk.options].some(o=>o.value===pv))pk.value=pv;fitBlanks()}
+$("fSession").addEventListener("change",fillPkgs);
+function renderLetter(){const pk=$("fPkg"),st=$("fStyle"),ss=$("fSession");if(!pk||!st)return;const sv=st.value,tv=ss.value;
+  ss.innerHTML=(C.pricing.categories||[]).map(t=>`<option value="${LBL.esc(t.id)}">${LBL.esc(t.name.toLowerCase())}</option>`).join("")+'<option value="other">something else</option>';if([...ss.options].some(o=>o.value===tv))ss.value=tv;
+  fillPkgs();
+  st.innerHTML=(C.edits.styles||[]).map(s=>`<option>${LBL.esc(s.name.toLowerCase())}</option>`).join("")+"<option>not sure yet</option>";
+  if(sv)st.value=sv;if(!$("fDate").value)$("fDate").value=LBL.isoDaysFromNow(21);fitBlanks()}
+function fitBlanks(){document.querySelectorAll("input.blank").forEach(i=>{if(i.type==="date")return;const fit=()=>i.style.width=Math.max(8,((i.tagName==="SELECT"?(i.selectedOptions[0]||{}).textContent:i.value)||i.placeholder||"").length+(i.tagName==="SELECT"?4:2))+"ch";if(!i._fit){i._fit=1;i.addEventListener("input",fit)}fit()})}
+$("bookForm").addEventListener("submit",async e=>{e.preventDefault();const f=e.target,err=$("formErr");err.textContent="";
+  const name=$("fName").value.trim(),email=$("fEmail").value.trim();
+  if(!name){err.textContent="Fill in your name!";$("fName").focus();return}
+  if(!LBL.isEmail(email)){err.textContent="Double-check that email.";$("fEmail").focus();return}
+  const body={kind:"inquiry",name,email,phone:$("fPhone").value,session:($("fSession").selectedOptions[0]||{}).textContent||"",date:$("fDate").value,package:$("fPkg").value,style:$("fStyleWrap").hidden?"":$("fStyle").value,message:$("fMsg").value,website:$("hp").value};
+  let ok=false;
+  if(LIVE){try{await LBL.api.inquiry(body);ok=true}catch(x){err.textContent=x.message||"That didn't send. Please try again.";return}}
+  else LBL.demoInbox(body);
+  f.classList.add("fly");confetti();
+  setTimeout(()=>{$("letterWrap").innerHTML=`<div class="envelope"><svg width="240" height="170" viewBox="0 0 240 170" aria-hidden="true"><rect x="6" y="20" width="228" height="144" rx="10" fill="#FDE3E9" stroke="#35415A" stroke-width="4"/><path d="M6 30 L120 105 L234 30" fill="none" stroke="#35415A" stroke-width="4" stroke-linejoin="round"/><path d="M120 92 c-14-10-20-18-14-25 c4-5 11-3 14 3 c3-6 10-8 14-3 c6 7 0 15-14 25z" fill="#E88AA0" stroke="#35415A" stroke-width="3"/></svg><h3 style="font-size:2rem">Sent with love!</h3><p style="color:var(--ink-soft)">${ok?"Thanks, "+LBL.esc(name.split(" ")[0])+"! I'll write back within 48 hours.":"Preview mode: your note went to the admin panel's inbox in this browser only."}</p></div>`},850)});
+
+/* ---------- confetti ---------- */
+function confetti(){if(reduce)return;const c=document.createElement("div");c.className="confetti";const bits=["✿","♡","★","✦","❀"],cols=["#E88AA0","#6FA8DC","#F2B84B","#8BC77A","#A98BDB"];for(let i=0;i<40;i++){const s=document.createElement("i");s.textContent=bits[i%5];s.style.left=Math.random()*100+"%";s.style.color=cols[i%5];s.style.animationDuration=(2+Math.random()*2)+"s";s.style.animationDelay=(Math.random()*.6)+"s";c.appendChild(s)}document.body.appendChild(c);setTimeout(()=>c.remove(),5000)}
+
+/* ---------- active tab while scrolling ---------- */
+const tabLinks=[...document.querySelectorAll(".tabs a:not(.minitab)")];
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)tabLinks.forEach(a=>a.classList.toggle("here",a.getAttribute("href")==="#"+e.target.id))}),{rootMargin:"-45% 0px -50% 0px"});
+["hi","board","edits","tags","letter"].forEach(id=>io.observe($(id)));
+
+/* =========================================================
+   Minis page
+   ========================================================= */
+const t12=hm=>{let [h,m]=String(hm).split(":").map(Number);const ap=h>=12?"pm":"am";h=h%12||12;return `${h}:${String(m).padStart(2,"0")}${ap}`};
+const niceDate=d=>{const x=new Date(d+"T12:00");return isNaN(x)?d:x.toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric"})};
+const shortDate=d=>{const x=new Date(d+"T12:00");return isNaN(x)?d:x.toLocaleDateString("en-US",{month:"short",day:"numeric"})};
+const unavailable=m=>new Set([...(m.taken||[]),...(m.booked||[]),...(m.busy||[])]);
+let cur=null,chosenSlot=null,cdTimer=null;const addonSel=new Set();
+const visibleMinis=()=>(C.minis||[]).filter(m=>m.status!=="hidden");
+function renderMinis(){
+  const on=C.minisPage.enabled!==false&&visibleMinis().length>0;
+  $("miniTab").hidden=!on;document.querySelector(".tabs .gap").hidden=!on;$("miniTabLabel").textContent=C.minisPage.tabLabel||"Minis";
+  if(!on&&location.hash==="#minis")location.hash="#hi";
+  renderPromo();
+  $("reel").innerHTML="";(C.minisPage.moments||[]).forEach((p,i)=>{const f=document.createElement("figure");f.style.setProperty("--r",((i%3)-1)*3+"deg");f.innerHTML=`<img alt="${LBL.esc(p.caption)}" src="${LBL.photoOr(p.photo,p.kind||"family",i*3+2,400,500)}"><figcaption>${LBL.esc(p.caption)}</figcaption>`;$("reel").appendChild(f)});
+  $("miniFaq").innerHTML=(C.minisPage.faq||[]).map((q,i)=>`<details ${i?"":"open"} style="--c:${["#FFF1A8","#F9C6D0","#BFE0F5","#C6E7B8"][i%4]}"><summary>${LBL.esc(q.q)}</summary><p>${LBL.esc(q.a)}</p></details>`).join("");
+  const keep=cur&&visibleMinis().find(m=>m.id===cur.id);select(keep||visibleMinis()[0]||null,true)}
+function renderPromo(){const el=$("promo");const m=(C.minis||[]).find(x=>x.status==="open");if(!m||C.minisPage.promo===false||C.minisPage.enabled===false){el.hidden=true;return}
+  const all=LBL.slotsFor(m),u=unavailable(m),left=all.filter(s=>!u.has(s)).length;el.hidden=false;
+  el.innerHTML=`<span class="new">new!</span><span><b>${LBL.esc(m.name)}</b> · ${shortDate(m.date)} · $${LBL.money(m.price)}</span><span class="left">${left?`${left} spot${left===1?"":"s"} left →`:"sold out, join the next one →"}</span>`}
+function renderSeasons(){$("seasons").innerHTML="";visibleMinis().forEach((m,i)=>{const b=document.createElement("button");b.className="season";b.type="button";b.style.setProperty("--c",m.color||"#F7B98A");b.style.setProperty("--r",["-2deg","1.5deg","-1deg","2deg"][i%4]);b.setAttribute("aria-pressed",m===cur);b.innerHTML=`${LBL.esc(m.tab||m.name)}<small>${m.status==="open"?shortDate(m.date):"coming soon"}</small>`;b.onclick=()=>select(m);$("seasons").appendChild(b)})}
+function select(m,keepSel){if(!m)return;if(!keepSel||!cur||cur.id!==m.id){chosenSlot=null;addonSel.clear()}cur=m;$("page-minis").style.setProperty("--season",m.color||"#F7B98A");renderSeasons();renderMiniHero();renderBook()}
+function renderMiniHero(){const m=cur;$("heroKicker").textContent=m.kicker||"";$("heroTitle").innerHTML=`${LBL.esc(m.title||m.name)} <span class="hl">minis</span>`;$("heroLede").textContent=m.lede||"";
+  $("tImg").src=LBL.photoOr(m.photo,m.kind||"family",(m.id||"").length*3+3,640,400);$("tName").textContent=m.name;
+  $("tMeta").innerHTML=`<span><b>When:</b> ${LBL.esc(niceDate(m.date))}</span><span><b>Where:</b> ${LBL.esc(m.where)}</span><span><b>You get:</b> ${LBL.esc(m.photos)} edited photos</span>`;
+  $("tPrice").textContent="$"+LBL.money(m.price);$("tLen").textContent=m.len||"";
+  const all=LBL.slotsFor(m),u=unavailable(m),left=all.filter(s=>!u.has(s)).length;
+  if(m.status==="open"){$("spotsTxt").textContent=left?"spots left":"all booked!";$("spotsNum").textContent=`${left} of ${all.length}`;$("spotsBar").style.width=(all.length?(all.length-left)/all.length*100:0)+"%"}
+  else{$("spotsTxt").textContent="booking opens soon";$("spotsNum").textContent="join the list!";$("spotsBar").style.width="8%"}
+  clearInterval(cdTimer);tick();cdTimer=setInterval(tick,30000)}
+function tick(){const m=cur;if(!m)return;const target=new Date(`${m.date}T${(m.start||"10:00").padStart(5,"0")}:00`);let ms=Math.max(0,target-new Date());if(isNaN(ms))ms=0;
+  const d=Math.floor(ms/864e5),hh=Math.floor(ms%864e5/36e5),mm=Math.floor(ms%36e5/6e4);
+  $("countdown").innerHTML=[[d,"days","#FFF1A8","-3deg"],[hh,"hours","#F9C6D0","2deg"],[mm,"mins","#BFE0F5","-1deg"]].map(([n,l,c,r])=>`<div class="cd" style="--c:${c};--r:${r}"><b>${n}</b><span>${l}</span></div>`).join("")}
+const miniPay=()=>(C.minisPage.bookingMode||"pay")==="pay";
+function renderBook(){const m=cur,area=$("bookArea");
+  if(m.status!=="open"){area.innerHTML=`<div class="panel" style="--c:${m.color}"><div class="soon"><p class="hand" style="font-size:1.6rem">${LBL.esc(m.name)} are coming!</p><p>${LBL.esc(niceDate(m.date))} · ${LBL.esc(m.where)} · $${LBL.money(m.price)}</p><p style="color:var(--ink-soft)">Spots go fast. Join the list and you'll get first dibs.</p><form id="waitForm" novalidate><input type="email" id="wEmail" placeholder="you@example.com" aria-label="Your email" autocomplete="email"><button class="btn" type="submit">Save me a spot ✿</button></form><span class="err" id="wErr" role="alert"></span></div></div>`;
+    $("waitForm").addEventListener("submit",async e=>{e.preventDefault();const email=$("wEmail").value.trim();if(!LBL.isEmail(email)){$("wErr").textContent="Check that email address.";return}
+      const body={kind:"waitlist",email,mini:m.name};
+      if(LIVE){try{await LBL.api.inquiry(body)}catch(x){$("wErr").textContent=x.message;return}}else LBL.demoInbox(body);
+      e.target.outerHTML=`<p class="chosen">You're on the list! ✿</p>`;confetti()});return}
+  const all=LBL.slotsFor(m),u=unavailable(m);
+  area.innerHTML=`<div class="book">
+  <div class="panel" style="--c:${m.color}"><h3>1. Tap a time sticker</h3><p class="mhint">${LBL.esc(niceDate(m.date))} · each mini is ${LBL.esc(m.len)}</p><div class="slots" id="slots" role="group" aria-label="Available times"></div>
+   <h3 style="margin-top:24px">2. Add a little extra?</h3><p class="mhint">Peel off any stickers you'd like.</p><div class="addons" id="addons"></div></div>
+  <div class="panel" style="--c:var(--lav)"><h3>3. Your details</h3><p class="mhint">${miniPay()?"Takes 30 seconds, then secure checkout.":"Send your request and I'll confirm your time, then send you a payment link."}</p>
+   <form class="bform" id="bForm" novalidate>
+    <p class="chosen" id="chosen">No time picked yet</p>
+    <div class="f"><label for="mName">Your name</label><input id="mName" autocomplete="name"></div>
+    <div class="two"><div class="f"><label for="mEmail">Email</label><input id="mEmail" type="email" autocomplete="email"></div><div class="f"><label for="mPhone">Phone</label><input id="mPhone" type="tel" autocomplete="tel"></div></div>
+    <div class="f"><label for="mPeople">Who's coming?</label><select id="mPeople"><option>Just me</option><option>2 people</option><option selected>3–4 people</option><option>5–6 people</option></select></div>
+    <div class="f"><label for="mMsg">Anything I should know?</label><textarea id="mMsg" placeholder="kids' ages, pets, ideas…"></textarea></div>
+    <div class="receipt" id="receipt"></div>
+    ${LIVE||!miniPay()?"":'<p class="demo-note">Preview mode: checkout turns on once the site is live with Stripe.</p>'}
+    <button class="btn" type="submit" id="bBtn">${miniPay()?"Pay &amp; book my mini ✿":"Request this time ✿"}</button><span class="err" id="bErr" role="alert"></span>
+   </form></div></div>`;
+  all.forEach(s=>{const b=document.createElement("button");b.type="button";b.className="slot";b.textContent=t12(s);const taken=u.has(s);b.disabled=taken;b.setAttribute("aria-label",t12(s)+(taken?", booked":", open"));b.setAttribute("aria-pressed",String(s===chosenSlot&&!taken));
+    b.onclick=()=>{chosenSlot=s;[...$("slots").children].forEach(x=>x.setAttribute("aria-pressed",x===b));updateReceipt()};$("slots").appendChild(b)});
+  (C.addons||[]).forEach(a=>{const d=document.createElement("div");d.className="addon";d.innerHTML=`<input type="checkbox" id="ad-${LBL.esc(a.id)}"><label for="ad-${LBL.esc(a.id)}" style="--c:${a.color||"#F9C6D0"}"><b>${LBL.esc(a.label)}</b><small>${LBL.esc(a.note)} · ${Number(a.price)?"$"+LBL.money(a.price):"free"}</small></label>`;const cb=d.querySelector("input");cb.checked=addonSel.has(a.id);cb.onchange=e=>{e.target.checked?addonSel.add(a.id):addonSel.delete(a.id);updateReceipt()};$("addons").appendChild(d)});
+  updateReceipt();$("bForm").addEventListener("submit",submitMini)}
+function totals(){const m=cur;const lines=[[m.name,Number(m.price)]];(C.addons||[]).filter(a=>addonSel.has(a.id)).forEach(a=>lines.push([a.label,Number(a.price)]));return{lines,total:lines.reduce((s,l)=>s+l[1],0)}}
+function updateReceipt(){const {lines,total}=totals();$("receipt").innerHTML=lines.map(l=>`<div class="ln"><span>${LBL.esc(l[0])}</span><span>${l[1]?"$"+LBL.money(l[1]):"free"}</span></div>`).join("")+`<div class="ln tot"><span>Total</span><span>$${LBL.money(total)}</span></div>`;
+  $("chosen").textContent=chosenSlot?`${niceDate(cur.date)} at ${t12(chosenSlot)} ♡`:"No time picked yet"}
+async function submitMini(e){e.preventDefault();const err=$("bErr");err.textContent="";const m=cur;
+  if(!chosenSlot){err.textContent="Tap a time sticker first!";$("slots").scrollIntoView({block:"center",behavior:"smooth"});return}
+  const name=$("mName").value.trim(),email=$("mEmail").value.trim();if(!name){err.textContent="Add your name.";return}if(!LBL.isEmail(email)){err.textContent="Check that email address.";return}
+  if(!miniPay()){const body={kind:"mini-request",name,email,phone:$("mPhone").value,people:$("mPeople").value,message:$("mMsg").value,mini:m.name,miniId:m.id,slot:chosenSlot,date:m.date,addons:(C.addons||[]).filter(a=>addonSel.has(a.id)).map(a=>a.label).join(", ")};
+    if(LIVE){$("bBtn").disabled=true;try{await LBL.api.inquiry(body)}catch(x){err.textContent=x.message;$("bBtn").disabled=false;return}}else LBL.demoInbox(body);
+    confetti();$("bForm").outerHTML=`<div class="done"><p class="hand" style="font-size:1.8rem;color:var(--pink-d)">yay! ✿</p><h3 style="font-size:1.6rem">Request sent, ${LBL.esc(name.split(" ")[0])}!</h3><p class="chosen">${LBL.esc(niceDate(m.date))} at ${t12(chosenSlot)}</p><p>I'll confirm your time and email you a link to pay and lock it in.</p></div>`;return}
+  if(!LIVE){err.textContent="Preview only: nothing was charged. On the live site this opens Stripe checkout.";return}
+  $("bBtn").disabled=true;$("bBtn").textContent="Opening checkout…";
+  try{const r=await LBL.api.checkout({type:"mini",miniId:m.id,slot:chosenSlot,addons:[...addonSel],name,email,phone:$("mPhone").value,people:$("mPeople").value,message:$("mMsg").value});location.href=r.url}
+  catch(x){err.textContent=x.message;$("bBtn").disabled=false;$("bBtn").textContent="Pay & book my mini ✿";if(x.status===409){const live=await LBL.api.content();if(live){C=live;renderMinis()}}}}
+document.addEventListener("click",e=>{const j=e.target.closest("[data-jump]");if(j)$(j.dataset.jump).scrollIntoView({behavior:"smooth",block:"start"})});
+
+/* ---------- page switching: #minis shows the minis page ---------- */
+(()=>{const home=$("page-home"),minis=$("page-minis"),tab=$("miniTab");let showing=null;
+ function route(first){const h=decodeURIComponent(location.hash.slice(1));const want=h==="minis"&&!tab.hidden?"minis":"home";
+  if(want!==showing){showing=want;home.classList.toggle("on",want==="home");minis.classList.toggle("on",want==="minis");tab.classList.toggle("here",want==="minis");if(want==="minis")tabLinks.forEach(a=>a.classList.remove("here"));if(want==="minis"||!h)scrollTo({top:0,behavior:"instant"})}
+  if(want==="home"&&h){const t=document.getElementById(h);if(t)setTimeout(()=>t.scrollIntoView({behavior:first?"auto":"smooth",block:"start"}),first?120:60)}}
+ addEventListener("hashchange",()=>route(false));window.__route=route;})();
+
+boot().then(()=>window.__route(true));
+</script>
+
+</body>
+</html>
